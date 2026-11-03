@@ -1,11 +1,19 @@
-s://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معلمي - بوابة مدرسة الذاريات الابتدائية</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; background-color: #0f172a; color: #f8fafc; }
         .student-card { transition: all 0.3s ease; }
         .student-card:hover { transform: translateY(-3px); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-start p-2 sm:p-4">
+<body class="min-h-screen flex flex-col items-center justify-start p-3 sm:p-4">
 
     <!-- رأس التطبيق العام -->
     <header class="w-full max-w-md bg-slate-800/90 backdrop-blur border border-slate-700 rounded-2xl p-4 mb-4 shadow-xl text-center">
@@ -118,7 +126,7 @@ s://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" re
             <div id="teacher-tab-planner" class="space-y-4 hidden">
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                     <h3 class="font-bold text-sm text-slate-200">سجل خطة الدرس والتحضير اليومي 📖</h3>
-                    <input type="text" id="lesson-topic" placeholder="عنوان الدرس (مثلاً: قواعد - الفاعل / إسلامية - سورة النجم)" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
+                    <input type="text" id="lesson-topic" placeholder="عنوان الدرس (مثلاً: قواعد - الفاعل)" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
                     <textarea id="lesson-notes" rows="3" placeholder="الواجب اليومي والملاحظات..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white"></textarea>
                     <button onclick="saveLessonPlan()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs">حفظ الخطة اليومية 📋</button>
                     <div id="saved-plan-display" class="text-xs text-slate-300 p-3 bg-slate-900 rounded-xl border border-slate-700 mt-2">
@@ -142,7 +150,6 @@ s://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" re
 
             <!-- نتيجة تفتيش ولي الأمر -->
             <div id="parent-result-view" class="space-y-4 hidden">
-                <!-- بطاقة المعلومات والدرجات -->
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                     <div class="flex justify-between items-center border-b border-slate-700 pb-2">
                         <div>
@@ -171,13 +178,11 @@ s://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" re
                         </div>
                     </div>
 
-                    <!-- ملاحظات المرشد والسلوك -->
                     <div class="bg-slate-900 p-3 rounded-xl border border-slate-700 space-y-1">
                         <span class="text-xs text-amber-400 font-bold block"><i class="fa-solid fa-heart-pulse"></i> ملاحظات وتوجيهات المرشد التربوي:</span>
                         <p id="res-notes" class="text-xs text-slate-300">لا توجد ملاحظات مسجلة حالياً.</p>
                     </div>
 
-                    <!-- زر الشهادة التقديرية (إن وُجد استحقاق) -->
                     <div id="res-certificate-box" class="hidden">
                         <div class="bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/50 p-3 rounded-xl text-center space-y-1">
                             <i class="fa-solid fa-award text-amber-400 text-xl"></i>
@@ -186,28 +191,25 @@ s://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" re
                         </div>
                     </div>
 
-                    <!-- زر الأسئلة الوزارية (يظهر للسادس فقط) -->
                     <div id="res-ministerial-box" class="hidden pt-2">
                         <button onclick="openMinisterialModal()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2.5 rounded-xl text-xs flex items-center justify-center gap-2">
                             <i class="fa-solid fa-book-open"></i> فتح أرشيف الأسئلة الوزارية (للصف السادس) 📚
                         </button>
                     </div>
 
-                    <!-- الأوراق الامتحانية الشهرية -->
                     <div class="bg-slate-900 p-3 rounded-xl border border-slate-700 space-y-2">
                         <span class="text-xs text-amber-400 font-bold block"><i class="fa-solid fa-file-lines"></i> معاينة الأوراق الامتحانية الشهرية:</span>
                         <div class="text-xs text-slate-400 bg-slate-800 p-2 rounded-lg">
                             تم تصحيح الأوراق الشهرية ورصدها في السجل الرسمي بنجاح.
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
 
     </main>
 
-    <!-- نافذة الأسئلة الوزارية (الصف السادس) -->
+    <!-- نافذة الأسئلة الوزارية -->
     <div id="ministerial-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-2xl p-4 space-y-4 max-h-[80vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-slate-700 pb-2">
@@ -220,33 +222,23 @@ s://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" re
                         <span class="font-bold text-white block">أسئلة مادة اللغة العربية - الدور الأول 2024</span>
                         <span class="text-slate-400 text-[10px]">وزارة التربية العراقية</span>
                     </div>
-                    <a href="https://moedu.gov.iq" target="_blank" class="bg-blue-600 px-3 py-1.5 rounded-lg text-white font-bold">معاينة/تحميل</a>
+                    <a href="https://moedu.gov.iq" target="_blank" class="bg-blue-600 px-3 py-1.5 rounded-lg text-white font-bold">معاينة</a>
                 </div>
                 <div class="bg-slate-900 p-3 rounded-xl border border-slate-700 flex justify-between items-center">
                     <div>
                         <span class="font-bold text-white block">أسئلة مادة التربية الإسلامية - الدور الأول 2024</span>
                         <span class="text-slate-400 text-[10px]">وزارة التربية العراقية</span>
                     </div>
-                    <a href="https://moedu.gov.iq" target="_blank" class="bg-blue-600 px-3 py-1.5 rounded-lg text-white font-bold">معاينة/تحميل</a>
-                </div>
-                <div class="bg-slate-900 p-3 rounded-xl border border-slate-700 flex justify-between items-center">
-                    <div>
-                        <span class="font-bold text-white block">أسئلة مادة اللغة العربية - الدور الأول 2023</span>
-                        <span class="text-slate-400 text-[10px]">وزارة التربية العراقية</span>
-                    </div>
-                    <a href="https://moedu.gov.iq" target="_blank" class="bg-blue-600 px-3 py-1.5 rounded-lg text-white font-bold">معاينة/تحميل</a>
+                    <a href="https://moedu.gov.iq" target="_blank" class="bg-blue-600 px-3 py-1.5 rounded-lg text-white font-bold">معاينة</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- البرمجة والمنطق التفاعلي (JavaScript) -->
     <script>
-        // تخزين البيانات محلياً في المتصفح
         let studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || [
             { id: 'STU-601', name: 'سجاد حيدر محمد', class: 'السادس الابتدائي', section: 'أ', oct: 95, dec: 90, mid: 92, final: '', notes: 'تلميذ متفوق جداً وذو سلوك ممتاز.', isTop: true },
-            { id: 'STU-602', name: 'فاطمة علي حسين', class: 'السادس الابتدائي', section: 'أ', oct: 85, dec: 88, mid: 86, final: '', notes: 'منتظمة وحريصة على الواجبات.', isTop: false },
-            { id: 'STU-501', name: 'محمد أحمد كريم', class: 'الخامس الابتدائي', section: 'ب', oct: 78, dec: 80, mid: 79, final: '', notes: 'تحسن مستواه بشكل ملحوظ.', isTop: false }
+            { id: 'STU-602', name: 'فاطمة علي حسين', class: 'السادس الابتدائي', section: 'أ', oct: 85, dec: 88, mid: 86, final: '', notes: 'منتظمة وحريصة على الواجبات.', isTop: false }
         ];
 
         let lessonPlanData = JSON.parse(localStorage.getItem('dhariyat_lesson')) || { topic: 'لم يتم تحديد خطة اليوم', notes: 'لا توجد ملاحظات.' };
@@ -255,10 +247,8 @@ s://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" re
             localStorage.setItem('dhariyat_students', JSON.stringify(studentsData));
             localStorage.setItem('dhariyat_lesson', JSON.stringify(lessonPlanData));
             renderStudentsList();
-            updateStats();
         }
 
-        // تبديل البوابات الرئيسية
         function switchPortal(portal) {
             if(portal === 'teacher') {
                 document.getElementById('portal-teacher').classList.remove('hidden');
@@ -273,7 +263,6 @@ s://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" re
             }
         }
 
-        // تبديل تبويبات المعلم
         function switchTeacherTab(tab) {
             document.getElementById('teacher-tab-students').classList.add('hidden');
             document.getElementById('teacher-tab-grades').classList.add('hidden');
@@ -290,28 +279,23 @@ s://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" re
             if(tab === 'planner') loadPlannerDisplay();
         }
 
-        // إضافة تلميذ جديد
         function addNewStudent() {
             const nameInput = document.getElementById('new-student-name');
             const name = nameInput.value.trim();
             if(!name) { alert('يرجى إدخال اسم التلميذ الثلاثي.'); return; }
-
             const cls = document.getElementById('new-student-class').value;
             const sec = document.getElementById('new-student-section').value;
             const randomId = 'STU-' + Math.floor(100 + Math.random() * 900);
-
             studentsData.push({ id: randomId, name: name, class: cls, section: sec, oct: '', dec: '', mid: '', final: '', notes: 'تلميذ جديد في النظام.', isTop: false });
             nameInput.value = '';
             saveData();
-            alert('تمت إضافة التلميذ بنجاح وتم توليد كوده الخاص: ' + randomId);
+            alert('تمت إضافة التلميذ بنجاح. الكود: ' + randomId);
         }
 
-        // عرض قائمة التلاميذ
         function renderStudentsList() {
             const listContainer = document.getElementById('teacher-students-list');
             listContainer.innerHTML = '';
             document.getElementById('total-students').innerText = studentsData.length;
-
             studentsData.forEach((s, idx) => {
                 const div = document.createElement('div');
                 div.className = "p-3 bg-slate-900 border border-slate-700 rounded-xl flex justify-between items-center text-xs";
@@ -321,8 +305,8 @@ s://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" re
                         <span class="text-slate-400 text-[10px]">${s.class} (${s.section}) - الكود: <strong class="text-amber-400">${s.id}</strong></span>
                     </div>
                     <div class="flex gap-1">
-                        <button onclick="toggleTopStudent('${s.id}')" class="px-2 py-1 bg-slate-800 text-amber-400 rounded border border-slate-700 font-bold" title="منح شهادة تفوق">🏆</button>
-                        <button onclick="deleteStudent(${idx})" class="px-2 py-1 bg-red-900/40 text-red-400 rounded border border-red-900" title="حذف">🗑️</button>
+                        <button onclick="toggleTopStudent('${s.id}')" class="px-2 py-1 bg-slate-800 text-amber-400 rounded border border-slate-700 font-bold">🏆</button>
+                        <button onclick="deleteStudent(${idx})" class="px-2 py-1 bg-red-900/40 text-red-400 rounded border border-red-900">🗑️</button>
                     </div>
                 `;
                 listContainer.appendChild(div);
@@ -330,22 +314,14 @@ s://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" re
         }
 
         function deleteStudent(index) {
-            if(confirm('هل أنت متأكد من حذف هذا التلميذ؟')) {
-                studentsData.splice(index, 1);
-                saveData();
-            }
+            if(confirm('هل أنت متأكد من الحذف؟')) { studentsData.splice(index, 1); saveData(); }
         }
 
         function toggleTopStudent(id) {
             const s = studentsData.find(x => x.id === id);
-            if(s) {
-                s.isTop = !s.isTop;
-                saveData();
-                alert(s.isTop ? `تم منح التلميذ ${s.name} شهادة التفوق والسلوك المتميز بنجاح!` : `تم إلغاء حالة التفوق.`);
-            }
+            if(s) { s.isTop = !s.isTop; saveData(); alert(s.isTop ? 'تم منح شهادة التفوق!' : 'تم إلغاء التفوق.'); }
         }
 
-        // تعبئة قائمة اختيار التلاميذ للدرجات
         function populateGradeSelect() {
             const select = document.getElementById('grade-student-select');
             select.innerHTML = '<option value="">اختر التلميذ لإدخال درجاته...</option>';
@@ -361,7 +337,6 @@ s://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" re
             const id = this.value;
             const container = document.getElementById('grade-inputs-container');
             if(!id) { container.classList.add('hidden'); return; }
-            
             const s = studentsData.find(x => x.id === id);
             if(s) {
                 container.classList.remove('hidden');
@@ -383,11 +358,10 @@ s://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" re
                 s.final = document.getElementById('g-final').value;
                 s.notes = document.getElementById('g-notes').value;
                 saveData();
-                alert('تم حفظ درجات وتوجيهات التلميذ بنجاح!');
+                alert('تم حفظ الدرجات بنجاح!');
             }
         }
 
-        // خطة الدرس
         function saveLessonPlan() {
             const topic = document.getElementById('lesson-topic').value;
             const notes = document.getElementById('lesson-notes').value;
@@ -395,7 +369,7 @@ s://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" re
             lessonPlanData = { topic, notes };
             localStorage.setItem('dhariyat_lesson', JSON.stringify(lessonPlanData));
             loadPlannerDisplay();
-            alert('تم حفظ خطة الدرس اليومي بنجاح!');
+            alert('تم حفظ الخطة بنجاح!');
         }
 
         function loadPlannerDisplay() {
@@ -403,43 +377,26 @@ s://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" re
             disp.innerHTML = `<strong>العنوان:</strong> ${lessonPlanData.topic}<br><strong>الملاحظات:</strong> ${lessonPlanData.notes}`;
         }
 
-        // بحث ولي الأمر بالكود
         function searchStudentByCode() {
             const code = document.getElementById('parent-code-input').value.trim().toUpperCase();
             const s = studentsData.find(x => x.id === code);
             const resView = document.getElementById('parent-result-view');
-
-            if(!s) {
-                alert('عذراً، الكود المدخل غير صحيح أو غير مسجل في النظام.');
-                resView.classList.add('hidden');
-                return;
-            }
-
+            if(!s) { alert('الكود غير صحيح.'); resView.classList.add('hidden'); return; }
             resView.classList.remove('hidden');
             document.getElementById('res-name').innerText = s.name;
             document.getElementById('res-class').innerText = `${s.class} - شعبة ${s.section}`;
             document.getElementById('res-code').innerText = s.id;
-            
             document.getElementById('res-oct').innerText = s.oct !== '' ? s.oct : '-';
             document.getElementById('res-dec').innerText = s.dec !== '' ? s.dec : '-';
             document.getElementById('res-mid').innerText = s.mid !== '' ? s.mid : '-';
-            
-            // حساب المعدل التقريبي البسيط
             const vals = [s.oct, s.dec, s.mid].filter(v => v !== '' && !isNaN(v)).map(Number);
             const avg = vals.length > 0 ? (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1) : '-';
             document.getElementById('res-avg').innerText = avg;
-
-            document.getElementById('res-notes').innerText = s.notes || 'لا توجد ملاحظات مسجلة حالياً.';
-
-            // الشهادة التقديرية
-            const certBox = document.getElementById('res-certificate-box');
-            if(s.isTop) certBox.classList.remove('hidden');
-            else certBox.classList.add('hidden');
-
-            // الأسئلة الوزارية (تظهر للسادس فقط)
-            const minBox = document.getElementById('res-ministerial-box');
-            if(s.class.includes('السادس')) minBox.classList.remove('hidden');
-            else minBox.classList.add('hidden');
+            document.getElementById('res-notes').innerText = s.notes || 'لا توجد ملاحظات.';
+            if(s.isTop) document.getElementById('res-certificate-box').classList.remove('hidden');
+            else document.getElementById('res-certificate-box').classList.add('hidden');
+            if(s.class.includes('السادس')) document.getElementById('res-ministerial-box').classList.remove('hidden');
+            else document.getElementById('res-ministerial-box').classList.add('hidden');
         }
 
         function openMinisterialModal() { document.getElementById('ministerial-modal').classList.remove('hidden'); }
@@ -447,37 +404,14 @@ s://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" re
 
         function exportBackup() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(studentsData));
-            const dlAnchor = document.createElement('a');
-            dlAnchor.setAttribute("href", dataStr);
-            dlAnchor.setAttribute("download", "dhariyat_backup.json");
-            document.body.appendChild(dlAnchor);
-            dlAnchor.click();
-            dlAnchor.remove();
+            const dl = document.createElement('a');
+            dl.setAttribute("href", dataStr);
+            dl.setAttribute("download", "dhariyat_backup.json");
+            document.body.appendChild(dl);
+            dl.click();
+            dl.remove();
         }
 
-        function importStudentsFile(event) {
-            const file = event.target.files[0];
-            if(!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const text = e.target.result;
-                const lines = text.split('\n');
-                let count = 0;
-                lines.forEach(line => {
-                    const cleanName = line.trim();
-                    if(cleanName.length > 3) {
-                        const randomId = 'STU-' + Math.floor(100 + Math.random() * 900);
-                        studentsData.push({ id: randomId, name: cleanName, class: 'السادس الابتدائي', section: 'أ', oct: '', dec: '', mid: '', final: '', notes: 'تلميذ مستورد من القائمة.', isTop: false });
-                        count++;
-                    }
-                });
-                saveData();
-                alert(`تم استيراد ${count} تلميذاً بنجاح من الملف وتوليد أكوادهم!`);
-            };
-            reader.readAsText(file);
-        }
-
-        // تشغيل أولي
         renderStudentsList();
     </script>
 </body>
