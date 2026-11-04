@@ -23,7 +23,7 @@
     <main class="w-full max-w-md space-y-4">
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3 text-center">
             <h2 class="text-base font-bold text-amber-400">استعلام عن نتائج التلميذ</h2>
-            <p class="text-xs text-slate-300">أدخل الكود المخصص لتلميذك (مثلاً: STU-601) للاطلاع على السجل والدرجات:</p>
+            <p class="text-xs text-slate-300">أدخل الكود المخصص لتلميذك (مثلاً: STU-601):</p>
             <div class="flex gap-2">
                 <input type="text" id="parent-code-input" placeholder="أدخل الكود هنا..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-center uppercase tracking-widest text-white">
                 <button onclick="searchStudentByCode()" class="bg-amber-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs">استعلام 🔍</button>
@@ -49,30 +49,31 @@
 
                 <div class="bg-slate-900 p-3 rounded-xl border border-slate-700 space-y-1">
                     <span class="text-xs text-amber-400 font-bold block"><i class="fa-solid fa-heart-pulse"></i> ملاحظات وتوجيهات المرشد التربوي:</span>
-                    <p id="res-notes" class="text-xs text-slate-300">لا توجد ملاحظات مسجلة حالياً.</p>
+                    <p id="res-notes" class="text-xs text-slate-300">لا توجد ملاحظات مسجلة.</p>
                 </div>
 
+                <!-- قسم الشهادة التقديرية المميزة -->
                 <div id="res-certificate-box" class="hidden">
-                    <div class="bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/50 p-3 rounded-xl text-center space-y-1">
-                        <i class="fa-solid fa-award text-amber-400 text-xl"></i>
-                        <h4 class="font-bold text-xs text-amber-300">شهادة تقديرية وتكريم تفوق 🏆</h4>
+                    <div class="bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/50 p-4 rounded-xl text-center space-y-2">
+                        <i class="fa-solid fa-award text-amber-400 text-2xl"></i>
+                        <h4 class="font-bold text-sm text-amber-300">شهادة تقديرية وتكريم تفوق 🏆</h4>
+                        <p class="text-[11px] text-slate-200" id="certificate-text">ممنوحة للتلميذ لتميزه العلمي الملحوظ وحسن سلوكه الأخلاقي الرفيع.</p>
                     </div>
                 </div>
 
                 <div id="res-ministerial-box" class="hidden pt-2">
                     <button onclick="openMinisterialModal()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2.5 rounded-xl text-xs flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-book-open"></i> فتح أرشيف الأسئلة الوزارية (للصف السادس) 📚
+                        <i class="fa-solid fa-book-open"></i> فتح أرشيف الأسئلة الوزارية (السادس الابتدائي) 📚
                     </button>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- نافذة الأسئلة الوزارية -->
     <div id="ministerial-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-2xl p-4 space-y-4 max-h-[80vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-slate-700 pb-2">
-                <h3 class="font-bold text-sm text-amber-400">أرشيف الأسئلة الوزارية (السادس الابتدائي)</h3>
+                <h3 class="font-bold text-sm text-amber-400">أرشيف الأسئلة الوزارية</h3>
                 <button onclick="closeMinisterialModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="space-y-2 text-xs">
@@ -86,14 +87,14 @@
 
     <script>
         let studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || [
-            { id: 'STU-601', name: 'سجاد حيدر محمد', class: 'السادس الابتدائي', section: 'أ', oct: 95, dec: 90, mid: 92, final: '', notes: 'تلميذ متفوق جداً وذو سلوك ممتاز.', isTop: true }
+            { id: 'STU-601', name: 'سجاد حيدر محمد', class: 'السادس الابتدائي', section: 'أ', oct: 95, dec: 90, mid: 92, final: '', notes: 'تلميذ متفوق جداً وذو سلوك ممتاز.', isTop: true, certText: 'ممنوحة للتلميذ لتميزه العلمي وحسن السلوك.' }
         ];
 
         function searchStudentByCode() {
             const code = document.getElementById('parent-code-input').value.trim().toUpperCase();
             const s = studentsData.find(x => x.id === code);
             const resView = document.getElementById('parent-result-view');
-            if(!s) { alert('عذراً، الكود المدخل غير صحيح.'); resView.classList.add('hidden'); return; }
+            if(!s) { alert('عذراً، الكود غير صحيح.'); resView.classList.add('hidden'); return; }
             resView.classList.remove('hidden');
             document.getElementById('res-name').innerText = s.name;
             document.getElementById('res-class').innerText = `${s.class} - شعبة ${s.section}`;
@@ -103,9 +104,15 @@
             document.getElementById('res-mid').innerText = s.mid || '-';
             const vals = [s.oct, s.dec, s.mid].filter(v => v !== '' && !isNaN(v)).map(Number);
             document.getElementById('res-avg').innerText = vals.length ? (vals.reduce((a,b)=>a+b)/vals.length).toFixed(1) : '-';
-            document.getElementById('res-notes').innerText = s.notes || 'لا توجد ملاحظات مسجلة.';
-            if(s.isTop) document.getElementById('res-certificate-box').classList.remove('hidden');
-            else document.getElementById('res-certificate-box').classList.add('hidden');
+            document.getElementById('res-notes').innerText = s.notes || 'لا توجد ملاحظات.';
+            
+            if(s.isTop) {
+                document.getElementById('res-certificate-box').classList.remove('hidden');
+                document.getElementById('certificate-text').innerText = s.certText || 'ممنوحة للتلميذ للتميز الدراسي والسلوك الحسن.';
+            } else {
+                document.getElementById('res-certificate-box').classList.add('hidden');
+            }
+
             if(s.class.includes('السادس')) document.getElementById('res-ministerial-box').classList.remove('hidden');
             else document.getElementById('res-ministerial-box').classList.add('hidden');
         }
