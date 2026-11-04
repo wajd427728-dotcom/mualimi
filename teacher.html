@@ -18,7 +18,7 @@
     </header>
 
     <main class="w-full max-w-md space-y-4">
-        <!-- لوحة التحكم والتبويبات الرئيسية (مفعلة بالكامل) -->
+        <!-- لوحة التحكم والتبويبات الرئيسية -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg">
             <h2 class="text-sm font-bold text-amber-400 mb-3 flex items-center gap-2">
                 <i class="fa-solid fa-gauge-high"></i> التبويبات الرئيسية
@@ -34,17 +34,18 @@
             </div>
         </div>
 
-        <!-- تبويب 1: إدارة التلاميذ (قسمين) -->
+        <!-- تبويب: إدارة التلاميذ -->
         <div id="teacher-tab-students" class="space-y-4">
-            <!-- القسم الأول: الإدخال الفردي والجماعي -->
+            
+            <!-- القسم الأول: إدخال تلميذ (فردي أو رفع مجموعة أسماء مع توليد الأكواد تلقائياً) -->
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
                 <div class="border-b border-slate-700 pb-2">
-                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-user-plus"></i> القسم الأول: إدخال تلميذ في الصف والشعبة</h3>
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-user-plus"></i> القسم الأول: إضافة التلاميذ وتوليد الأكواد تلقائياً</h3>
                 </div>
 
-                <!-- إضافة فردي -->
+                <!-- 1. إضافة تلميذ فردي -->
                 <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700/80 space-y-2">
-                    <span class="text-[11px] text-slate-300 font-bold block">إضافة تلميذ فردي:</span>
+                    <span class="text-[11px] text-slate-300 font-bold block">إضافة فردي (مع كود مخصص تلقائي):</span>
                     <div class="grid grid-cols-2 gap-2">
                         <select id="new-student-class" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
                             <option value="السادس الابتدائي">السادس الابتدائي</option>
@@ -56,13 +57,13 @@
                         </select>
                     </div>
                     <input type="text" id="new-student-name" placeholder="اسم التلميذ الثلاثي..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
-                    <button onclick="addNewStudent()" class="w-full bg-amber-500 text-slate-950 font-bold p-2 rounded-lg text-xs">إضافة التلميذ وتوليد الكود ➕</button>
+                    <button onclick="addNewStudent()" class="w-full bg-amber-500 text-slate-950 font-bold p-2 rounded-lg text-xs">إضافة التلميذ وتوليد الكود التلقائي ➕</button>
                 </div>
 
-                <!-- إضافة جماعية (ملف / نسخ ولصق أسماء) -->
+                <!-- 2. رفع مجموعة أسماء دفعة واحدة -->
                 <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700/80 space-y-2">
-                    <span class="text-[11px] text-amber-400 font-bold block"><i class="fa-solid fa-file-excel"></i> استيراد جماعي (من ملف Word / Excel أو لصق أسماء):</span>
-                    <p class="text-[10px] text-slate-400">الصق أسماء الشعبة هنا (كل اسم في سطر مستقل):</p>
+                    <span class="text-[11px] text-amber-400 font-bold block"><i class="fa-solid fa-file-arrow-up"></i> رفع مجموعة أسماء (توليد كود تلقائي لكل تلميذ):</span>
+                    <p class="text-[10px] text-slate-400">الصق قائمة الأسماء هنا (كل اسم في سطر مستقل):</p>
                     <textarea id="bulk-names-input" rows="3" placeholder="محمد أحمد علي&#10;حسن جاسم محمد&#10;..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"></textarea>
                     <div class="grid grid-cols-2 gap-2">
                         <select id="bulk-class" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
@@ -74,14 +75,14 @@
                             <option value="ب">شعبة ب</option>
                         </select>
                     </div>
-                    <button onclick="importBulkStudents()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2 rounded-lg text-xs">استيراد القائمة دفعة واحدة 📥</button>
+                    <button onclick="importBulkStudents()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2 rounded-lg text-xs">رفع القائمة وتوليد الأكواد للجميع 📥</button>
                 </div>
             </div>
 
-            <!-- القسم الثاني: توليد واستيراد الأكواد وسحب كشوفات الشعب -->
+            <!-- القسم الثاني: عرض الأكواد وسحب كشوفات الشعب -->
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <div class="flex justify-between items-center border-b border-slate-700 pb-2">
-                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-id-card"></i> القسم الثاني: توليد واستيراد الأكواد والكشوفات</h3>
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-id-card"></i> القسم الثاني: كشوفات الأكواد والشعب</h3>
                     <span class="text-xs bg-slate-700 px-2 py-0.5 rounded text-amber-300 font-bold">العدد: <span id="total-students">0</span></span>
                 </div>
 
@@ -96,6 +97,7 @@
 
                 <div id="teacher-students-list" class="space-y-2 max-h-55 overflow-y-auto pr-1 pt-1"></div>
             </div>
+
         </div>
 
         <!-- تبويب 2: سجل الدرجات -->
@@ -284,16 +286,24 @@
             }
         }
 
+        // إضافة فردي مع توليد كود مخصص تلقائي
         function addNewStudent() {
             const name = document.getElementById('new-student-name').value.trim();
             if(!name) { alert('أدخل اسم التلميذ.'); return; }
-            const randomId = 'STU-' + Math.floor(100 + Math.random() * 900);
-            studentsData.push({ id: randomId, name, class: document.getElementById('new-student-class').value, section: document.getElementById('new-student-section').value, oct: '', dec: '', mid: '', final: '', notes: '', isTop: false, certText: '' });
+            const randomId = 'STU-' + Math.floor(1000 + Math.random() * 9000);
+            studentsData.push({ 
+                id: randomId, 
+                name, 
+                class: document.getElementById('new-student-class').value, 
+                section: document.getElementById('new-student-section').value, 
+                oct: '', dec: '', mid: '', final: '', notes: '', isTop: false, certText: '' 
+            });
             document.getElementById('new-student-name').value = '';
             saveData();
-            alert('تمت الإضافة وتوليد الكود بنجاح: ' + randomId);
+            alert(`تمت إضافة التلميذ بنجاح وتم توليد الكود المخصص له تلقائياً: ${randomId}`);
         }
 
+        // رفع مجموعة أسماء (جماعي) مع توليد كود مخصص لكل تلميذ تلقائياً
         function importBulkStudents() {
             const rawText = document.getElementById('bulk-names-input').value.trim();
             if(!rawText) { alert('الرجاء إدخال أو لصق أسماء التلاميذ.'); return; }
@@ -304,13 +314,19 @@
             let addedCount = 0;
             namesArray.forEach(name => {
                 const randomId = 'STU-' + Math.floor(1000 + Math.random() * 9000);
-                studentsData.push({ id: randomId, name, class: cls, section: sec, oct: '', dec: '', mid: '', final: '', notes: '', isTop: false, certText: '' });
+                studentsData.push({ 
+                    id: randomId, 
+                    name, 
+                    class: cls, 
+                    section: sec, 
+                    oct: '', dec: '', mid: '', final: '', notes: '', isTop: false, certText: '' 
+                });
                 addedCount++;
             });
 
             document.getElementById('bulk-names-input').value = '';
             saveData();
-            alert(`تم بنجاح استيراد وتوليد الأكواد لـ (${addedCount}) تلميذ في (${cls} - شعبة ${sec})! 🎉`);
+            alert(`تم رفع القائمة بنجاح! تم إضافة (${addedCount}) تلميذ وتوليد كود مخصص تلقائي لكل واحد منهم في (${cls} - شعبة ${sec}) 🎉`);
         }
 
         function exportSectionReport() {
@@ -338,7 +354,7 @@
                 c.innerHTML += `<div class="p-3 bg-slate-900 border border-slate-700 rounded-xl flex justify-between items-center text-xs">
                     <div>
                         <span class="font-bold text-white block">${s.name}</span>
-                        <span class="text-slate-400">${s.class} (شعبة ${s.section}) - كود الدخول: <strong class="text-amber-400">${s.id}</strong></span>
+                        <span class="text-slate-400">${s.class} (شعبة ${s.section}) - كود الدخول التلقائي: <strong class="text-amber-400">${s.id}</strong></span>
                     </div>
                     <button onclick="deleteStudent(${idx})" class="px-2 py-1 bg-red-900/40 text-red-400 rounded">🗑️</button>
                 </div>`;
