@@ -24,8 +24,8 @@
                 <i class="fa-solid fa-gauge-high"></i> التبويبات الرئيسية
             </h2>
             <div class="grid grid-cols-3 gap-2 text-center text-xs mb-2">
-                <button onclick="switchTeacherTab('students')" id="t-tab-students" class="p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition">إدارة التلاميذ</button>
-                <button onclick="switchTeacherTab('grades')" id="t-tab-grades" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">سجل الدرجات</button>
+                <button onclick="switchTeacherTab('students')" id="t-tab-students" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">إدارة التلاميذ</button>
+                <button onclick="switchTeacherTab('grades')" id="t-tab-grades" class="p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition">سجل الدرجات</button>
                 <button onclick="switchTeacherTab('planner')" id="t-tab-planner" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">خطة الدرس</button>
             </div>
             <div class="grid grid-cols-2 gap-2 text-center text-xs">
@@ -34,18 +34,12 @@
             </div>
         </div>
 
-        <!-- تبويب: إدارة التلاميذ (مقسماً إلى قسمين احترافيين) -->
-        <div id="teacher-tab-students" class="space-y-4">
-            
-            <!-- القسم الأول: إضافة التلاميذ وتوزيعهم (فردي وجماعي من نوت باد أو ورد) -->
+        <!-- تبويب: إدارة التلاميذ -->
+        <div id="teacher-tab-students" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
-                <div class="border-b border-slate-700 pb-2">
-                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-user-plus"></i> القسم الأول: إدخال وتوزيع التلاميذ</h3>
-                </div>
-
-                <!-- 1. الإضافة الفردية -->
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-user-plus"></i> القسم الأول: إدخال وتوزيع التلاميذ</h3>
                 <div class="bg-slate-900/70 p-3 rounded-xl border border-slate-700/80 space-y-2">
-                    <span class="text-[11px] text-slate-300 font-bold block">➕ إضافة تلميذ فردي وتوزيع2ه:</span>
+                    <span class="text-[11px] text-slate-300 font-bold block">إضافة فردي:</span>
                     <div class="grid grid-cols-2 gap-2">
                         <select id="new-student-class" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
                             <option value="السادس الابتدائي">السادس الابتدائي</option>
@@ -59,12 +53,9 @@
                     <input type="text" id="new-student-name" placeholder="اسم التلميذ الثلاثي..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
                     <button onclick="addNewStudent()" class="w-full bg-amber-500 text-slate-950 font-bold p-2 rounded-lg text-xs">حفظ التلميذ وتوليد كود الدخول ➕</button>
                 </div>
-
-                <!-- 2. الإضافة الجماعية من نوت باد أو ورد -->
                 <div class="bg-slate-900/70 p-3 rounded-xl border border-slate-700/80 space-y-2">
-                    <span class="text-[11px] text-amber-400 font-bold block"><i class="fa-solid fa-file-lines"></i> الإضافة الجماعية (نسخ من ملف نوت باد / ورد):</span>
-                    <p class="text-[10px] text-slate-400">انسخ الأسماء من ملفك والصقها هنا (كل اسم في سطر مستقل):</p>
-                    <textarea id="bulk-names-input" rows="3" placeholder="محمد أحمد علي&#10;حسن جاسم محمد&#10;..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"></textarea>
+                    <span class="text-[11px] text-amber-400 font-bold block"><i class="fa-solid fa-file-lines"></i> الإضافة الجماعية (من نوت باد أو ورد):</span>
+                    <textarea id="bulk-names-input" rows="3" placeholder="محمد أحمد علي&#10;حسن جاسم محمد" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"></textarea>
                     <div class="grid grid-cols-2 gap-2">
                         <select id="bulk-class" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
                             <option value="السادس الابتدائي">السادس الابتدائي</option>
@@ -78,33 +69,26 @@
                     <button onclick="importBulkStudents()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2 rounded-lg text-xs">استيراد القائمة وتوزيعها جماعياً 📥</button>
                 </div>
             </div>
-
-            <!-- القسم الثاني: توليد الأكواد وسحب ملفات الصف والشعبة الكاملة -->
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <div class="flex justify-between items-center border-b border-slate-700 pb-2">
-                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-id-card"></i> القسم الثاني: توليد الأكواد وكشوفات الشعب</h3>
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-id-card"></i> القسم الثاني: كشوفات الأكواد والشعب</h3>
                     <span class="text-xs bg-slate-700 px-2 py-0.5 rounded text-amber-300 font-bold">العدد: <span id="total-students">0</span></span>
                 </div>
-
                 <div class="flex gap-2 pt-1">
-                    <button onclick="exportSectionReport()" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold p-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow">
-                        <i class="fa-solid fa-file-arrow-down"></i> سحب كشف الصف والشعبة الكامل (مع الأكواد) 📄
+                    <button onclick="exportSectionReport()" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold p-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-file-arrow-down"></i> سحب كشف الصف والشعبة الكامل 📄
                     </button>
-                    <button onclick="exportBackup()" class="bg-slate-700 hover:bg-slate-600 text-amber-400 font-bold px-3 py-2.5 rounded-xl text-xs" title="نسخة احتياطية للنظام">
-                        <i class="fa-solid fa-floppy-disk"></i>
-                    </button>
+                    <button onclick="exportBackup()" class="bg-slate-700 text-amber-400 font-bold px-3 py-2.5 rounded-xl text-xs" title="نسخة احتياطية">💾</button>
                 </div>
-
-                <!-- قائمة عرض التلاميذ وأكوادهم المخصصة -->
                 <div id="teacher-students-list" class="space-y-2 max-h-55 overflow-y-auto pr-1 pt-1"></div>
             </div>
-
         </div>
 
-        <!-- تبويب 2: سجل الدرجات -->
-        <div id="teacher-tab-grades" class="space-y-4 hidden">
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <h3 class="font-bold text-sm text-slate-200">إدارة درجات المواد والتقييمات</h3>
+        <!-- تبويب: سجل الدرجات (المطور بقسميه الإداري والمعلم) -->
+        <div id="teacher-tab-grades" class="space-y-4">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-graduation-cap"></i> سجل الدرجات والتقييمات</h3>
+                
                 <div class="grid grid-cols-2 gap-2">
                     <select id="grade-subject" class="bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
                         <option value="اللغة العربية">اللغة العربية</option>
@@ -114,24 +98,74 @@
                         <option value="">اختر التلميذ...</option>
                     </select>
                 </div>
-                <div id="grade-inputs-container" class="space-y-2 hidden">
-                    <div class="grid grid-cols-2 gap-2">
-                        <div><label class="text-xs text-slate-400">تشرين الأول:</label><input type="number" id="g-oct" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"></div>
-                        <div><label class="text-xs text-slate-400">كانون الأول:</label><input type="number" id="g-dec" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"></div>
+
+                <div id="grade-inputs-container" class="space-y-4 hidden">
+                    
+                    <!-- القسم الأول: سجل الدرجات الإداري -->
+                    <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-3">
+                        <h4 class="text-xs font-bold text-amber-400 border-b border-slate-700 pb-1.5">📊 القسم الأول: سجل الدرجات الإداري</h4>
+                        
+                        <!-- الفصل الأول الإداري -->
+                        <div class="space-y-2">
+                            <span class="text-[11px] text-slate-300 font-bold block">الفصل الأول:</span>
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <div><label class="text-[10px] text-slate-400">تشرين الأول:</label><input type="number" id="g-oct" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+                                <div><label class="text-[10px] text-slate-400">تشرين الثاني:</label><input type="number" id="g-nov" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <div><label class="text-[10px] text-slate-400">كانون الأول:</label><input type="number" id="g-dec" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+                                <div><label class="text-[10px] text-slate-400">كانون الثاني:</label><input type="number" id="g-jan" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+                                <div><label class="text-[10px] text-amber-300">معدل النصف الأول:</label><input type="number" id="g-mid-avg" class="w-full bg-slate-800 border border-amber-500/50 rounded-lg p-2 text-white font-bold"></div>
+                                <div><label class="text-[10px] text-amber-300">نصف السنة:</label><input type="number" id="g-mid" class="w-full bg-slate-800 border border-amber-500/50 rounded-lg p-2 text-white font-bold"></div>
+                            </div>
+                        </div>
+
+                        <!-- الفصل الثاني الإداري -->
+                        <div class="space-y-2 pt-2 border-t border-slate-800">
+                            <span class="text-[11px] text-slate-300 font-bold block">الفصل الثاني:</span>
+                            <div class="grid grid-cols-3 gap-2 text-xs">
+                                <div><label class="text-[10px] text-slate-400">شباط:</label><input type="number" id="g-feb" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
+                                <div><label class="text-[10px] text-slate-400">أذار:</label><input type="number" id="g-mar" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
+                                <div><label class="text-[10px] text-slate-400">نيسان:</label><input type="number" id="g-apr" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 text-xs pt-1">
+                                <div><label class="text-[10px] text-amber-300">معدل الثاني:</label><input type="number" id="g-sec-avg" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
+                                <div><label class="text-[10px] text-amber-300">السعي السنوي:</label><input type="number" id="g-annual" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
+                                <div><label class="text-[10px] text-amber-300">النهائي:</label><input type="number" id="g-final" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
+                            </div>
+                            <div class="pt-1">
+                                <label class="text-[10px] text-amber-400 font-bold block">الدرجة النهائية:</label>
+                                <input type="number" id="g-total-final" class="w-full bg-slate-800 border-2 border-amber-500 rounded-lg p-2 text-center text-amber-400 font-black text-sm">
+                            </div>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div><label class="text-xs text-slate-400">نصف السنة:</label><input type="number" id="g-mid" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"></div>
-                        <div><label class="text-xs text-slate-400">النهائي:</label><input type="number" id="g-final" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"></div>
+
+                    <!-- القسم الثاني: سجل المعلم (الامتحانات الشهرية) -->
+                    <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-3">
+                        <h4 class="text-xs font-bold text-blue-400 border-b border-slate-700 pb-1.5">📝 القسم الثاني: سجل المعلم (امتحانات الشهور)</h4>
+                        
+                        <div class="space-y-2">
+                            <span class="text-[11px] text-slate-300 font-bold block">الفصل الأول:</span>
+                            <div class="grid grid-cols-3 gap-2 text-xs">
+                                <div><label class="text-[10px] text-slate-400">الشهر الأول:</label><input type="number" id="t-m1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
+                                <div><label class="text-[10px] text-slate-400">الشهر الثاني:</label><input type="number" id="t-m2" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
+                                <div><label class="text-[10px] text-slate-400">الشهر الثالث:</label><input type="number" id="t-m3" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 pt-2 border-t border-slate-800">
+                            <span class="text-[11px] text-slate-300 font-bold block">الفصل الثاني:</span>
+                            <div class="grid grid-cols-3 gap-2 text-xs">
+                                <div><label class="text-[10px] text-slate-400">الشهر الأول:</label><input type="number" id="t-m4" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
+                                <div><label class="text-[10px] text-slate-400">الشهر الثاني:</label><input type="number" id="t-m5" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
+                                <div><label class="text-[10px] text-slate-400">الشهر الثالث:</label><input type="number" id="t-m6" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div><label class="text-xs text-slate-400">الملاحظات والسلوك:</label><textarea id="g-notes" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"></textarea></div>
-                    <div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-2">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" id="g-top-check" class="w-4 h-4 accent-amber-500">
-                            <span class="text-xs text-amber-400 font-bold">منح شهادة تقديرية وتكريم 🏆</span>
-                        </label>
-                        <input type="text" id="g-cert-text" placeholder="نص الشهادة التقديرية..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white">
-                    </div>
-                    <button onclick="saveStudentGrades()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs">حفظ الدرجات والشهادة 💾</button>
+
+                    <button onclick="saveStudentGrades()" class="w-full bg-amber-500 text-slate-950 font-bold p-3 rounded-xl text-xs shadow-lg hover:bg-amber-400 transition">حفظ السجل والدرجات بالكامل 💾</button>
                 </div>
             </div>
         </div>
@@ -239,7 +273,7 @@
 
     <script>
         let studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || [
-            { id: 'STU-601', name: 'سجاد حيدر محمد', class: 'السادس الابتدائي', section: 'أ', oct: 95, dec: 90, mid: 92, final: '', notes: 'تلميذ متفوق جداً وذو سلوك ممتاز.', isTop: true, certText: 'ممنوحة للتلميذ لتميزه العلمي وحسن السلوك.' }
+            { id: 'STU-601', name: 'سجاد حيدر محمد', class: 'السادس الابتدائي', section: 'أ', oct: '', nov: '', dec: '', jan: '', midAvg: '', mid: '', feb: '', mar: '', apr: '', secAvg: '', annual: '', final: '', totalFinal: '', m1: '', m2: '', m3: '', m4: '', m5: '', m6: '' }
         ];
         let lessonPlanData = JSON.parse(localStorage.getItem('dhariyat_lesson')) || { topic: 'قواعد - الفاعل', notes: 'حل التمارين' };
         let tasksData = JSON.parse(localStorage.getItem('dhariyat_tasks')) || [];
@@ -292,20 +326,17 @@
             if(!name) { alert('أدخل اسم التلميذ.'); return; }
             const randomId = 'STU-' + Math.floor(1000 + Math.random() * 9000);
             studentsData.push({ 
-                id: randomId, 
-                name, 
-                class: document.getElementById('new-student-class').value, 
-                section: document.getElementById('new-student-section').value, 
-                oct: '', dec: '', mid: '', final: '', notes: '', isTop: false, certText: '' 
+                id: randomId, name, class: document.getElementById('new-student-class').value, section: document.getElementById('new-student-section').value, 
+                oct: '', nov: '', dec: '', jan: '', midAvg: '', mid: '', feb: '', mar: '', apr: '', secAvg: '', annual: '', final: '', totalFinal: '', m1: '', m2: '', m3: '', m4: '', m5: '', m6: '' 
             });
             document.getElementById('new-student-name').value = '';
             saveData();
-            alert(`تمت إضافة التلميذ وتوليد كود الدخول التلقائي: ${randomId}`);
+            alert(`تمت إضافة التلميذ وتوليد كود الدخول: ${randomId}`);
         }
 
         function importBulkStudents() {
             const rawText = document.getElementById('bulk-names-input').value.trim();
-            if(!rawText) { alert('الرجاء لصق أسماء التلاميذ من ملف نوت باد أو ورد.'); return; }
+            if(!rawText) { alert('الرجاء لصق أسماء التلاميذ.'); return; }
             const namesArray = rawText.split('\n').map(n => n.trim()).filter(n => n.length > 0);
             const cls = document.getElementById('bulk-class').value;
             const sec = document.getElementById('bulk-section').value;
@@ -314,18 +345,15 @@
             namesArray.forEach(name => {
                 const randomId = 'STU-' + Math.floor(1000 + Math.random() * 9000);
                 studentsData.push({ 
-                    id: randomId, 
-                    name, 
-                    class: cls, 
-                    section: sec, 
-                    oct: '', dec: '', mid: '', final: '', notes: '', isTop: false, certText: '' 
+                    id: randomId, name, class: cls, section: sec, 
+                    oct: '', nov: '', dec: '', jan: '', midAvg: '', mid: '', feb: '', mar: '', apr: '', secAvg: '', annual: '', final: '', totalFinal: '', m1: '', m2: '', m3: '', m4: '', m5: '', m6: '' 
                 });
                 addedCount++;
             });
 
             document.getElementById('bulk-names-input').value = '';
             saveData();
-            alert(`تم استيراد وتوزيع (${addedCount}) تلميذ وتوليد أكوادهم بنجاح في (${cls} - شعبة ${sec}) 🎉`);
+            alert(`تم استيراد (${addedCount}) تلميذ بنجاح في (${cls} - شعبة ${sec}) 🎉`);
         }
 
         function exportSectionReport() {
@@ -366,7 +394,7 @@
             const select = document.getElementById('grade-student-select');
             if(!select) return;
             select.innerHTML = '<option value="">اختر التلميذ...</option>';
-            studentsData.forEach(s => { select.innerHTML += `<option value="${s.id}">${s.name} (${s.class})</option>`; });
+            studentsData.forEach(s => { select.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`; });
         }
 
         const gradeSelectElem = document.getElementById('grade-student-select');
@@ -376,28 +404,60 @@
                 const container = document.getElementById('grade-inputs-container');
                 if(!s) { container.classList.add('hidden'); return; }
                 container.classList.remove('hidden');
+                
+                // تعبئة سجل الدرجات الإداري
                 document.getElementById('g-oct').value = s.oct || '';
+                document.getElementById('g-nov').value = s.nov || '';
                 document.getElementById('g-dec').value = s.dec || '';
+                document.getElementById('g-jan').value = s.jan || '';
+                document.getElementById('g-mid-avg').value = s.midAvg || '';
                 document.getElementById('g-mid').value = s.mid || '';
+                document.getElementById('g-feb').value = s.feb || '';
+                document.getElementById('g-mar').value = s.mar || '';
+                document.getElementById('g-apr').value = s.apr || '';
+                document.getElementById('g-sec-avg').value = s.secAvg || '';
+                document.getElementById('g-annual').value = s.annual || '';
                 document.getElementById('g-final').value = s.final || '';
-                document.getElementById('g-notes').value = s.notes || '';
-                document.getElementById('g-top-check').checked = s.isTop || false;
-                document.getElementById('g-cert-text').value = s.certText || '';
+                document.getElementById('g-total-final').value = s.totalFinal || '';
+
+                // تعبئة سجل المعلم
+                document.getElementById('t-m1').value = s.m1 || '';
+                document.getElementById('t-m2').value = s.m2 || '';
+                document.getElementById('t-m3').value = s.m3 || '';
+                document.getElementById('t-m4').value = s.m4 || '';
+                document.getElementById('t-m5').value = s.m5 || '';
+                document.getElementById('t-m6').value = s.m6 || '';
             });
         }
 
         function saveStudentGrades() {
             const s = studentsData.find(x => x.id === document.getElementById('grade-student-select').value);
             if(s) {
+                // حفظ سجل الدرجات الإداري
                 s.oct = document.getElementById('g-oct').value;
+                s.nov = document.getElementById('g-nov').value;
                 s.dec = document.getElementById('g-dec').value;
+                s.jan = document.getElementById('g-jan').value;
+                s.midAvg = document.getElementById('g-mid-avg').value;
                 s.mid = document.getElementById('g-mid').value;
+                s.feb = document.getElementById('g-feb').value;
+                s.mar = document.getElementById('g-mar').value;
+                s.apr = document.getElementById('g-apr').value;
+                s.secAvg = document.getElementById('g-sec-avg').value;
+                s.annual = document.getElementById('g-annual').value;
                 s.final = document.getElementById('g-final').value;
-                s.notes = document.getElementById('g-notes').value;
-                s.isTop = document.getElementById('g-top-check').checked;
-                s.certText = document.getElementById('g-cert-text').value;
+                s.totalFinal = document.getElementById('g-total-final').value;
+
+                // حفظ سجل المعلم
+                s.m1 = document.getElementById('t-m1').value;
+                s.m2 = document.getElementById('t-m2').value;
+                s.m3 = document.getElementById('t-m3').value;
+                s.m4 = document.getElementById('t-m4').value;
+                s.m5 = document.getElementById('t-m5').value;
+                s.m6 = document.getElementById('t-m6').value;
+
                 saveData();
-                alert('تم حفظ الدرجات والشهادة بنجاح!');
+                alert('تم حفظ السجل والدرجات بنجاح تماماً! 💾');
             }
         }
 
