@@ -25,8 +25,8 @@
             </h2>
             <div class="grid grid-cols-3 gap-2 text-center text-xs mb-2">
                 <button onclick="switchTeacherTab('students')" id="t-tab-students" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">إدارة التلاميذ</button>
-                <button onclick="switchTeacherTab('grades')" id="t-tab-grades" class="p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition">سجل الدرجات</button>
-                <button onclick="switchTeacherTab('planner')" id="t-tab-planner" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">خطة الدرس</button>
+                <button onclick="switchTeacherTab('grades')" id="t-tab-grades" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">سجل الدرجات</button>
+                <button onclick="switchTeacherTab('homework')" id="t-tab-homework" class="p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition">📖 واجباتي</button>
             </div>
             <div class="grid grid-cols-2 gap-2 text-center text-xs">
                 <button onclick="switchTeacherTab('schedule')" id="t-tab-schedule" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">📚 دروسي</button>
@@ -84,11 +84,10 @@
             </div>
         </div>
 
-        <!-- تبويب: سجل الدرجات (المطور بقسميه الإداري والمعلم) -->
-        <div id="teacher-tab-grades" class="space-y-4">
+        <!-- تبويب: سجل الدرجات -->
+        <div id="teacher-tab-grades" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-graduation-cap"></i> سجل الدرجات والتقييمات</h3>
-                
                 <div class="grid grid-cols-2 gap-2">
                     <select id="grade-subject" class="bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
                         <option value="اللغة العربية">اللغة العربية</option>
@@ -98,14 +97,9 @@
                         <option value="">اختر التلميذ...</option>
                     </select>
                 </div>
-
                 <div id="grade-inputs-container" class="space-y-4 hidden">
-                    
-                    <!-- القسم الأول: سجل الدرجات الإداري -->
                     <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-3">
                         <h4 class="text-xs font-bold text-amber-400 border-b border-slate-700 pb-1.5">📊 القسم الأول: سجل الدرجات الإداري</h4>
-                        
-                        <!-- الفصل الأول الإداري -->
                         <div class="space-y-2">
                             <span class="text-[11px] text-slate-300 font-bold block">الفصل الأول:</span>
                             <div class="grid grid-cols-2 gap-2 text-xs">
@@ -121,8 +115,6 @@
                                 <div><label class="text-[10px] text-amber-300">نصف السنة:</label><input type="number" id="g-mid" class="w-full bg-slate-800 border border-amber-500/50 rounded-lg p-2 text-white font-bold"></div>
                             </div>
                         </div>
-
-                        <!-- الفصل الثاني الإداري -->
                         <div class="space-y-2 pt-2 border-t border-slate-800">
                             <span class="text-[11px] text-slate-300 font-bold block">الفصل الثاني:</span>
                             <div class="grid grid-cols-3 gap-2 text-xs">
@@ -141,11 +133,8 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- القسم الثاني: سجل المعلم (الامتحانات الشهرية) -->
                     <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-3">
                         <h4 class="text-xs font-bold text-blue-400 border-b border-slate-700 pb-1.5">📝 القسم الثاني: سجل المعلم (امتحانات الشهور)</h4>
-                        
                         <div class="space-y-2">
                             <span class="text-[11px] text-slate-300 font-bold block">الفصل الأول:</span>
                             <div class="grid grid-cols-3 gap-2 text-xs">
@@ -154,7 +143,6 @@
                                 <div><label class="text-[10px] text-slate-400">الشهر الثالث:</label><input type="number" id="t-m3" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
                             </div>
                         </div>
-
                         <div class="space-y-2 pt-2 border-t border-slate-800">
                             <span class="text-[11px] text-slate-300 font-bold block">الفصل الثاني:</span>
                             <div class="grid grid-cols-3 gap-2 text-xs">
@@ -164,20 +152,67 @@
                             </div>
                         </div>
                     </div>
-
                     <button onclick="saveStudentGrades()" class="w-full bg-amber-500 text-slate-950 font-bold p-3 rounded-xl text-xs shadow-lg hover:bg-amber-400 transition">حفظ السجل والدرجات بالكامل 💾</button>
                 </div>
             </div>
         </div>
 
-        <!-- تبويب 3: خطة الدرس -->
-        <div id="teacher-tab-planner" class="space-y-4 hidden">
+        <!-- تبويب: واجباتي (مطور لإرسال الواجبات لصفحات التلاميذ) -->
+        <div id="teacher-tab-homework" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <h3 class="font-bold text-sm text-slate-200">سجل خطة الدرس اليومي 📖</h3>
-                <input type="text" id="lesson-topic" placeholder="عنوان الدرس..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
-                <textarea id="lesson-notes" rows="3" placeholder="الواجب اليومي والملاحظات..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white"></textarea>
-                <button onclick="saveLessonPlan()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs">حفظ الخطة 📋</button>
-                <div id="saved-plan-display" class="text-xs text-slate-300 p-3 bg-slate-900 rounded-xl border border-slate-700 mt-2">لا توجد خطة محفوظة.</div>
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-book-open-reader"></i> إدارة ونشر واجباتي للتلاميذ 📖</h3>
+                <p class="text-xs text-slate-300">قم بإرسال الواجبات والمهام لترسل مباشرة إلى صفحة التلميذ:</p>
+
+                <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="text-[10px] text-slate-400 block mb-1">الصف المستهدف:</label>
+                            <select id="hw-class" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                                <option value="السادس الابتدائي">السادس الابتدائي</option>
+                                <option value="الخامس الابتدائي">الخامس الابتدائي</option>
+                                <option value="الجميع">كافة الصفوف</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-slate-400 block mb-1">الشعبة:</label>
+                            <select id="hw-section" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                                <option value="أ">شعبة أ</option>
+                                <option value="ب">شعبة ب</option>
+                                <option value="الجميع">كافة الشعب</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] text-slate-400 block mb-1">المادة:</label>
+                        <select id="hw-subject" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
+                            <option value="اللغة العربية">اللغة العربية</option>
+                            <option value="التربية الإسلامية">التربية الإسلامية</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] text-slate-400 block mb-1">عنوان الواجب أو الموضوع:</label>
+                        <input type="text" id="hw-title" placeholder="مثال: حل تمارين الفاعل ص 25..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] text-slate-400 block mb-1">تفاصيل الواجب والملاحظات:</label>
+                        <textarea id="hw-notes" rows="3" placeholder="اكتب تفاصيل الواجب هنا..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] text-slate-400 block mb-1">إرفاق صورة توضيحية (اختياري):</label>
+                        <input type="file" id="hw-img" accept="image/*" class="w-full text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-slate-700 file:text-white">
+                    </div>
+
+                    <button onclick="publishHomework()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl mt-2">نشر الواجب لصفحات التلاميذ 🚀</button>
+                </div>
+
+                <div class="border-t border-slate-700 pt-3">
+                    <h4 class="font-bold text-xs text-slate-200 mb-2">الواجبات المنشورة الحالية (<span id="total-hw">0</span>):</h4>
+                    <div id="homework-list-container" class="space-y-2 max-h-55 overflow-y-auto pr-1"></div>
+                </div>
             </div>
         </div>
 
@@ -275,7 +310,7 @@
         let studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || [
             { id: 'STU-601', name: 'سجاد حيدر محمد', class: 'السادس الابتدائي', section: 'أ', oct: '', nov: '', dec: '', jan: '', midAvg: '', mid: '', feb: '', mar: '', apr: '', secAvg: '', annual: '', final: '', totalFinal: '', m1: '', m2: '', m3: '', m4: '', m5: '', m6: '' }
         ];
-        let lessonPlanData = JSON.parse(localStorage.getItem('dhariyat_lesson')) || { topic: 'قواعد - الفاعل', notes: 'حل التمارين' };
+        let homeworkData = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
         let tasksData = JSON.parse(localStorage.getItem('dhariyat_tasks')) || [];
         let scheduleData = JSON.parse(localStorage.getItem('dhariyat_schedule')) || [];
 
@@ -285,16 +320,17 @@
 
         function saveData() {
             localStorage.setItem('dhariyat_students', JSON.stringify(studentsData));
-            localStorage.setItem('dhariyat_lesson', JSON.stringify(lessonPlanData));
+            localStorage.setItem('dhariyat_homework', JSON.stringify(homeworkData));
             localStorage.setItem('dhariyat_tasks', JSON.stringify(tasksData));
             localStorage.setItem('dhariyat_schedule', JSON.stringify(scheduleData));
             renderStudentsList();
+            renderHomeworkList();
             renderTasksList();
             renderScheduleList();
         }
 
         function switchTeacherTab(tab) {
-            ['students', 'grades', 'planner', 'schedule', 'tasks'].forEach(t => {
+            ['students', 'grades', 'homework', 'schedule', 'tasks'].forEach(t => {
                 const el = document.getElementById(`teacher-tab-${t}`);
                 const btn = document.getElementById(`t-tab-${t}`);
                 if(el) el.classList.add('hidden');
@@ -306,7 +342,7 @@
             if(activeBtn) activeBtn.className = "p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition text-xs";
 
             if(tab === 'grades') populateGradeSelect();
-            if(tab === 'planner') loadPlannerDisplay();
+            if(tab === 'homework') renderHomeworkList();
             if(tab === 'tasks') renderTasksList();
             if(tab === 'schedule') renderScheduleList();
         }
@@ -405,7 +441,6 @@
                 if(!s) { container.classList.add('hidden'); return; }
                 container.classList.remove('hidden');
                 
-                // تعبئة سجل الدرجات الإداري
                 document.getElementById('g-oct').value = s.oct || '';
                 document.getElementById('g-nov').value = s.nov || '';
                 document.getElementById('g-dec').value = s.dec || '';
@@ -420,7 +455,6 @@
                 document.getElementById('g-final').value = s.final || '';
                 document.getElementById('g-total-final').value = s.totalFinal || '';
 
-                // تعبئة سجل المعلم
                 document.getElementById('t-m1').value = s.m1 || '';
                 document.getElementById('t-m2').value = s.m2 || '';
                 document.getElementById('t-m3').value = s.m3 || '';
@@ -433,7 +467,6 @@
         function saveStudentGrades() {
             const s = studentsData.find(x => x.id === document.getElementById('grade-student-select').value);
             if(s) {
-                // حفظ سجل الدرجات الإداري
                 s.oct = document.getElementById('g-oct').value;
                 s.nov = document.getElementById('g-nov').value;
                 s.dec = document.getElementById('g-dec').value;
@@ -448,7 +481,6 @@
                 s.final = document.getElementById('g-final').value;
                 s.totalFinal = document.getElementById('g-total-final').value;
 
-                // حفظ سجل المعلم
                 s.m1 = document.getElementById('t-m1').value;
                 s.m2 = document.getElementById('t-m2').value;
                 s.m3 = document.getElementById('t-m3').value;
@@ -461,19 +493,58 @@
             }
         }
 
-        function saveLessonPlan() {
-            lessonPlanData = { topic: document.getElementById('lesson-topic').value, notes: document.getElementById('lesson-notes').value };
-            saveData();
-            loadPlannerDisplay();
-            alert('تم حفظ الخطة!');
-        }
+        // نشر الواجبات للتلاميذ
+        function publishHomework() {
+            const title = document.getElementById('hw-title').value.trim();
+            const notes = document.getElementById('hw-notes').value.trim();
+            const cls = document.getElementById('hw-class').value;
+            const sec = document.getElementById('hw-section').value;
+            const sub = document.getElementById('hw-subject').value;
+            const fileInput = document.getElementById('hw-img');
 
-        function loadPlannerDisplay() {
-            const display = document.getElementById('saved-plan-display');
-            if(display) {
-                display.innerHTML = `<strong>العنوان:</strong> ${lessonPlanData.topic}<br><strong>الواجب:</strong> ${lessonPlanData.notes}`;
+            if(!title) { alert('يرجى كتابة عنوان الواجب.'); return; }
+
+            if(fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    homeworkData.push({ title, notes, cls, sec, sub, img: e.target.result, date: new Date().toLocaleDateString('ar-IQ') });
+                    document.getElementById('hw-title').value = '';
+                    document.getElementById('hw-notes').value = '';
+                    fileInput.value = '';
+                    saveData();
+                    alert('تم نشر الواجب بنجاح لصفحات التلاميذ! 🚀');
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                homeworkData.push({ title, notes, cls, sec, sub, img: '', date: new Date().toLocaleDateString('ar-IQ') });
+                document.getElementById('hw-title').value = '';
+                document.getElementById('hw-notes').value = '';
+                saveData();
+                alert('تم نشر الواجب بنجاح لصفحات التلاميذ! 🚀');
             }
         }
+
+        function renderHomeworkList() {
+            const c = document.getElementById('homework-list-container');
+            if(!c) return;
+            c.innerHTML = '';
+            document.getElementById('total-hw').innerText = homeworkData.length;
+            homeworkData.forEach((hw, idx) => {
+                let imgTag = hw.img ? `<img src="${hw.img}" class="w-full h-20 object-cover rounded-lg mt-2">` : '';
+                c.innerHTML += `<div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-1.5 text-xs">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-amber-400">${hw.sub} (${hw.cls} - ${hw.sec})</span>
+                        <button onclick="deleteHomework(${idx})" class="px-2 py-0.5 bg-red-900/40 text-red-400 rounded">🗑️</button>
+                    </div>
+                    <p class="text-white font-bold">${hw.title}</p>
+                    <p class="text-slate-300 text-[11px]">${hw.notes || ''}</p>
+                    ${imgTag}
+                    <span class="text-[10px] text-slate-500 block pt-1">تاريخ النشر: ${hw.date}</span>
+                </div>`;
+            });
+        }
+
+        function deleteHomework(i) { homeworkData.splice(i, 1); saveData(); }
 
         function addScheduleItem() {
             const day = document.getElementById('sch-day').value;
@@ -591,6 +662,7 @@
         }
 
         renderStudentsList();
+        renderHomeworkList();
         renderTasksList();
         renderScheduleList();
     </script>
