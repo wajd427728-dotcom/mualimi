@@ -107,52 +107,75 @@
             </div>
         </div>
 
-        <!-- تبويب 4: دروسي والمنبه المخصص (4 حصص لكل يوم + شاغر) -->
+        <!-- تبويب 4: دروسي (مقسم إلى 4 حصص + شاغر + أوقات البدء والانتهاء) -->
         <div id="teacher-tab-schedule" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-calendar-days"></i> جدول دروسي اليومية (4 حصص لكل يوم)</h3>
-                <p class="text-xs text-slate-300">اختر اليوم، الصف، الشعبة، المادة (أو شاغر)، وحدد أوقات البدء والانتهاء:</p>
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-calendar-days"></i> جدول دروسي والمنبه (4 حصص لكل يوم)</h3>
+                <p class="text-xs text-slate-300">أنشئ حصصك وحدد رقم الحصة، المادة أو الشاغر، وأوقات البدء والانتهاء:</p>
                 
-                <div class="space-y-2 bg-slate-900 p-3 rounded-xl border border-slate-700">
+                <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
                     <div class="grid grid-cols-2 gap-2">
-                        <select id="sch-day" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white">
-                            <option value="الأحد">الأحد</option>
-                            <option value="الإثنين">الإثنين</option>
-                            <option value="الثلاثاء">الثلاثاء</option>
-                            <option value="الأربعاء">الأربعاء</option>
-                            <option value="الخميس">الخميس</option>
-                        </select>
-                        <select id="sch-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white">
-                            <option value="السادس الابتدائي">السادس الابتدائي</option>
-                            <option value="الخامس الابتدائي">الخامس الابتدائي</option>
-                        </select>
+                        <div>
+                            <label class="text-[10px] text-slate-400 block mb-1">اليوم:</label>
+                            <select id="sch-day" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                                <option value="الأحد">الأحد</option>
+                                <option value="الإثنين">الإثنين</option>
+                                <option value="الثلاثاء">الثلاثاء</option>
+                                <option value="الأربعاء">الأربعاء</option>
+                                <option value="الخميس">الخميس</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-slate-400 block mb-1">رقم الحصة:</label>
+                            <select id="sch-number" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                                <option value="الحصة الأولى">الحصة الأولى</option>
+                                <option value="الحصة الثانية">الحصة الثانية</option>
+                                <option value="الحصة الثالثة">الحصة الثالثة</option>
+                                <option value="الحصة الرابعة">الحصة الرابعة</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <select id="sch-section" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white">
-                            <option value="شعبة أ">شعبة أ</option>
-                            <option value="شعبة ب">شعبة ب</option>
-                        </select>
-                        <select id="sch-subject" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white">
-                            <option value="اللغة العربية">اللغة العربية</option>
-                            <option value="التربية الإسلامية">التربية الإسلامية</option>
-                            <option value="إرشاد تربوي">إرشاد تربوي</option>
-                            <option value="شاغر 🟡">شاغر 🟡</option>
-                        </select>
+
+                    <div class="grid grid-cols-3 gap-2">
+                        <div>
+                            <label class="text-[10px] text-slate-400 block mb-1">الصف:</label>
+                            <select id="sch-class" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                                <option value="السادس الابتدائي">السادس</option>
+                                <option value="الخامس الابتدائي">الخامس</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-slate-400 block mb-1">الشعبة:</label>
+                            <select id="sch-section" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                                <option value="شعبة أ">شعبة أ</option>
+                                <option value="شعبة ب">شعبة ب</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-slate-400 block mb-1">المادة:</label>
+                            <select id="sch-subject" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                                <option value="اللغة العربية">اللغة العربية</option>
+                                <option value="التربية الإسلامية">التربية الإسلامية</option>
+                                <option value="شاغر 🟡 (استراحة)">شاغر 🟡 (استراحة)</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-2 text-xs">
+
+                    <div class="grid grid-cols-2 gap-2 pt-1">
                         <div>
                             <label class="text-[10px] text-slate-400 block mb-1">وقت البدء:</label>
-                            <input type="time" id="sch-start" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white text-center">
+                            <input type="time" id="sch-start" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center text-white font-mono">
                         </div>
                         <div>
                             <label class="text-[10px] text-slate-400 block mb-1">وقت الانتهاء:</label>
-                            <input type="time" id="sch-end" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white text-center">
+                            <input type="time" id="sch-end" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center text-white font-mono">
                         </div>
                     </div>
-                    <button onclick="addScheduleItem()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs">إضافة الحصة وتفعيل التنبيه ⏰</button>
+
+                    <button onclick="addScheduleItem()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl mt-2">حفظ الحصة وتفعيل المنبه ⏰</button>
                 </div>
 
-                <div id="schedule-list-container" class="space-y-2 max-h-50 overflow-y-auto pr-1"></div>
+                <div id="schedule-list-container" class="space-y-2 max-h-55 overflow-y-auto pr-1"></div>
             </div>
         </div>
 
@@ -174,7 +197,7 @@
     <div id="alarm-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-800 border-2 border-amber-500 w-full max-w-sm rounded-2xl p-6 text-center space-y-4 shadow-2xl animate-bounce">
             <i class="fa-solid fa-bell text-amber-400 text-4xl"></i>
-            <h3 class="text-lg font-black text-amber-400">تنبيه موعد الدرس الآن! ⏰</h3>
+            <h3 class="text-lg font-black text-amber-400">تنبيه بدء الدرس الآن! ⏰</h3>
             <p id="alarm-details" class="text-sm text-white font-bold"></p>
             <button onclick="stopAlarm()" class="w-full bg-amber-500 text-slate-950 font-bold p-3 rounded-xl text-sm">إيقاف التنبيه ومتابعة الدرس 👍</button>
         </div>
@@ -283,9 +306,10 @@
             document.getElementById('saved-plan-display').innerHTML = `<strong>العنوان:</strong> ${lessonPlanData.topic}<br><strong>الواجب:</strong> ${lessonPlanData.notes}`;
         }
 
-        // الحصص والمنبه التفاعلي للدروس والشاغر
+        // جدول دروسي (ترقيم الحصص، الشاغر، وأوقات البدء والانتهاء)
         function addScheduleItem() {
             const day = document.getElementById('sch-day').value;
+            const num = document.getElementById('sch-number').value;
             const cls = document.getElementById('sch-class').value;
             const sec = document.getElementById('sch-section').value;
             const sub = document.getElementById('sch-subject').value;
@@ -293,9 +317,9 @@
             const endTime = document.getElementById('sch-end').value;
 
             if(!startTime || !endTime) { alert('يرجى تحديد وقت البدء ووقت الانتهاء.'); return; }
-            scheduleData.push({ day, cls, sec, sub, startTime, endTime });
+            scheduleData.push({ day, num, cls, sec, sub, startTime, endTime });
             saveData();
-            alert('تمت إضافة الحصة/الشاغر وتفعيل المنبه بنجاح! ⏰');
+            alert('تمت إضافة الحصة وتفعيل المنبه بنجاح! ⏰');
         }
 
         function renderScheduleList() {
@@ -303,9 +327,9 @@
             c.innerHTML = '';
             scheduleData.forEach((item, idx) => {
                 let isVacant = item.sub.includes('شاغر');
-                c.innerHTML += `<div class="p-2.5 bg-slate-900 border ${isVacant ? 'border-amber-500/50' : 'border-slate-700'} rounded-xl flex justify-between items-center text-xs">
+                c.innerHTML += `<div class="p-3 bg-slate-900 border ${isVacant ? 'border-amber-500/40 bg-amber-500/5' : 'border-slate-700'} rounded-xl flex justify-between items-center text-xs">
                     <div>
-                        <span class="font-bold ${isVacant ? 'text-amber-300' : 'text-amber-400'} block">${item.day}: ${item.sub}</span>
+                        <span class="font-bold text-amber-400 block">${item.day} - ${item.num} (${item.sub})</span>
                         <span class="text-slate-300">${item.cls} (${item.sec}) | من <strong class="text-white">${item.startTime}</strong> إلى <strong class="text-white">${item.endTime}</strong></span>
                     </div>
                     <button onclick="deleteSchedule(${idx})" class="px-2 py-1 bg-red-900/40 text-red-400 rounded">🗑️</button>
@@ -334,7 +358,7 @@
         }, 1000);
 
         function triggerAlarm(item) {
-            document.getElementById('alarm-details').innerText = `حان موعد (${item.sub}) للصف (${item.cls} - ${item.sec}) ليوم (${item.day}) من الساعة ${item.startTime} إلى ${item.endTime}`;
+            document.getElementById('alarm-details').innerText = `حان موعد (${item.num}: ${item.sub}) للصف (${item.cls} - ${item.sec}) ليوم (${item.day}) من ${item.startTime} إلى ${item.endTime}`;
             document.getElementById('alarm-modal').classList.remove('hidden');
             alarmAudio.play().catch(e => console.log('Requires interaction'));
         }
