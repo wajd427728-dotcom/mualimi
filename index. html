@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة ولي الأمر - مدرسة الذاريات الابتدائية</title>
+    <title>بوابة ولي الأمر والتلميذ - مدرسة الذاريات الابتدائية</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -12,113 +12,187 @@
 <body class="min-h-screen flex flex-col items-center justify-start p-3 sm:p-4">
 
     <header class="w-full max-w-md bg-slate-800/90 backdrop-blur border border-slate-700 rounded-2xl p-4 mb-4 shadow-xl text-center">
-        <div class="flex items-center justify-between mb-2">
-            <span class="text-xs bg-amber-500/20 text-amber-400 px-2.5 py-1 rounded-full font-bold">العام الدراسي 2025-2026</span>
-            <span class="text-xs bg-blue-500/20 text-blue-400 px-2.5 py-1 rounded-full font-bold">الرصافة الثانية</span>
-        </div>
-        <h1 class="text-xl font-black text-amber-400">مدرسة الذاريات الابتدائية</h1>
-        <p class="text-xs text-slate-300 mt-1">بوابة متابعة التلاميذ والمرشد التربوي</p>
+        <span class="text-xs bg-amber-500/20 text-amber-400 px-2.5 py-1 rounded-full font-bold">بوابة ولي الأمر والتلميذ</span>
+        <h1 class="text-xl font-black text-amber-400 mt-2">مدرسة الذاريات الابتدائية</h1>
+        <p class="text-sm text-slate-300 mt-1">تابع مستوى ابنك الدراسي وواجباته اليومية</p>
     </header>
 
     <main class="w-full max-w-md space-y-4">
-        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3 text-center">
-            <h2 class="text-base font-bold text-amber-400">استعلام عن نتائج التلميذ</h2>
-            <p class="text-xs text-slate-300">أدخل الكود المخصص لتلميذك (مثلاً: STU-601):</p>
-            <div class="flex gap-2">
-                <input type="text" id="parent-code-input" placeholder="أدخل الكود هنا..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-center uppercase tracking-widest text-white">
-                <button onclick="searchStudentByCode()" class="bg-amber-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs">استعلام 🔍</button>
+        <!-- شاشة تسجيل الدخول بكود التلميذ المخصص -->
+        <div id="login-section" class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-lg space-y-3 text-center">
+            <div class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center mx-auto text-xl font-bold mb-2">
+                <i class="fa-solid fa-id-card"></i>
             </div>
+            <h2 class="text-sm font-bold text-white">تسجيل الدخول برمز التلميذ</h2>
+            <p class="text-[11px] text-slate-400">أدخل كود الدخول المخصص الذي استلمته من المعلم:</p>
+            <input type="text" id="student-code-input" placeholder="مثال: STU-XXXX" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-center text-amber-400 font-bold font-mono text-sm uppercase">
+            <button onclick="loginStudent()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold p-3 rounded-xl text-xs shadow-lg transition">دخول إلى صفحة التلميذ 🚀</button>
         </div>
 
-        <div id="parent-result-view" class="space-y-4 hidden">
+        <!-- لوحة عرض بيانات التلميذ ودرجاته وواجباته (تظهر بعد الدخول) -->
+        <div id="student-dashboard" class="space-y-4 hidden">
+            
+            <!-- بطاقة معلومات التلميذ -->
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg flex justify-between items-center">
+                <div>
+                    <span id="p-student-class" class="text-[10px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded font-bold block w-fit mb-1"></span>
+                    <h2 id="p-student-name" class="text-sm font-black text-white"></h2>
+                    <span class="text-[11px] text-slate-400">كود الدخول: <strong id="p-student-id" class="text-amber-400 font-mono"></strong></span>
+                </div>
+                <button onclick="logoutStudent()" class="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-red-400 rounded-xl text-xs font-bold" title="خروج">
+                    <i class="fa-solid fa-right-from-bracket"></i> خروج
+                </button>
+            </div>
+
+            <!-- سجل الدرجات الخاص بالتلميذ -->
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <div class="flex justify-between items-center border-b border-slate-700 pb-2">
-                    <div>
-                        <h3 id="res-name" class="font-bold text-sm text-amber-400"></h3>
-                        <p id="res-class" class="text-xs text-slate-400"></p>
+                <h3 class="font-bold text-sm text-amber-400 border-b border-slate-700 pb-2"><i class="fa-solid fa-graduation-cap"></i> سجل الدرجات والتقييمات</h3>
+                
+                <!-- سجل الدرجات الإداري -->
+                <div class="bg-slate-900 p-3 rounded-xl border border-slate-700 space-y-2 text-xs">
+                    <span class="font-bold text-amber-300 block border-b border-slate-800 pb-1">📊 السجل الإداري:</span>
+                    <div class="grid grid-cols-2 gap-2 text-slate-300">
+                        <div>تشرين الأول: <strong id="s-oct" class="text-white">-</strong></div>
+                        <div>تشرين الثاني: <strong id="s-nov" class="text-white">-</strong></div>
+                        <div>كانون الأول: <strong id="s-dec" class="text-white">-</strong></div>
+                        <div>كانون الثاني: <strong id="s-jan" class="text-white">-</strong></div>
                     </div>
-                    <span id="res-code" class="text-xs bg-slate-700 px-2 py-1 rounded font-mono text-amber-300"></span>
-                </div>
-
-                <div class="grid grid-cols-4 gap-2 text-center text-xs">
-                    <div class="bg-slate-900 p-2 rounded-xl border border-slate-700"><span class="text-slate-400 block text-[10px]">تشرين</span><span id="res-oct" class="font-bold text-white">-</span></div>
-                    <div class="bg-slate-900 p-2 rounded-xl border border-slate-700"><span class="text-slate-400 block text-[10px]">كانون</span><span id="res-dec" class="font-bold text-white">-</span></div>
-                    <div class="bg-slate-900 p-2 rounded-xl border border-slate-700"><span class="text-slate-400 block text-[10px]">نصف السنة</span><span id="res-mid" class="font-bold text-white">-</span></div>
-                    <div class="bg-slate-900 p-2 rounded-xl border border-slate-700"><span class="text-slate-400 block text-[10px]">المعدل</span><span id="res-avg" class="font-bold text-amber-400">-</span></div>
-                </div>
-
-                <div class="bg-slate-900 p-3 rounded-xl border border-slate-700 space-y-1">
-                    <span class="text-xs text-amber-400 font-bold block"><i class="fa-solid fa-heart-pulse"></i> ملاحظات وتوجيهات المرشد التربوي:</span>
-                    <p id="res-notes" class="text-xs text-slate-300">لا توجد ملاحظات مسجلة.</p>
-                </div>
-
-                <!-- قسم الشهادة التقديرية المميزة -->
-                <div id="res-certificate-box" class="hidden">
-                    <div class="bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/50 p-4 rounded-xl text-center space-y-2">
-                        <i class="fa-solid fa-award text-amber-400 text-2xl"></i>
-                        <h4 class="font-bold text-sm text-amber-300">شهادة تقديرية وتكريم تفوق 🏆</h4>
-                        <p class="text-[11px] text-slate-200" id="certificate-text">ممنوحة للتلميذ لتميزه العلمي الملحوظ وحسن سلوكه الأخلاقي الرفيع.</p>
+                    <div class="grid grid-cols-2 gap-2 pt-1 border-t border-slate-800 text-amber-400 font-bold">
+                        <div>معدل النصف الأول: <strong id="s-mid-avg">-</strong></div>
+                        <div>نصف السنة: <strong id="s-mid">-</strong></div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 pt-1 border-t border-slate-800 text-slate-300">
+                        <div>شباط: <strong id="s-feb" class="text-white">-</strong></div>
+                        <div>أذار: <strong id="s-mar" class="text-white">-</strong></div>
+                        <div>نيسان: <strong id="s-apr" class="text-white">-</strong></div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 pt-1 border-t border-slate-800 text-amber-400">
+                        <div>معدل الثاني: <strong id="s-sec-avg">-</strong></div>
+                        <div>السعي السنوي: <strong id="s-annual">-</strong></div>
+                        <div>النهائي: <strong id="s-final">-</strong></div>
+                    </div>
+                    <div class="pt-2 border-t border-slate-800 text-center bg-slate-800 p-2 rounded-lg">
+                        <span class="text-slate-300 block text-[10px]">الدرجة النهائية:</span>
+                        <strong id="s-total-final" class="text-amber-400 text-base font-black">-</strong>
                     </div>
                 </div>
 
-                <div id="res-ministerial-box" class="hidden pt-2">
-                    <button onclick="openMinisterialModal()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2.5 rounded-xl text-xs flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-book-open"></i> فتح أرشيف الأسئلة الوزارية (السادس الابتدائي) 📚
-                    </button>
+                <!-- سجل المعلم للشهور -->
+                <div class="bg-slate-900 p-3 rounded-xl border border-slate-700 space-y-2 text-xs">
+                    <span class="font-bold text-blue-400 block border-b border-slate-800 pb-1">📝 امتحانات الشهور (سجل المعلم):</span>
+                    <div class="grid grid-cols-3 gap-2 text-slate-300 text-center">
+                        <div class="bg-slate-800 p-1.5 rounded">شهر 1: <strong id="s-m1" class="text-white block">-</strong></div>
+                        <div class="bg-slate-800 p-1.5 rounded">شهر 2: <strong id="s-m2" class="text-white block">-</strong></div>
+                        <div class="bg-slate-800 p-1.5 rounded">شهر 3: <strong id="s-m3" class="text-white block">-</strong></div>
+                        <div class="bg-slate-800 p-1.5 rounded">شهر 4: <strong id="s-m4" class="text-white block">-</strong></div>
+                        <div class="bg-slate-800 p-1.5 rounded">شهر 5: <strong id="s-m5" class="text-white block">-</strong></div>
+                        <div class="bg-slate-800 p-1.5 rounded">شهر 6: <strong id="s-m6" class="text-white block">-</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الواجبات والمهام المخصصة -->
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                <h3 class="font-bold text-sm text-amber-400 border-b border-slate-700 pb-2"><i class="fa-solid fa-book-open-reader"></i> الواجبات المدرسية الموجهة إليك 📖</h3>
+                <div id="student-homework-container" class="space-y-2.5 max-h-60 overflow-y-auto pr-1">
+                    <p class="text-xs text-slate-400 text-center py-2">لا توجد واجبات منشورة حالياً.</p>
                 </div>
             </div>
         </div>
     </main>
 
-    <div id="ministerial-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-2xl p-4 space-y-4 max-h-[80vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b border-slate-700 pb-2">
-                <h3 class="font-bold text-sm text-amber-400">أرشيف الأسئلة الوزارية</h3>
-                <button onclick="closeMinisterialModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="space-y-2 text-xs">
-                <div class="bg-slate-900 p-3 rounded-xl border border-slate-700 flex justify-between items-center">
-                    <span>أسئلة اللغة العربية - الدور الأول 2024</span>
-                    <a href="https://moedu.gov.iq" target="_blank" class="bg-blue-600 px-3 py-1.5 rounded-lg text-white font-bold">معاينة</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
-        let studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || [
-            { id: 'STU-601', name: 'سجاد حيدر محمد', class: 'السادس الابتدائي', section: 'أ', oct: 95, dec: 90, mid: 92, final: '', notes: 'تلميذ متفوق جداً وذو سلوك ممتاز.', isTop: true, certText: 'ممنوحة للتلميذ لتميزه العلمي وحسن السلوك.' }
-        ];
+        function loginStudent() {
+            const code = document.getElementById('student-code-input').value.trim().toUpperCase();
+            if(!code) { alert('الرجاء إدخال كود التلميذ.'); return; }
 
-        function searchStudentByCode() {
-            const code = document.getElementById('parent-code-input').value.trim().toUpperCase();
-            const s = studentsData.find(x => x.id === code);
-            const resView = document.getElementById('parent-result-view');
-            if(!s) { alert('عذراً، الكود غير صحيح.'); resView.classList.add('hidden'); return; }
-            resView.classList.remove('hidden');
-            document.getElementById('res-name').innerText = s.name;
-            document.getElementById('res-class').innerText = `${s.class} - شعبة ${s.section}`;
-            document.getElementById('res-code').innerText = s.id;
-            document.getElementById('res-oct').innerText = s.oct || '-';
-            document.getElementById('res-dec').innerText = s.dec || '-';
-            document.getElementById('res-mid').innerText = s.mid || '-';
-            const vals = [s.oct, s.dec, s.mid].filter(v => v !== '' && !isNaN(v)).map(Number);
-            document.getElementById('res-avg').innerText = vals.length ? (vals.reduce((a,b)=>a+b)/vals.length).toFixed(1) : '-';
-            document.getElementById('res-notes').innerText = s.notes || 'لا توجد ملاحظات.';
-            
-            if(s.isTop) {
-                document.getElementById('res-certificate-box').classList.remove('hidden');
-                document.getElementById('certificate-text').innerText = s.certText || 'ممنوحة للتلميذ للتميز الدراسي والسلوك الحسن.';
-            } else {
-                document.getElementById('res-certificate-box').classList.add('hidden');
-            }
+            const studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || [];
+            const student = studentsData.find(s => s.id.toUpperCase() === code);
 
-            if(s.class.includes('السادس')) document.getElementById('res-ministerial-box').classList.remove('hidden');
-            else document.getElementById('res-ministerial-box').classList.add('hidden');
+            if(!student) { alert('الكود غير صحيح أو غير مسجل في النظام. تأكد من المعلم.'); return; }
+
+            // حفظ التلميذ الحالي في الجلسة
+            localStorage.setItem('current_student_session', JSON.stringify(student));
+            loadStudentDashboard(student);
         }
 
-        function openMinisterialModal() { document.getElementById('ministerial-modal').classList.remove('hidden'); }
-        function closeMinisterialModal() { document.getElementById('ministerial-modal').classList.add('hidden'); }
+        function loadStudentDashboard(student) {
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('student-dashboard').classList.remove('hidden');
+
+            document.getElementById('p-student-name').innerText = student.name;
+            document.getElementById('p-student-class').innerText = `${student.class} - شعبة ${student.section}`;
+            document.getElementById('p-student-id').innerText = student.id;
+
+            // تعبئة الدرجات الإدارية
+            document.getElementById('s-oct').innerText = student.oct || '-';
+            document.getElementById('s-nov').innerText = student.nov || '-';
+            document.getElementById('s-dec').innerText = student.dec || '-';
+            document.getElementById('s-jan').innerText = student.jan || '-';
+            document.getElementById('s-mid-avg').innerText = student.midAvg || '-';
+            document.getElementById('s-mid').innerText = student.mid || '-';
+            document.getElementById('s-feb').innerText = student.feb || '-';
+            document.getElementById('s-mar').innerText = student.mar || '-';
+            document.getElementById('s-apr').innerText = student.apr || '-';
+            document.getElementById('s-sec-avg').innerText = student.secAvg || '-';
+            document.getElementById('s-annual').innerText = student.annual || '-';
+            document.getElementById('s-final').innerText = student.final || '-';
+            document.getElementById('s-total-final').innerText = student.totalFinal || '-';
+
+            // تعبئة درجات الشهور
+            document.getElementById('s-m1').innerText = student.m1 || '-';
+            document.getElementById('s-m2').innerText = student.m2 || '-';
+            document.getElementById('s-m3').innerText = student.m3 || '-';
+            document.getElementById('s-m4').innerText = student.m4 || '-';
+            document.getElementById('s-m5').innerText = student.m5 || '-';
+            document.getElementById('s-m6').innerText = student.m6 || '-';
+
+            // عرض الواجبات الخاصة بصفه وشعبته
+            const homeworkContainer = document.getElementById('student-homework-container');
+            const allHomework = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
+            
+            const filteredHomework = allHomework.filter(hw => 
+                (hw.cls === student.class || hw.cls === 'الجميع') && 
+                (hw.sec === student.section || hw.sec === 'الجميع')
+            );
+
+            homeworkContainer.innerHTML = '';
+            if(filteredHomework.length === 0) {
+                homeworkContainer.innerHTML = '<p class="text-xs text-slate-400 text-center py-2">لا توجد واجبات منشورة حالياً.</p>';
+            } else {
+                filteredHomework.forEach(hw => {
+                    let imgTag = hw.img ? `<img src="${hw.img}" class="w-full h-28 object-cover rounded-lg mt-2">` : '';
+                    homeworkContainer.innerHTML += `<div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-1.5 text-xs">
+                        <div class="flex justify-between items-center text-[10px] text-slate-400 border-b border-slate-800 pb-1">
+                            <span class="text-amber-400 font-bold">${hw.sub}</span>
+                            <span>${hw.date}</span>
+                        </div>
+                        <p class="text-white font-bold">${hw.title}</p>
+                        <p class="text-slate-300 text-[11px]">${hw.notes || ''}</p>
+                        ${imgTag}
+                    </div>`;
+                });
+            }
+        }
+
+        function logoutStudent() {
+            localStorage.removeItem('current_student_session');
+            document.getElementById('student-dashboard').classList.add('hidden');
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('student-code-input').value = '';
+        }
+
+        // فحص ما إذا كان التلميذ مسجلاً مسبقاً في الجلسة
+        window.onload = function() {
+            const savedSession = localStorage.getItem('current_student_session');
+            if(savedSession) {
+                const student = JSON.parse(savedSession);
+                // تحديث بيانات التلميذ من القائمة العامة إن وجدت
+                const studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || [];
+                const latestStudent = studentsData.find(s => s.id === student.id) || student;
+                loadStudentDashboard(latestStudent);
+            }
+        };
     </script>
 </body>
 </html>
