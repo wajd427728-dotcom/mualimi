@@ -44,6 +44,13 @@
                 </button>
             </div>
 
+            <!-- إشعار الشهادة التقديرية الواردة من المعلم -->
+            <div id="student-certificate-banner" class="hidden bg-gradient-to-r from-amber-500/20 to-blue-500/20 border-2 border-amber-500 rounded-2xl p-4 shadow-lg text-center space-y-2">
+                <div class="text-amber-400 text-2xl animate-bounce"><i class="fa-solid fa-trophy"></i></div>
+                <h3 class="text-sm font-black text-amber-400">مبروك! لقد استلمت شهادة تقديرية جديدة 🌟</h3>
+                <p id="s-cert-details" class="text-xs text-white font-medium"></p>
+            </div>
+
             <!-- سجل الدرجات الخاص بالتلميذ -->
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400 border-b border-slate-700 pb-2"><i class="fa-solid fa-graduation-cap"></i> سجل الدرجات والتقييمات</h3>
@@ -143,6 +150,17 @@
             document.getElementById('s-m4').innerText = student.m4 || '-';
             document.getElementById('s-m5').innerText = student.m5 || '-';
             document.getElementById('s-m6').innerText = student.m6 || '-';
+
+            // التحقق من وجود شهادة تقديرية مرسلة للتلميذ
+            const certificatesList = JSON.parse(localStorage.getItem('dhariyat_certificates')) || [];
+            const myCert = certificatesList.find(c => c.studentId === student.id);
+            const certBanner = document.getElementById('student-certificate-banner');
+            if(myCert) {
+                certBanner.classList.remove('hidden');
+                document.getElementById('s-cert-details').innerText = `شهادة تفوق وسلوك تام (100%) مجهزة لك في مادة (${myCert.subject}) بتوقيع المعلم أ. حيدر محمد ومدير المدرسة أ. عدي حليم.`;
+            } else {
+                certBanner.classList.add('hidden');
+            }
 
             const homeworkContainer = document.getElementById('student-homework-container');
             const allHomework = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
