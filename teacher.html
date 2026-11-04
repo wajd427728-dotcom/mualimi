@@ -274,16 +274,37 @@
             </div>
         </div>
 
-        <!-- تبويب: مهامي (مذكرة المعلم الخاصة) -->
+        <!-- تبويب: مهامي (المذكرة الشخصية المطورة) -->
         <div id="teacher-tab-tasks" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-list-check"></i> مذكرة مهامي الشخصية (خاصة بك وحدك)</h3>
-                <p class="text-[11px] text-slate-300">سجل هنا ملاحظاتك ومهامك اليومية (لا ترسل للتلاميذ):</p>
-                <div class="space-y-2">
-                    <input type="text" id="new-task-input" placeholder="عنوان المهمة أو الملاحظة..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
-                    <button onclick="addNewTask()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs">إضافة المهمة إلى مذكرتي 📌</button>
+                <p class="text-[11px] text-slate-300">سجل هنا مهامك وملاحظاتك الخاصة بتنسيق احترافي:</p>
+                
+                <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
+                    <div>
+                        <label class="text-[10px] text-slate-400 block mb-1">📅 اليوم والتاريخ:</label>
+                        <input type="text" id="task-date" placeholder="مثال: الأحد 2026/6/7..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-slate-400 block mb-1">📌 نوع المهمة:</label>
+                        <select id="task-type" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
+                            <option value="مهمة إدارية">مهمة إدارية</option>
+                            <option value="واجب مدرسي">واجب مدرسي</option>
+                            <option value="اجتماع / نشاط">اجتماع / نشاط</option>
+                            <option value="ملاحظة شخصية">ملاحظة شخصية</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-slate-400 block mb-1">📝 التفاصيل:</label>
+                        <textarea id="task-details" rows="2" placeholder="اكتب تفاصيل المهمة هنا..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></textarea>
+                    </div>
+                    <button onclick="addNewTask()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl mt-1">حفظ المهمة في المذكرة 📌</button>
                 </div>
-                <div id="tasks-list-container" class="space-y-3 max-h-60 overflow-y-auto pr-1"></div>
+
+                <div class="border-t border-slate-700 pt-3">
+                    <h4 class="font-bold text-xs text-slate-200 mb-2">قائمة المهام المحفوظة:</h4>
+                    <div id="tasks-list-container" class="space-y-2.5 max-h-60 overflow-y-auto pr-1"></div>
+                </div>
             </div>
         </div>
     </main>
@@ -604,11 +625,17 @@
         }
 
         function addNewTask() {
-            const text = document.getElementById('new-task-input').value.trim();
-            if(!text) { alert('أدخل نص المهمة.'); return; }
-            tasksData.push({ text, done: false });
-            document.getElementById('new-task-input').value = '';
+            const taskDate = document.getElementById('task-date').value.trim();
+            const taskType = document.getElementById('task-type').value;
+            const taskDetails = document.getElementById('task-details').value.trim();
+
+            if(!taskDate || !taskDetails) { alert('يرجى إدخال التاريخ وتفاصيل المهمة.'); return; }
+
+            tasksData.push({ date: taskDate, type: taskType, details: taskDetails, done: false });
+            document.getElementById('task-date').value = '';
+            document.getElementById('task-details').value = '';
             saveData();
+            alert('تمت إضافة المهمة بنجاح إلى مذكرتك الشخصية! 📌');
         }
 
         function renderTasksList() {
@@ -616,11 +643,15 @@
             if(!c) return;
             c.innerHTML = '';
             tasksData.forEach((t, i) => {
-                c.innerHTML += `<div class="p-3 bg-slate-900 border border-slate-700 rounded-xl flex justify-between items-center text-xs">
-                    <span class="${t.done ? 'line-through text-slate-500' : 'text-white'} font-bold">${t.text}</span>
-                    <div class="flex gap-1">
-                        <button onclick="toggleTask(${i})" class="px-2 py-1 bg-slate-800 text-amber-400 rounded">✔️</button>
-                        <button onclick="deleteTask(${i})" class="px-2 py-1 bg-red-900/40 text-red-400 rounded">🗑️</button>
+                c.innerHTML += `<div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-1.5 text-xs">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-1">
+                        <span class="text-amber-400 font-bold"><i class="fa-solid fa-calendar-days"></i> ${t.date}</span>
+                        <span class="bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">${t.type}</span>
+                    </div>
+                    <p class="${t.done ? 'line-through text-slate-500' : 'text-white'} font-medium pt-1">${t.details}</p>
+                    <div class="flex justify-end gap-1 pt-1">
+                        <button onclick="toggleTask(${i})" class="px-2 py-1 bg-slate-800 text-amber-400 rounded text-[10px]">✔️ إنجاز</button>
+                        <button onclick="deleteTask(${i})" class="px-2 py-1 bg-red-900/40 text-red-400 rounded text-[10px]">🗑️ حذف</button>
                     </div>
                 </div>`;
             });
