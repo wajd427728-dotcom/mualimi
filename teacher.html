@@ -25,12 +25,12 @@
             </h2>
             <div class="grid grid-cols-3 gap-2 text-center text-xs mb-2">
                 <button onclick="switchTeacherTab('students')" id="t-tab-students" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">إدارة التلاميذ</button>
-                <button onclick="switchTeacherTab('grades')" id="t-tab-grades" class="p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition">سجل الدرجات</button>
+                <button onclick="switchTeacherTab('grades')" id="t-tab-grades" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">سجل الدرجات</button>
                 <button onclick="switchTeacherTab('homework')" id="t-tab-homework" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">📖 واجباتي</button>
             </div>
             <div class="grid grid-cols-2 gap-2 text-center text-xs">
                 <button onclick="switchTeacherTab('schedule')" id="t-tab-schedule" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">📚 دروسي</button>
-                <button onclick="switchTeacherTab('tasks')" id="t-tab-tasks" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">✅ مهامي والصور</button>
+                <button onclick="switchTeacherTab('tasks')" id="t-tab-tasks" class="p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition">✅ مهامي</button>
             </div>
         </div>
 
@@ -84,11 +84,10 @@
             </div>
         </div>
 
-        <!-- تبويب: سجل الدرجات (المطور كلياً) -->
-        <div id="teacher-tab-grades" class="space-y-4">
+        <!-- تبويب: سجل الدرجات -->
+        <div id="teacher-tab-grades" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-graduation-cap"></i> سجل درجات التلاميذ (الإداري ومعلم المادة)</h3>
-                
                 <div class="grid grid-cols-2 gap-2">
                     <select id="grade-subject" class="bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
                         <option value="اللغة العربية">اللغة العربية</option>
@@ -98,14 +97,9 @@
                         <option value="">اختر التلميذ...</option>
                     </select>
                 </div>
-
                 <div id="grade-inputs-container" class="space-y-4 hidden">
-                    
-                    <!-- القسم الأول: سجل الدرجات الإداري -->
                     <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-3">
                         <h4 class="text-xs font-bold text-amber-400 border-b border-slate-700 pb-1.5">📊 القسم الأول: سجل الدرجات الإداري</h4>
-                        
-                        <!-- الفصل الأول -->
                         <div class="space-y-2">
                             <span class="text-[11px] text-slate-300 font-bold block">الفصل الأول:</span>
                             <div class="grid grid-cols-2 gap-2 text-xs">
@@ -121,8 +115,6 @@
                                 <div><label class="text-[10px] text-amber-300">نصف السنة:</label><input type="number" id="g-mid" class="w-full bg-slate-800 border border-amber-500/50 rounded-lg p-2 text-white font-bold"></div>
                             </div>
                         </div>
-
-                        <!-- الفصل الثاني -->
                         <div class="space-y-2 pt-2 border-t border-slate-800">
                             <span class="text-[11px] text-slate-300 font-bold block">الفصل الثاني:</span>
                             <div class="grid grid-cols-3 gap-2 text-xs">
@@ -141,11 +133,8 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- القسم الثاني: سجل المعلم (امتحانات الشهور) -->
                     <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-3">
                         <h4 class="text-xs font-bold text-blue-400 border-b border-slate-700 pb-1.5">📝 القسم الثاني: سجل المعلم (امتحانات الشهور)</h4>
-                        
                         <div class="space-y-2">
                             <span class="text-[11px] text-slate-300 font-bold block">الفصل الأول:</span>
                             <div class="grid grid-cols-3 gap-2 text-xs">
@@ -154,7 +143,6 @@
                                 <div><label class="text-[10px] text-slate-400">الشهر الثالث:</label><input type="number" id="t-m3" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
                             </div>
                         </div>
-
                         <div class="space-y-2 pt-2 border-t border-slate-800">
                             <span class="text-[11px] text-slate-300 font-bold block">الفصل الثاني:</span>
                             <div class="grid grid-cols-3 gap-2 text-xs">
@@ -164,7 +152,6 @@
                             </div>
                         </div>
                     </div>
-
                     <button onclick="saveStudentGrades()" class="w-full bg-amber-500 text-slate-950 font-bold p-3 rounded-xl text-xs shadow-lg hover:bg-amber-400 transition">حفظ السجل والدرجات بالكامل 💾</button>
                 </div>
             </div>
@@ -287,14 +274,14 @@
             </div>
         </div>
 
-        <!-- تبويب: مهامي والصور -->
+        <!-- تبويب: مهامي (مذكرة المعلم الخاصة) -->
         <div id="teacher-tab-tasks" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-list-check"></i> قائمة مهامي اليومية (مع إرفاق صورة)</h3>
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-list-check"></i> مذكرة مهامي الشخصية (خاصة بك وحدك)</h3>
+                <p class="text-[11px] text-slate-300">سجل هنا ملاحظاتك ومهامك اليومية (لا ترسل للتلاميذ):</p>
                 <div class="space-y-2">
-                    <input type="text" id="new-task-input" placeholder="عنوان المهمة..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
-                    <input type="file" id="new-task-img" accept="image/*" class="w-full text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-slate-700 file:text-white">
-                    <button onclick="addNewTask()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs">إضافة المهمة مع الصورة 📷</button>
+                    <input type="text" id="new-task-input" placeholder="عنوان المهمة أو الملاحظة..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
+                    <button onclick="addNewTask()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs">إضافة المهمة إلى مذكرتي 📌</button>
                 </div>
                 <div id="tasks-list-container" class="space-y-3 max-h-60 overflow-y-auto pr-1"></div>
             </div>
@@ -618,23 +605,10 @@
 
         function addNewTask() {
             const text = document.getElementById('new-task-input').value.trim();
-            const fileInput = document.getElementById('new-task-img');
             if(!text) { alert('أدخل نص المهمة.'); return; }
-
-            if(fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    tasksData.push({ text, img: e.target.result, done: false });
-                    document.getElementById('new-task-input').value = '';
-                    fileInput.value = '';
-                    saveData();
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                tasksData.push({ text, img: '', done: false });
-                document.getElementById('new-task-input').value = '';
-                saveData();
-            }
+            tasksData.push({ text, done: false });
+            document.getElementById('new-task-input').value = '';
+            saveData();
         }
 
         function renderTasksList() {
@@ -642,16 +616,12 @@
             if(!c) return;
             c.innerHTML = '';
             tasksData.forEach((t, i) => {
-                let imgTag = t.img ? `<img src="${t.img}" class="w-full h-24 object-cover rounded-lg mt-2">` : '';
-                c.innerHTML += `<div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-2 text-xs">
-                    <div class="flex justify-between items-center">
-                        <span class="${t.done ? 'line-through text-slate-500' : 'text-white'} font-bold">${t.text}</span>
-                        <div class="flex gap-1">
-                            <button onclick="toggleTask(${i})" class="px-2 py-1 bg-slate-800 text-amber-400 rounded">✔️</button>
-                            <button onclick="deleteTask(${i})" class="px-2 py-1 bg-red-900/40 text-red-400 rounded">🗑️</button>
-                        </div>
+                c.innerHTML += `<div class="p-3 bg-slate-900 border border-slate-700 rounded-xl flex justify-between items-center text-xs">
+                    <span class="${t.done ? 'line-through text-slate-500' : 'text-white'} font-bold">${t.text}</span>
+                    <div class="flex gap-1">
+                        <button onclick="toggleTask(${i})" class="px-2 py-1 bg-slate-800 text-amber-400 rounded">✔️</button>
+                        <button onclick="deleteTask(${i})" class="px-2 py-1 bg-red-900/40 text-red-400 rounded">🗑️</button>
                     </div>
-                    ${imgTag}
                 </div>`;
             });
         }
