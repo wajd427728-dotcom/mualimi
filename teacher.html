@@ -18,13 +18,13 @@
     </header>
 
     <main class="w-full max-w-md space-y-4">
-        <!-- لوحة التحكم والتبويبات -->
+        <!-- لوحة التحكم والتبويبات الرئيسية -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg">
             <h2 class="text-sm font-bold text-amber-400 mb-3 flex items-center gap-2">
                 <i class="fa-solid fa-gauge-high"></i> التبويبات الرئيسية
             </h2>
             <div class="grid grid-cols-3 gap-2 text-center text-xs mb-2">
-                <button onclick="switchTeacherTab('students')" id="t-tab-students" class="p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition">إدارة الطلاب</button>
+                <button onclick="switchTeacherTab('students')" id="t-tab-students" class="p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition">إدارة التلاميذ</button>
                 <button onclick="switchTeacherTab('grades')" id="t-tab-grades" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">سجل الدرجات</button>
                 <button onclick="switchTeacherTab('planner')" id="t-tab-planner" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">خطة الدرس</button>
             </div>
@@ -34,54 +34,72 @@
             </div>
         </div>
 
-        <!-- تبويب 1: إدارة التلاميذ الاحترافية -->
+        <!-- تبويب: إدارة التلاميذ (مقسم إلى قسمين) -->
         <div id="teacher-tab-students" class="space-y-4">
-            <!-- إضافة تلميذ فردي -->
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <h3 class="font-bold text-sm text-slate-200">إضافة تلميذ فردي</h3>
-                <div class="grid grid-cols-2 gap-2">
-                    <select id="new-student-class" class="bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
-                        <option value="السادس الابتدائي">السادس الابتدائي</option>
-                        <option value="الخامس الابتدائي">الخامس الابتدائي</option>
-                    </select>
-                    <select id="new-student-section" class="bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
-                        <option value="أ">شعبة أ</option>
-                        <option value="ب">شعبة ب</option>
-                    </select>
+            
+            <!-- القسم الأول: إدخال التلميذ في الشعبة والصف (فردي أو جماعي) -->
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
+                <div class="border-b border-slate-700 pb-2">
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-user-plus"></i> القسم الأول: إدخال تلميذ في الصف والشعبة</h3>
                 </div>
-                <input type="text" id="new-student-name" placeholder="اسم التلميذ الثلاثي..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
-                <button onclick="addNewStudent()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs">إضافة وتوليد الكود ➕</button>
-            </div>
 
-            <!-- إضافة جماعية (استيراد أسماء) -->
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-file-excel"></i> استيراد أسماء شعبة كاملة دفعة واحدة</h3>
-                <p class="text-[11px] text-slate-300">الصق أسماء التلاميذ هنا (كل اسم في سطر مستقل)، وسيقوم النظام بتوليد الأكواد لهم تلقائياً:</p>
-                <textarea id="bulk-names-input" rows="3" placeholder="محمد أحمد علي&#10;حسن جاسم محمد&#10;..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white"></textarea>
-                <div class="grid grid-cols-2 gap-2">
-                    <select id="bulk-class" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
-                        <option value="السادس الابتدائي">السادس الابتدائي</option>
-                        <option value="الخامس الابتدائي">الخامس الابتدائي</option>
-                    </select>
-                    <select id="bulk-section" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
-                        <option value="أ">شعبة أ</option>
-                        <option value="ب">شعبة ب</option>
-                    </select>
-                </div>
-                <button onclick="importBulkStudents()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2.5 rounded-xl text-xs">استيراد القائمة وتوليد الأكواد 📥</button>
-            </div>
-
-            <!-- عرض وحفظ وتصدير بيانات الطلاب -->
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <div class="flex justify-between items-center">
-                    <h3 class="font-bold text-sm text-slate-200">قائمة التلاميذ (<span id="total-students">0</span>)</h3>
-                    <div class="flex gap-1.5">
-                        <button onclick="exportSectionReport()" class="text-[11px] bg-blue-600/80 text-white px-2.5 py-1 rounded-lg font-bold" title="سحب ملف كامل للشعبة مع الأكواد">سحب كشف الشعبة 📄</button>
-                        <button onclick="exportBackup()" class="text-[11px] bg-slate-700 text-amber-400 px-2.5 py-1 rounded-lg font-bold">نسخة احتياطية 💾</button>
+                <!-- 1. إضافة فردي -->
+                <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700/80 space-y-2">
+                    <span class="text-[11px] text-slate-300 font-bold block">إضافة تلميذ فردي:</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <select id="new-student-class" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                            <option value="السادس الابتدائي">السادس الابتدائي</option>
+                            <option value="الخامس الابتدائي">الخامس الابتدائي</option>
+                        </select>
+                        <select id="new-student-section" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                            <option value="أ">شعبة أ</option>
+                            <option value="ب">شعبة ب</option>
+                        </select>
                     </div>
+                    <input type="text" id="new-student-name" placeholder="اسم التلميذ الثلاثي..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                    <button onclick="addNewStudent()" class="w-full bg-amber-500 text-slate-950 font-bold p-2 rounded-lg text-xs">إضافة التلميذ وتوليد الكود ➕</button>
                 </div>
-                <div id="teacher-students-list" class="space-y-2 max-h-55 overflow-y-auto pr-1"></div>
+
+                <!-- 2. إضافة جماعية (ملف / نسخ ولصق أسماء) -->
+                <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700/80 space-y-2">
+                    <span class="text-[11px] text-amber-400 font-bold block"><i class="fa-solid fa-file-excel"></i> استيراد جماعي (من ملف Word / Excel أو لصق أسماء):</span>
+                    <p class="text-[10px] text-slate-400">الصق أسماء الشعبة هنا (كل اسم في سطر مستقل):</p>
+                    <textarea id="bulk-names-input" rows="3" placeholder="محمد أحمد علي&#10;حسن جاسم محمد&#10;..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"></textarea>
+                    <div class="grid grid-cols-2 gap-2">
+                        <select id="bulk-class" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                            <option value="السادس الابتدائي">السادس الابتدائي</option>
+                            <option value="الخامس الابتدائي">الخامس الابتدائي</option>
+                        </select>
+                        <select id="bulk-section" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                            <option value="أ">شعبة أ</option>
+                            <option value="ب">شعبة ب</option>
+                        </select>
+                    </div>
+                    <button onclick="importBulkStudents()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2 rounded-lg text-xs">استيراد القائمة دفعة واحدة 📥</button>
+                </div>
             </div>
+
+            <!-- القسم الثاني: توليد واستيراد الأكواد وسحب كشوفات الشعب -->
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid id-card"></i> القسم الثاني: توليد واستيراد الأكواد والكشوفات</h3>
+                    <span class="text-xs bg-slate-700 px-2 py-0.5 rounded text-amber-300 font-bold">العدد: <span id="total-students">0</span></span>
+                </div>
+
+                <!-- أزرار الإجراءات والسحب للشعبة -->
+                <div class="flex gap-2 pt-1">
+                    <button onclick="exportSectionReport()" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold p-2 rounded-xl text-xs flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-file-arrow-down"></i> سحب كشف الشعبة الكامل (مع الأكواد) 📄
+                    </button>
+                    <button onclick="exportBackup()" class="bg-slate-700 hover:bg-slate-600 text-amber-400 font-bold px-3 py-2 rounded-xl text-xs" title="نسخة احتياطية">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                    </button>
+                </div>
+
+                <!-- قائمة عرض التلاميذ وأكوادهم -->
+                <div id="teacher-students-list" class="space-y-2 max-h-55 overflow-y-auto pr-1 pt-1"></div>
+            </div>
+
         </div>
 
         <!-- تبويب 2: سجل الدرجات -->
@@ -134,8 +152,6 @@
         <div id="teacher-tab-schedule" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-calendar-days"></i> جدول دروسي والمنبه (4 حصص لكل يوم)</h3>
-                <p class="text-xs text-slate-300">اختر اليوم، رقم الحصة، المادة أو الشاغر، وحدد الأوقات:</p>
-                
                 <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
                     <div class="grid grid-cols-2 gap-2">
                         <div>
@@ -158,16 +174,14 @@
                             </select>
                         </div>
                     </div>
-
                     <div>
-                        <label class="text-[10px] text-slate-400 block mb-1">اختر المادة أو الشاغر:</label>
+                        <label class="text-[10px] text-slate-400 block mb-1">المادة أو الشاغر:</label>
                         <select id="sch-subject" onchange="toggleSubjectFields()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
                             <option value="اللغة العربية">اللغة العربية</option>
                             <option value="التربية الإسلامية">التربية الإسلامية</option>
                             <option value="شاغر 🟡 (استراحة)">شاغر 🟡 (استراحة)</option>
                         </select>
                     </div>
-
                     <div id="class-section-container" class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="text-[10px] text-slate-400 block mb-1">الصف:</label>
@@ -184,7 +198,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="grid grid-cols-2 gap-2 pt-1">
                         <div>
                             <label class="text-[10px] text-slate-400 block mb-1">وقت البدء:</label>
@@ -195,10 +208,8 @@
                             <input type="time" id="sch-end" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center text-white font-mono">
                         </div>
                     </div>
-
                     <button onclick="addScheduleItem()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl mt-2">حفظ الحصة وتفعيل المنبه ⏰</button>
                 </div>
-
                 <div id="schedule-list-container" class="space-y-2 max-h-55 overflow-y-auto pr-1"></div>
             </div>
         </div>
@@ -280,10 +291,9 @@
             studentsData.push({ id: randomId, name, class: document.getElementById('new-student-class').value, section: document.getElementById('new-student-section').value, oct: '', dec: '', mid: '', final: '', notes: '', isTop: false, certText: '' });
             document.getElementById('new-student-name').value = '';
             saveData();
-            alert('تمت الإضافة. الكود: ' + randomId);
+            alert('تمت الإضافة وتوليد الكود بنجاح: ' + randomId);
         }
 
-        // استيراد أسماء جماعية (دفعة واحدة)
         function importBulkStudents() {
             const rawText = document.getElementById('bulk-names-input').value.trim();
             if(!rawText) { alert('الرجاء إدخال أو لصق أسماء التلاميذ.'); return; }
@@ -300,10 +310,9 @@
 
             document.getElementById('bulk-names-input').value = '';
             saveData();
-            alert(`تم بنجاح استيراد وتوليد أكواد لـ (${addedCount}) تلميذ! 🎉`);
+            alert(`تم بنجاح استيراد وتوليد الأكواد لـ (${addedCount}) تلميذ في (${cls} - شعبة ${sec})! 🎉`);
         }
 
-        // تصدير كشف كامل للشعبة مع الأكواد (ملف نصي/CSV)
         function exportSectionReport() {
             if(studentsData.length === 0) { alert('لا توجد بيانات تلاميذ لتصديرها.'); return; }
             let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
@@ -325,7 +334,13 @@
             c.innerHTML = '';
             document.getElementById('total-students').innerText = studentsData.length;
             studentsData.forEach((s, idx) => {
-                c.innerHTML += `<div class="p-3 bg-slate-900 border border-slate-700 rounded-xl flex justify-between items-center text-xs"><div><span class="font-bold text-white block">${s.name}</span><span class="text-slate-400">${s.class} (شعبة ${s.section}) - كود: <strong class="text-amber-400">${s.id}</strong></span></div><button onclick="deleteStudent(${idx})" class="px-2 py-1 bg-red-900/40 text-red-400 rounded">🗑️</button></div>`;
+                c.innerHTML += `<div class="p-3 bg-slate-900 border border-slate-700 rounded-xl flex justify-between items-center text-xs">
+                    <div>
+                        <span class="font-bold text-white block">${s.name}</span>
+                        <span class="text-slate-400">${s.class} (شعبة ${s.section}) - كود الدخول: <strong class="text-amber-400">${s.id}</strong></span>
+                    </div>
+                    <button onclick="deleteStudent(${idx})" class="px-2 py-1 bg-red-900/40 text-red-400 rounded">🗑️</button>
+                </div>`;
             });
         }
 
@@ -377,7 +392,6 @@
             document.getElementById('saved-plan-display').innerHTML = `<strong>العنوان:</strong> ${lessonPlanData.topic}<br><strong>الواجب:</strong> ${lessonPlanData.notes}`;
         }
 
-        // جدول دروسي
         function addScheduleItem() {
             const day = document.getElementById('sch-day').value;
             const num = document.getElementById('sch-number').value;
@@ -386,14 +400,11 @@
             const endTime = document.getElementById('sch-end').value;
 
             if(!startTime || !endTime) { alert('يرجى تحديد وقت البدء ووقت الانتهاء.'); return; }
-
-            let cls = '';
-            let sec = '';
+            let cls = '', sec = '';
             if(!sub.includes('شاغر')) {
                 cls = document.getElementById('sch-class').value;
                 sec = document.getElementById('sch-section').value;
             }
-
             scheduleData.push({ day, num, cls, sec, sub, startTime, endTime });
             saveData();
             alert('تمت إضافة الحصة وتفعيل المنبه بنجاح! ⏰');
@@ -417,13 +428,11 @@
 
         function deleteSchedule(i) { scheduleData.splice(i, 1); saveData(); }
 
-        // فحص المنبه كل ثانية
         setInterval(() => {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const currentTime = `${hours}:${minutes}`;
-            
             const daysNames = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
             const currentDay = daysNames[now.getDay()];
 
@@ -448,7 +457,6 @@
             document.getElementById('alarm-modal').classList.add('hidden');
         }
 
-        // مهامي والصور
         function addNewTask() {
             const text = document.getElementById('new-task-input').value.trim();
             const fileInput = document.getElementById('new-task-img');
@@ -471,9 +479,35 @@
         }
 
         function renderTasksList() {
-            const c =, document.getElementById('tasks-list-container');
-            // ... (باقي كود المهامي محفوظ)
+            const c = document.getElementById('tasks-list-container');
+            c.innerHTML = '';
+            tasksData.forEach((t, i) => {
+                let imgTag = t.img ? `<img src="${t.img}" class="w-full h-24 object-cover rounded-lg mt-2">` : '';
+                c.innerHTML += `<div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-2 text-xs">
+                    <div class="flex justify-between items-center">
+                        <span class="${t.done ? 'line-through text-slate-500' : 'text-white'} font-bold">${t.text}</span>
+                        <div class="flex gap-1">
+                            <button onclick="toggleTask(${i})" class="px-2 py-1 bg-slate-800 text-amber-400 rounded">✔️</button>
+                            <button onclick="deleteTask(${i})" class="px-2 py-1 bg-red-900/40 text-red-400 rounded">🗑️</button>
+                        </div>
+                    </div>
+                    ${imgTag}
+                </div>`;
+            });
         }
+
+        function toggleTask(i) { tasksData[i].done = !tasksData[i].done; saveData(); }
+        function deleteTask(i) { tasksData.splice(i, 1); saveData(); }
+
+        function exportBackup() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(studentsData));
+            const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "dhariyat_backup.json");
+            document.body.appendChild(dl); dl.click(); dl.remove();
+        }
+
+        renderStudentsList();
+        renderTasksList();
+        renderScheduleList();
     </script>
 </body>
 </html>
