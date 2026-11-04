@@ -107,11 +107,11 @@
             </div>
         </div>
 
-        <!-- تبويب 4: دروسي (مقسم إلى 4 حصص + شاغر + أوقات البدء والانتهاء) -->
+        <!-- تبويب 4: دروسي (مع إخفاء الصف والشعبة تلقائياً عند اختيار شاغر) -->
         <div id="teacher-tab-schedule" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-calendar-days"></i> جدول دروسي والمنبه (4 حصص لكل يوم)</h3>
-                <p class="text-xs text-slate-300">أنشئ حصصك وحدد رقم الحصة، المادة أو الشاغر، وأوقات البدء والانتهاء:</p>
+                <p class="text-xs text-slate-300">اختر اليوم، رقم الحصة، المادة أو الشاغر، وحدد الأوقات:</p>
                 
                 <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
                     <div class="grid grid-cols-2 gap-2">
@@ -136,7 +136,17 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-2">
+                    <div>
+                        <label class="text-[10px] text-slate-400 block mb-1">اختر المادة أو الشاغر:</label>
+                        <select id="sch-subject" onchange="toggleSubjectFields()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
+                            <option value="اللغة العربية">اللغة العربية</option>
+                            <option value="التربية الإسلامية">التربية الإسلامية</option>
+                            <option value="شاغر 🟡 (استراحة)">شاغر 🟡 (استراحة)</option>
+                        </select>
+                    </div>
+
+                    <!-- حقول الصف والشعبة التي تختفي تلقائياً عند اختيار شاغر -->
+                    <div id="class-section-container" class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="text-[10px] text-slate-400 block mb-1">الصف:</label>
                             <select id="sch-class" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
@@ -149,14 +159,6 @@
                             <select id="sch-section" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
                                 <option value="شعبة أ">شعبة أ</option>
                                 <option value="شعبة ب">شعبة ب</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-[10px] text-slate-400 block mb-1">المادة:</label>
-                            <select id="sch-subject" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
-                                <option value="اللغة العربية">اللغة العربية</option>
-                                <option value="التربية الإسلامية">التربية الإسلامية</option>
-                                <option value="شاغر 🟡 (استراحة)">شاغر 🟡 (استراحة)</option>
                             </select>
                         </div>
                     </div>
@@ -239,6 +241,16 @@
             if(tab === 'schedule') renderScheduleList();
         }
 
+        function toggleSubjectFields() {
+            const sub = document.getElementById('sch-subject').value;
+            const container = document.getElementById('class-section-container');
+            if(sub.includes('شاغر')) {
+                container.classList.add('hidden');
+            } else {
+                container.classList.remove('hidden');
+            }
+        }
+
         function addNewStudent() {
             const name = document.getElementById('new-student-name').value.trim();
             if(!name) { alert('أدخل اسم التلميذ.'); return; }
@@ -306,17 +318,23 @@
             document.getElementById('saved-plan-display').innerHTML = `<strong>العنوان:</strong> ${lessonPlanData.topic}<br><strong>الواجب:</strong> ${lessonPlanData.notes}`;
         }
 
-        // جدول دروسي (ترقيم الحصص، الشاغر، وأوقات البدء والانتهاء)
+        // جدول دروسي
         function addScheduleItem() {
             const day = document.getElementById('sch-day').value;
             const num = document.getElementById('sch-number').value;
-            const cls = document.getElementById('sch-class').value;
-            const sec = document.getElementById('sch-section').value;
             const sub = document.getElementById('sch-subject').value;
             const startTime = document.getElementById('sch-start').value;
             const endTime = document.getElementById('sch-end').value;
 
             if(!startTime || !endTime) { alert('يرجى تحديد وقت البدء ووقت الانتهاء.'); return; }
+
+            let cls = '';
+            let sec = '';
+            if(!sub.includes('شاغر')) {
+                cls = document.getElementById('sch-class').value;
+                sec = document.getElementById('sch-section').value;
+            }
+
             scheduleData.push({ day, num, cls, sec, sub, startTime, endTime });
             saveData();
             alert('تمت إضافة الحصة وتفعيل المنبه بنجاح! ⏰');
@@ -327,10 +345,11 @@
             c.innerHTML = '';
             scheduleData.forEach((item, idx) => {
                 let isVacant = item.sub.includes('شاغر');
+                let details = isVacant ? `وقت الاستراحة` : `${item.cls} (${item.sec})`;
                 c.innerHTML += `<div class="p-3 bg-slate-900 border ${isVacant ? 'border-amber-500/40 bg-amber-500/5' : 'border-slate-700'} rounded-xl flex justify-between items-center text-xs">
                     <div>
                         <span class="font-bold text-amber-400 block">${item.day} - ${item.num} (${item.sub})</span>
-                        <span class="text-slate-300">${item.cls} (${item.sec}) | من <strong class="text-white">${item.startTime}</strong> إلى <strong class="text-white">${item.endTime}</strong></span>
+                        <span class="text-slate-300">${details} | من <strong class="text-white">${item.startTime}</strong> إلى <strong class="text-white">${item.endTime}</strong></span>
                     </div>
                     <button onclick="deleteSchedule(${idx})" class="px-2 py-1 bg-red-900/40 text-red-400 rounded">🗑️</button>
                 </div>`;
@@ -339,7 +358,7 @@
 
         function deleteSchedule(i) { scheduleData.splice(i, 1); saveData(); }
 
-        // فحص المنبه كل ثانية مقارنة بوقت البدء في ساعة الهاتف
+        // فحص المنبه كل ثانية
         setInterval(() => {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');
@@ -358,7 +377,8 @@
         }, 1000);
 
         function triggerAlarm(item) {
-            document.getElementById('alarm-details').innerText = `حان موعد (${item.num}: ${item.sub}) للصف (${item.cls} - ${item.sec}) ليوم (${item.day}) من ${item.startTime} إلى ${item.endTime}`;
+            let detailText = item.sub.includes('شاغر') ? `وقت شاغر (استراحة)` : `للصف (${item.cls} - ${item.sec})`;
+            document.getElementById('alarm-details').innerText = `حان موعد (${item.num}: ${item.sub}) ${detailText} ليوم (${item.day}) من ${item.startTime} إلى ${item.endTime}`;
             document.getElementById('alarm-modal').classList.remove('hidden');
             alarmAudio.play().catch(e => console.log('Requires interaction'));
         }
