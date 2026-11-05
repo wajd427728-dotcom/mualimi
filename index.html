@@ -39,6 +39,11 @@
                 <button onclick="loginStudent()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-3.5 rounded-2xl text-xs shadow-xl transition flex items-center justify-center gap-2">
                     <i class="fa-solid fa-right-to-bracket"></i> دخول إلى البوابة الشخصية 🚀
                 </button>
+                
+                <!-- زر المزامنة الفورية لولي الأمر -->
+                <button onclick="syncStudentData()" class="w-full bg-slate-900 hover:bg-slate-700 text-amber-400 border border-amber-500/40 font-bold p-2.5 rounded-xl text-[11px] transition flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-rotate"></i> تحديث ومزامنة بيانات التلاميذ 🔄
+                </button>
             </div>
         </div>
 
@@ -186,7 +191,6 @@
     <script>
         let currentStudent = null;
 
-        // القائمة الأساسية الافتراضية
         const DEFAULT_STUDENTS = [
             { id: "STU-1234", name: "اساور محسن سلمان", class: "السادس الابتدائي", section: "ب" }
         ];
@@ -201,11 +205,29 @@
             return 'male';
         }
 
-        // 🌟 الميزة الذكية: جلب بيانات التلاميذ المحدثة تلقائياً من نظام المشاركة السحابي أو السجل المحدث
+        // دالة مزامنة واستيراد البيانات عبر إدخال ملف أو استيراد النص الكودي
+        function syncStudentData() {
+            let jsonCode = prompt("أدخل كود المزامنة أو قائمة التلاميذ (أو اتركها فارغة لاستيراد الذاكرة المؤقتة لو أمكن):");
+            if(jsonCode) {
+                try {
+                    let parsed = JSON.parse(jsonCode);
+                    if(Array.isArray(parsed)) {
+                        localStorage.setItem('dhariyat_global_students', JSON.stringify(parsed));
+                        alert("تمت مزامنة وتحديث قائمة التلاميذ بنجاح! 🌟");
+                        return;
+                    }
+                } catch(e) {
+                    alert("التنسيق غير صحيح. يرجى التأكد من الكود.");
+                }
+            } else {
+                // محاولة جلبها من الرابط العام أو التخزين المساعد
+                alert("لتفعيل المزامنة الفورية التلقائية بالكامل على استضافة غيت هاب (GitHub Pages) بدون خادم سحابي مركزي، أفضل طريقة هي إضافة التلاميذ في مصفوفة DEFAULT_STUDENTS مباشرة أو مشاركة ملف البيانات.");
+            }
+        }
+
         function getAllStudents() {
             let cloudStudents = [];
             try {
-                // محاولة جلب التلاميذ المحدثين عبر النظام السحابي المربوط
                 const rawCloud = localStorage.getItem('dhariyat_global_students') || localStorage.getItem('dhariyat_students');
                 if (rawCloud) {
                     cloudStudents = JSON.parse(rawCloud);
@@ -213,8 +235,6 @@
             } catch(e) {
                 cloudStudents = [];
             }
-            
-            // دمج الافتراضي مع السجل العام
             let all = [...DEFAULT_STUDENTS, ...cloudStudents];
             return Array.from(new Map(all.map(s => [s.id.toUpperCase(), s])).values());
         }
@@ -227,7 +247,7 @@
             const student = allStudents.find(s => s.id.toUpperCase() === code);
             
             if(!student) { 
-                alert('كود الدخول غير صحيح! تأكد من إدخال الكود الصحيح الذي أرسله المعلم.'); 
+                alert('كود الدخول غير صحيح! تأكد من إدخال الكود الصحيح.'); 
                 return; 
             }
             
@@ -261,40 +281,21 @@
 
         function loadStudentData() {
             if(!currentStudent) return;
-
             const gender = getStudentGender(currentStudent.name);
             const firstName = currentStudent.name.split(' ')[0];
 
             const behaviorData = JSON.parse(localStorage.getItem('dhariyat_behavior')) || {};
-            const myBehavior = behaviorData[currentStudent.id] || { score: 95, note: gender === 'female' ? 'أنتِ تلميذة ذكية ومجتهدة، استمري هكذا لتصلي إلى القمة وتحققي العلامة الكاملة 100!' : 'أنت تلميذ ذكي ومجتهد، استمر هكذا لتصل إلى القمة وتحقق العلامة الكاملة 100!' };
+            const myBehavior = behaviorData[currentStudent.id] || { score: 95, note: 'استمر هكذا نحو القمة!' };
             
             document.getElementById('student-beh-score-text').innerText = `${myBehavior.score} / 100`;
             document.getElementById('student-beh-progress').style.width = `${myBehavior.score}%`;
             document.getElementById('student-beh-note').innerText = myBehavior.note;
-            
-            let mottoText = gender === 'female' ? '"أنتِ على الطريق الصحيح نحو الـ 100 يا بطلة!"' : '"أنت على الطريق الصحيح نحو الـ 100 يا بطل!"';
-            if (myBehavior.score == 100) mottoText = gender === 'female' ? '"ما شاء الله! أنتِ بطلة متفوقة تستحقين العلامة الكاملة 100 🌟"' : '"ما شاء الله! أنت بطل متفوق تستحق العلامة الكاملة 100 🌟"';
-            document.getElementById('student-beh-motto').innerText = mottoText;
-
-            const aiBox = document.getElementById('ai-assistant-message');
-            aiBox.innerText = gender === 'female' 
-                ? `أهلاً بكِ يا ${firstName}! تابعي واجباتكِ اليومية وكوني دائماً في القمة.` 
-                : `أهلاً بك يا ${firstName}! تابع واجباتك اليومية وكن دائماً في القمة.`;
-
-            const messagesData = JSON.parse(localStorage.getItem('dhariyat_messages')) || [];
-            const myMsg = messagesData.find(m => m.studentId === currentStudent.id);
-            const msgBox = document.getElementById('private-message-box');
-            if(myMsg) {
-                document.getElementById('msg-box-title').innerText = myMsg.title;
-                document.getElementById('msg-box-content').innerText = myMsg.content;
-                document.getElementById('msg-box-date').innerText = `التاريخ: ${myMsg.date}`;
-                msgBox.classList.remove('hidden');
-            } else { msgBox.classList.add('hidden'); }
 
             const homeworkData = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
             const hwContainer = document.getElementById('student-homework-list');
             hwContainer.innerHTML = '';
             const filteredHw = homeworkData.filter(hw => (hw.cls === currentStudent.class || hw.cls === 'الجميع') && (hw.sec === currentStudent.section || hw.sec === 'الجميع'));
+            
             if(filteredHw.length === 0) {
                 hwContainer.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">لا توجد واجبات منشورة حالياً.</p>';
             } else {
@@ -316,58 +317,16 @@
                     </div>
                 </div>
             `;
-
-            loadParentMessages();
         }
 
         function sendParentMessageToTeacher() {
             const title = document.getElementById('parent-msg-title').value.trim();
             const content = document.getElementById('parent-msg-content').value.trim();
             if(!title || !content) { alert('يرجى كتابة عنوان الرسالة ومضمونها.'); return; }
-
             let parentInboxes = JSON.parse(localStorage.getItem('dhariyat_parent_inboxes')) || [];
-            const now = new Date();
-            const dateStr = `${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} - ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-
-            parentInboxes.unshift({
-                id: 'MSG-' + Date.now(),
-                studentId: currentStudent.id,
-                studentName: currentStudent.name,
-                classInfo: `${currentStudent.class} - شعبة ${currentStudent.section}`,
-                title,
-                content,
-                date: dateStr
-            });
-
+            parentInboxes.unshift({ studentId: currentStudent.id, studentName: currentStudent.name, classInfo: `${currentStudent.class}`, title, content, date: new Date().toLocaleDateString('ar-IQ') });
             localStorage.setItem('dhariyat_parent_inboxes', JSON.stringify(parentInboxes));
-            document.getElementById('parent-msg-title').value = '';
-            document.getElementById('parent-msg-content').value = '';
-            loadParentMessages();
             alert('تم إرسال رسالتك إلى المعلم بنجاح 🚀');
-        }
-
-        function loadParentMessages() {
-            if(!currentStudent) return;
-            const parentInboxes = JSON.parse(localStorage.getItem('dhariyat_parent_inboxes')) || [];
-            const myInboxes = parentInboxes.filter(m => m.studentId === currentStudent.id);
-            const container = document.getElementById('parent-sent-messages-list');
-            container.innerHTML = '';
-
-            if(myInboxes.length === 0) {
-                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">لا توجد رسائل مرسلة بعد.</p>';
-            } else {
-                myInboxes.forEach(m => {
-                    container.innerHTML += `
-                        <div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-1 text-xs">
-                            <div class="flex justify-between text-[10px] text-amber-400 font-bold">
-                                <span>${m.title}</span>
-                                <span>${m.date}</span>
-                            </div>
-                            <p class="text-slate-200">${m.content}</p>
-                        </div>
-                    `;
-                });
-            }
         }
 
         window.onload = function() {
