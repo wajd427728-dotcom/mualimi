@@ -186,11 +186,11 @@
     <script>
         let currentStudent = null;
 
-        // قائمة التلاميذ الأساسية والثابتة (يمكنك إضافة أو تعديل أكواد التلاميذ هنا لضمان عملها عند الجميع فوراً)
+        // 🌟 القائمة الأساسية والثابتة للتلاميذ (يمكنك إضافة أي تلميذ جديد هنا مباشرة ليعمل عند الجميع فوراً)
         const DEFAULT_STUDENTS = [
             { id: "STU-1234", name: "اساور محسن سلمان", class: "السادس الابتدائي", section: "ب" }
-            // يمكنك إضافة المزيد من التلاميذ هنا هكذا:
-            // { id: "STU-5678", name: "اسم التلميذ الثلاثي", class: "السادس الابتدائي", section: "أ" }
+            // ضع هنا أي تلميذ جديد تضيفه من لوحتك، مثال:
+            // { id: "STU-5678", name: "اسم التلميذ الثلاثي", class: "السادس الابتدائي", section: "أ" },
         ];
 
         function getStudentGender(fullName) {
@@ -207,15 +207,17 @@
             const code = document.getElementById('student-code-input').value.trim().toUpperCase();
             if(!code) { alert('الرجاء إدخال كود التلميذ.'); return; }
             
-            // دمج التلاميذ المخزنين محلياً مع القائمة الثابتة لضمان شموليتها
+            // دمج القائمة الثابتة مع أي بيانات مسجلة محلياً
             let localStudents = JSON.parse(localStorage.getItem('dhariyat_students')) || [];
             let allStudents = [...DEFAULT_STUDENTS, ...localStudents];
             
-            // إزالة التكرار إن وجد بناءً على كود التلميذ
             const uniqueStudents = Array.from(new Map(allStudents.map(s => [s.id.toUpperCase(), s])).values());
 
             const student = uniqueStudents.find(s => s.id.toUpperCase() === code);
-            if(!student) { alert('كود الدخول غير صحيح!'); return; }
+            if(!student) { 
+                alert('كود الدخول غير صحيح! تأكد من إدخال الكود بشكل دقيق أو أن التلميذ مضاف في قائمة المدرسة.'); 
+                return; 
+            }
             
             currentStudent = student;
             localStorage.setItem('dhariyat_current_student', JSON.stringify(student));
@@ -251,38 +253,22 @@
             const gender = getStudentGender(currentStudent.name);
             const firstName = currentStudent.name.split(' ')[0];
 
-            // التقييم السلوكي التحفيزي
             const behaviorData = JSON.parse(localStorage.getItem('dhariyat_behavior')) || {};
             const myBehavior = behaviorData[currentStudent.id] || { score: 95, note: gender === 'female' ? 'أنتِ تلميذة ذكية ومجتهدة، استمري هكذا لتصلي إلى القمة وتحققي العلامة الكاملة 100!' : 'أنت تلميذ ذكي ومجتهد، استمر هكذا لتصل إلى القمة وتحقق العلامة الكاملة 100!' };
             
             document.getElementById('student-beh-score-text').innerText = `${myBehavior.score} / 100`;
             document.getElementById('student-beh-progress').style.width = `${myBehavior.score}%`;
-            document.getElementById('student-beh-note').innerText = myBehavior.note || (gender === 'female' ? 'استمري في الاجتهاد والمثابرة لتكوني في قمة المجد!' : 'استمر في الاجتهاد والمثابرة لتكون في قمة المجد!');
+            document.getElementById('student-beh-note').innerText = myBehavior.note;
             
             let mottoText = gender === 'female' ? '"أنتِ على الطريق الصحيح نحو الـ 100 يا بطلة!"' : '"أنت على الطريق الصحيح نحو الـ 100 يا بطل!"';
             if (myBehavior.score == 100) mottoText = gender === 'female' ? '"ما شاء الله! أنتِ بطلة متفوقة تستحقين العلامة الكاملة 100 🌟"' : '"ما شاء الله! أنت بطل متفوق تستحق العلامة الكاملة 100 🌟"';
-            else if (myBehavior.score >= 90) mottoText = gender === 'female' ? '"قريبة جداً من القمة! واصلي التألق لتصلي إلى الـ 100 🚀"' : '"قريب جداً من القمة! واصل التألق لتصل إلى الـ 100 🚀"';
             document.getElementById('student-beh-motto').innerText = mottoText;
 
-            // المساعد التربوي الذكي
             const aiBox = document.getElementById('ai-assistant-message');
-            let aiText = "";
-            if (myBehavior.score == 100) {
-                aiText = gender === 'female' 
-                    ? `أهلاً بكِ يا ${firstName}! كم أنا فخور بمستواكِ الكامل والـ 100 المثالية. أنتِ قدوة رائعة في مدرسة الذاريات!` 
-                    : `أهلاً بك يا ${firstName}! كم أنا فخور بمستواك الكامل والـ 100 المثالية. أنت قدوة رائعة في مدرسة الذاريات!`;
-            } else if (myBehavior.score >= 90) {
-                aiText = gender === 'female' 
-                    ? `مرحباً يا ${firstName} البطلة! مستواكِ رائع ومؤشركِ (يحلق عند ${myBehavior.score}). ركّزي قليلاً في الاختبارات القادمة لتصلي للعلامة الكاملة 100!` 
-                    : `مرحباً يا ${firstName} البطل! مستواك رائع ومؤشرك (يحلق عند ${myBehavior.score}). ركز قليلاً في الاختبارات القادمة لتصل للعلامة الكاملة 100!`;
-            } else {
-                aiText = gender === 'female' 
-                    ? `أهلاً بكِ يا ${firstName}. أمامكِ فرصة ذهبية لرفع درجاتكِ ومؤشركِ السلوكي. راجعي واجباتكِ اليومية وتابعي بنك الأسئلة لتكوني في القمة دائماً!` 
-                    : `أهلاً بك يا ${firstName}. أمامك فرصة ذهبية لرفع درجاتك ومؤشرك السلوكي. راجع واجباتك اليومية وتابع بنك الأسئلة لتكون في القمة دائماً!`;
-            }
-            aiBox.innerText = aiText;
+            aiBox.innerText = gender === 'female' 
+                ? `أهلاً بكِ يا ${firstName}! تابعي واجباتكِ اليومية وكوني دائماً في القمة.` 
+                : `أهلاً بك يا ${firstName}! تابعه واجباتك اليومية وكن دائماً في القمة.`;
 
-            // رسائل المعلم الخاصة
             const messagesData = JSON.parse(localStorage.getItem('dhariyat_messages')) || [];
             const myMsg = messagesData.find(m => m.studentId === currentStudent.id);
             const msgBox = document.getElementById('private-message-box');
@@ -293,7 +279,6 @@
                 msgBox.classList.remove('hidden');
             } else { msgBox.classList.add('hidden'); }
 
-            // الواجبات
             const homeworkData = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
             const hwContainer = document.getElementById('student-homework-list');
             hwContainer.innerHTML = '';
@@ -306,7 +291,6 @@
                 });
             }
 
-            // درجاتي الرسمية
             const gradesContainer = document.getElementById('student-grades-container');
             gradesContainer.innerHTML = `
                 <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2">
@@ -319,65 +303,7 @@
                         <div class="col-span-2 pt-1 border-t border-slate-800 text-amber-300">معدل الأول: <strong>${currentStudent.midAvg || '-'}</strong> | نصف السنة: <strong>${currentStudent.mid || '-'}</strong></div>
                     </div>
                 </div>
-                <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2">
-                    <h4 class="font-bold text-blue-400 border-b border-slate-800 pb-1">📝 درجات الأشهر</h4>
-                    <div class="grid grid-cols-3 gap-2 text-slate-300 text-center">
-                        <div class="bg-slate-800 p-1.5 rounded">الشهر 1: <br><strong class="text-white">${currentStudent.m1 || '-'}</strong></div>
-                        <div class="bg-slate-800 p-1.5 rounded">الشهر 2: <br><strong class="text-white">${currentStudent.m2 || '-'}</strong></div>
-                        <div class="bg-slate-800 p-1.5 rounded">الشهر 3: <br><strong class="text-white">${currentStudent.m3 || '-'}</strong></div>
-                    </div>
-                </div>
             `;
-
-            // لوحة الشرف
-            const honorData = JSON.parse(localStorage.getItem('dhariyat_honor')) || [];
-            const myHonor = honorData.find(h => h.studentId === currentStudent.id);
-            const honorBox = document.getElementById('student-honor-box');
-            if(myHonor) {
-                honorBox.innerHTML = `
-                    <div class="bg-gradient-to-br from-amber-500/20 to-slate-900 border-2 border-amber-500 p-4 rounded-2xl space-y-2 text-center">
-                        <i class="fa-solid fa-medal text-amber-400 text-4xl animate-bounce"></i>
-                        <h4 class="font-black text-amber-400 text-sm">مبارك يا بطل${gender === 'female' ? 'ة' : ''}! أنتِ${gender === 'female' ? '' : ' أنت'} ضمن نجوم لوحة الشرف</h4>
-                        <p class="text-xs text-white">السبب: ${myHonor.reason}</p>
-                    </div>
-                `;
-            } else { honorBox.innerHTML = '<p class="text-xs text-slate-400 py-6">اسعَ واجتهد لتسجل اسمك في لوحة الشرف الشهرية!</p>'; }
-
-            // بنك الأسئلة والاختبارات القصيرة
-            const quizData = JSON.parse(localStorage.getItem('dhariyat_quiz')) || [];
-            const quizContainer = document.getElementById('student-quiz-container');
-            quizContainer.innerHTML = '';
-            const filteredQuiz = quizData.filter(q => q.cls === currentStudent.class || q.cls === 'الجميع');
-            if(filteredQuiz.length === 0) {
-                quizContainer.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">لا توجد أسئلة أو اختبارات نشطة حالياً.</p>';
-            } else {
-                filteredQuiz.forEach((q, idx) => {
-                    quizContainer.innerHTML += `
-                        <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2">
-                            <span class="text-[10px] text-amber-400 font-bold">${q.sub} - ${q.date}</span>
-                            <p class="text-white font-bold">${q.question}</p>
-                            <div class="grid grid-cols-2 gap-2 pt-1">
-                                <button onclick="checkQuizAnswer(this, '${q.correct}', '1', '${q.question.replace(/'/g, "")}', '${q.opt1.replace(/'/g, "")}')" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 p-2 rounded-lg text-white font-bold transition">أ) ${q.opt1}</button>
-                                <button onclick="checkQuizAnswer(this, '${q.correct}', '2', '${q.question.replace(/'/g, "")}', '${q.opt2.replace(/'/g, "")}')" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 p-2 rounded-lg text-white font-bold transition">ب) ${q.opt2}</button>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-
-            // الشهادات
-            const certList = JSON.parse(localStorage.getItem('dhariyat_certificates')) || [];
-            const myCert = certList.find(c => c.studentId === currentStudent.id);
-            const certContainer = document.getElementById('student-certificate-container');
-            if(myCert) {
-                certContainer.innerHTML = `
-                    <div class="bg-gradient-to-br from-amber-50 via-white to-amber-100 text-slate-900 p-4 rounded-2xl border-4 border-amber-500 shadow-xl space-y-2 text-right">
-                        <div class="text-center"><h2 class="text-xs font-black text-amber-700">مدرسة الذاريات الابتدائية المختلطة</h2><span class="bg-amber-500 text-slate-950 text-[10px] font-black px-3 py-0.5 rounded-full">شهادة تقديرية</span></div>
-                        <p class="text-xs text-center font-bold text-blue-900">إلى التلميذ${gender === 'female' ? 'ة' : ''} النجم${gender === 'female' ? 'ة' : ''}: ${myCert.studentName}</p>
-                        <p class="text-[10px] bg-white p-2 rounded-xl border border-amber-300 text-slate-800 text-center">"تقديراً للتميز السلوكي والتحفيز المستمر."</p>
-                    </div>
-                `;
-            } else { certContainer.innerHTML = '<p class="text-xs text-slate-400 py-6">لا توجد شهادات مرسلة حتى الآن.</p>'; }
 
             loadParentMessages();
         }
@@ -429,41 +355,6 @@
                         </div>
                     `;
                 });
-            }
-        }
-
-        function checkQuizAnswer(btn, correctOpt, chosenOpt, questionText, chosenText) {
-            const parent = btn.parentElement;
-            const buttons = parent.querySelectorAll('button');
-            buttons.forEach(b => b.disabled = true);
-
-            const isCorrect = (chosenOpt === correctOpt);
-            const gender = currentStudent ? getStudentGender(currentStudent.name) : 'male';
-
-            if(isCorrect) {
-                btn.className = "bg-emerald-600 text-white border border-emerald-500 p-2 rounded-lg font-bold";
-                alert(gender === 'female' ? 'إجابة صحيحة وممتازة! أهلاً بكِ يا بطلة 🌟' : 'إجابة صحيحة وصحيحة تماماً! أحسنت يا بطل 🌟');
-            } else {
-                btn.className = "bg-red-600 text-white border border-red-500 p-2 rounded-lg font-bold";
-                alert(gender === 'female' ? 'إجابة خاطئة، حاولي مرة أخرى في الأسئلة القادمة 💪' : 'إجابة خاطئة، حاول مرة أخرى في الأسئلة القادمة 💪');
-            }
-
-            if(currentStudent) {
-                let notifs = JSON.parse(localStorage.getItem('dhariyat_notifications')) || [];
-                const now = new Date();
-                const timeStr = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
-                
-                notifs.unshift({
-                    studentId: currentStudent.id,
-                    studentName: currentStudent.name,
-                    classInfo: `${currentStudent.class} - شعبة ${currentStudent.section}`,
-                    question: questionText,
-                    chosenText: chosenText,
-                    isCorrect: isCorrect,
-                    time: timeStr
-                });
-
-                localStorage.setItem('dhariyat_notifications', JSON.stringify(notifs));
             }
         }
 
