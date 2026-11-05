@@ -186,11 +186,9 @@
     <script>
         let currentStudent = null;
 
-        // 🌟 قائمة التلاميذ الأساسية والثابتة (يمكنك إضافة كل أكواد التلاميذ هنا لتفتح عند الجميع فوراً)
+        // القائمة الافتراضية
         const DEFAULT_STUDENTS = [
             { id: "STU-1234", name: "اساور محسن سلمان", class: "السادس الابتدائي", section: "ب" }
-            // ضع هنا بقية التلاميذ هكذا:
-            // { id: "STU-XXXX", name: "اسم التلميذ الثلاثي", class: "السادس الابتدائي", section: "أ" },
         ];
 
         function getStudentGender(fullName) {
@@ -203,13 +201,31 @@
             return 'male';
         }
 
+        // 🌟 الطريقة الأفضل: دمج القائمة الافتراضية مع أي بيانات يتم جلبها أو مزامنتها
+        function getAllStudents() {
+            let cloudStudents = [];
+            try {
+                // محاولة قراءة التلاميذ من التخزين المشترك أو السجل العام
+                const rawCloud = localStorage.getItem('dhariyat_global_students') || localStorage.getItem('dhariyat_students');
+                if (rawCloud) {
+                    cloudStudents = JSON.parse(rawCloud);
+                }
+            } catch(e) {
+                cloudStudents = [];
+            }
+            let all = [...DEFAULT_STUDENTS, ...cloudStudents];
+            return Array.from(new Map(all.map(s => [s.id.toUpperCase(), s])).values());
+        }
+
         function loginStudent() {
             const code = document.getElementById('student-code-input').value.trim().toUpperCase();
             if(!code) { alert('الرجاء إدخال كود التلميذ.'); return; }
             
-            const student = DEFAULT_STUDENTS.find(s => s.id.toUpperCase() === code);
+            const allStudents = getAllStudents();
+            const student = allStudents.find(s => s.id.toUpperCase() === code);
+            
             if(!student) { 
-                alert('كود الدخول غير صحيح! تأكد من إدخال الكود بدقة.'); 
+                alert('كود الدخول غير صحيح! تأكد من إدخال الكود الصحيح بدقة.'); 
                 return; 
             }
             
