@@ -39,11 +39,6 @@
                 <button onclick="loginStudent()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-3.5 rounded-2xl text-xs shadow-xl transition flex items-center justify-center gap-2">
                     <i class="fa-solid fa-right-to-bracket"></i> دخول إلى البوابة الشخصية 🚀
                 </button>
-                
-                <!-- زر المزامنة الفورية لولي الأمر -->
-                <button onclick="syncStudentData()" class="w-full bg-slate-900 hover:bg-slate-700 text-amber-400 border border-amber-500/40 font-bold p-2.5 rounded-xl text-[11px] transition flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-rotate"></i> تحديث ومزامنة بيانات التلاميذ 🔄
-                </button>
             </div>
         </div>
 
@@ -191,8 +186,11 @@
     <script>
         let currentStudent = null;
 
+        // 🌟 قائمة التلاميذ الأساسية والثابتة (يمكنك إضافة كل أكواد التلاميذ هنا لتفتح عند الجميع فوراً)
         const DEFAULT_STUDENTS = [
             { id: "STU-1234", name: "اساور محسن سلمان", class: "السادس الابتدائي", section: "ب" }
+            // ضع هنا بقية التلاميذ هكذا:
+            // { id: "STU-XXXX", name: "اسم التلميذ الثلاثي", class: "السادس الابتدائي", section: "أ" },
         ];
 
         function getStudentGender(fullName) {
@@ -205,49 +203,13 @@
             return 'male';
         }
 
-        // دالة مزامنة واستيراد البيانات عبر إدخال ملف أو استيراد النص الكودي
-        function syncStudentData() {
-            let jsonCode = prompt("أدخل كود المزامنة أو قائمة التلاميذ (أو اتركها فارغة لاستيراد الذاكرة المؤقتة لو أمكن):");
-            if(jsonCode) {
-                try {
-                    let parsed = JSON.parse(jsonCode);
-                    if(Array.isArray(parsed)) {
-                        localStorage.setItem('dhariyat_global_students', JSON.stringify(parsed));
-                        alert("تمت مزامنة وتحديث قائمة التلاميذ بنجاح! 🌟");
-                        return;
-                    }
-                } catch(e) {
-                    alert("التنسيق غير صحيح. يرجى التأكد من الكود.");
-                }
-            } else {
-                // محاولة جلبها من الرابط العام أو التخزين المساعد
-                alert("لتفعيل المزامنة الفورية التلقائية بالكامل على استضافة غيت هاب (GitHub Pages) بدون خادم سحابي مركزي، أفضل طريقة هي إضافة التلاميذ في مصفوفة DEFAULT_STUDENTS مباشرة أو مشاركة ملف البيانات.");
-            }
-        }
-
-        function getAllStudents() {
-            let cloudStudents = [];
-            try {
-                const rawCloud = localStorage.getItem('dhariyat_global_students') || localStorage.getItem('dhariyat_students');
-                if (rawCloud) {
-                    cloudStudents = JSON.parse(rawCloud);
-                }
-            } catch(e) {
-                cloudStudents = [];
-            }
-            let all = [...DEFAULT_STUDENTS, ...cloudStudents];
-            return Array.from(new Map(all.map(s => [s.id.toUpperCase(), s])).values());
-        }
-
         function loginStudent() {
             const code = document.getElementById('student-code-input').value.trim().toUpperCase();
             if(!code) { alert('الرجاء إدخال كود التلميذ.'); return; }
             
-            const allStudents = getAllStudents();
-            const student = allStudents.find(s => s.id.toUpperCase() === code);
-            
+            const student = DEFAULT_STUDENTS.find(s => s.id.toUpperCase() === code);
             if(!student) { 
-                alert('كود الدخول غير صحيح! تأكد من إدخال الكود الصحيح.'); 
+                alert('كود الدخول غير صحيح! تأكد من إدخال الكود بدقة.'); 
                 return; 
             }
             
@@ -281,11 +243,12 @@
 
         function loadStudentData() {
             if(!currentStudent) return;
+
             const gender = getStudentGender(currentStudent.name);
             const firstName = currentStudent.name.split(' ')[0];
 
             const behaviorData = JSON.parse(localStorage.getItem('dhariyat_behavior')) || {};
-            const myBehavior = behaviorData[currentStudent.id] || { score: 95, note: 'استمر هكذا نحو القمة!' };
+            const myBehavior = behaviorData[currentStudent.id] || { score: 95, note: gender === 'female' ? 'أنتِ تلميذة ذكية ومجتهدة، استمري هكذا لتصلي إلى القمة!' : 'أنت تلميذ ذكي ومجتهد، استمر هكذا لتصل إلى القمة!' };
             
             document.getElementById('student-beh-score-text').innerText = `${myBehavior.score} / 100`;
             document.getElementById('student-beh-progress').style.width = `${myBehavior.score}%`;
@@ -295,7 +258,6 @@
             const hwContainer = document.getElementById('student-homework-list');
             hwContainer.innerHTML = '';
             const filteredHw = homeworkData.filter(hw => (hw.cls === currentStudent.class || hw.cls === 'الجميع') && (hw.sec === currentStudent.section || hw.sec === 'الجميع'));
-            
             if(filteredHw.length === 0) {
                 hwContainer.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">لا توجد واجبات منشورة حالياً.</p>';
             } else {
@@ -323,9 +285,24 @@
             const title = document.getElementById('parent-msg-title').value.trim();
             const content = document.getElementById('parent-msg-content').value.trim();
             if(!title || !content) { alert('يرجى كتابة عنوان الرسالة ومضمونها.'); return; }
+
             let parentInboxes = JSON.parse(localStorage.getItem('dhariyat_parent_inboxes')) || [];
-            parentInboxes.unshift({ studentId: currentStudent.id, studentName: currentStudent.name, classInfo: `${currentStudent.class}`, title, content, date: new Date().toLocaleDateString('ar-IQ') });
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} - ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+            parentInboxes.unshift({
+                id: 'MSG-' + Date.now(),
+                studentId: currentStudent.id,
+                studentName: currentStudent.name,
+                classInfo: `${currentStudent.class} - شعبة ${currentStudent.section}`,
+                title,
+                content,
+                date: dateStr
+            });
+
             localStorage.setItem('dhariyat_parent_inboxes', JSON.stringify(parentInboxes));
+            document.getElementById('parent-msg-title').value = '';
+            document.getElementById('parent-msg-content').value = '';
             alert('تم إرسال رسالتك إلى المعلم بنجاح 🚀');
         }
 
