@@ -76,7 +76,7 @@
                 <span id="msg-box-date" class="text-[9px] text-slate-400 block text-left"></span>
             </div>
 
-            <!-- تبويبات البوابة (7 تبويبات شاملة تحدث مع المعلم) -->
+            <!-- تبويبات البوابة -->
             <div class="grid grid-cols-7 gap-1 text-center text-[10px]">
                 <button onclick="switchStudentTab('homework')" id="s-tab-homework" class="p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition shadow">📖 الواجبات</button>
                 <button onclick="switchStudentTab('grades')" id="s-tab-grades" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">📊 درجاتي</button>
@@ -153,12 +153,12 @@
                 <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3 text-center">
                     <h3 class="font-bold text-sm text-amber-400 flex items-center gap-1.5 justify-center"><i class="fa-solid fa-award"></i> شهادات التقدير والتميز</h3>
                     <div id="student-certificate-container" class="space-y-3">
-                        <p class="text-xs text-slate-400 py-6">لا توجد شهادات تقدير مرسلة حتى الآن.</p>
+                        <p class="text-xs text-slate-400 py-6">لا توجد شهادات مرسلة حتى الآن.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- تبويب: تحدث مع معلمي (جديد) -->
+            <!-- تبويب: تحدث مع معلمي -->
             <div id="student-tab-chat" class="space-y-3 hidden">
                 <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
                     <h3 class="font-bold text-sm text-amber-400 flex items-center gap-1.5"><i class="fa-solid fa-comments"></i> تحدث مع المعلم حيدر محمد عبد الكريم</h3>
@@ -186,6 +186,13 @@
     <script>
         let currentStudent = null;
 
+        // قائمة التلاميذ الأساسية والثابتة (يمكنك إضافة أو تعديل أكواد التلاميذ هنا لضمان عملها عند الجميع فوراً)
+        const DEFAULT_STUDENTS = [
+            { id: "STU-1234", name: "اساور محسن سلمان", class: "السادس الابتدائي", section: "ب" }
+            // يمكنك إضافة المزيد من التلاميذ هنا هكذا:
+            // { id: "STU-5678", name: "اسم التلميذ الثلاثي", class: "السادس الابتدائي", section: "أ" }
+        ];
+
         function getStudentGender(fullName) {
             if(!fullName) return 'male';
             const firstName = fullName.trim().split(' ')[0];
@@ -199,9 +206,17 @@
         function loginStudent() {
             const code = document.getElementById('student-code-input').value.trim().toUpperCase();
             if(!code) { alert('الرجاء إدخال كود التلميذ.'); return; }
-            const studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || [];
-            const student = studentsData.find(s => s.id.toUpperCase() === code);
+            
+            // دمج التلاميذ المخزنين محلياً مع القائمة الثابتة لضمان شموليتها
+            let localStudents = JSON.parse(localStorage.getItem('dhariyat_students')) || [];
+            let allStudents = [...DEFAULT_STUDENTS, ...localStudents];
+            
+            // إزالة التكرار إن وجد بناءً على كود التلميذ
+            const uniqueStudents = Array.from(new Map(allStudents.map(s => [s.id.toUpperCase(), s])).values());
+
+            const student = uniqueStudents.find(s => s.id.toUpperCase() === code);
             if(!student) { alert('كود الدخول غير صحيح!'); return; }
+            
             currentStudent = student;
             localStorage.setItem('dhariyat_current_student', JSON.stringify(student));
             document.getElementById('login-section').classList.add('hidden');
