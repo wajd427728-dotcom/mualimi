@@ -11,198 +11,234 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start p-3 sm:p-4">
 
-    <header class="w-full max-w-md bg-slate-800/90 backdrop-blur border border-slate-700 rounded-2xl p-4 mb-4 shadow-xl text-center">
-        <span class="text-xs bg-amber-500/20 text-amber-400 px-2.5 py-1 rounded-full font-bold">بوابة ولي الأمر والتلميذ</span>
-        <h1 class="text-xl font-black text-amber-400 mt-2">مدرسة الذاريات الابتدائية</h1>
-        <p class="text-sm text-slate-300 mt-1">تابع مستوى ابنك الدراسي وواجباته اليومية</p>
+    <!-- رأس البوابة -->
+    <header class="w-full max-w-md bg-slate-800/90 backdrop-blur border border-slate-700 rounded-2xl p-4 mb-4 shadow-xl text-center space-y-1">
+        <span class="text-xs bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full font-bold inline-block">بوابة ولي الأمر والتلميذ المستقلة</span>
+        <h1 class="text-xl font-black text-amber-400">مدرسة الذاريات الابتدائية</h1>
+        <p class="text-xs text-slate-300">متابعة الواجبات، الدرجات، والتوجيهات التربوية</p>
     </header>
 
     <main class="w-full max-w-md space-y-4">
-        <!-- شاشة تسجيل الدخول بكود التلميذ المخصص -->
-        <div id="login-section" class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-lg space-y-3 text-center">
-            <div class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center mx-auto text-xl font-bold mb-2">
+        <!-- شاشة تسجيل الدخول بكود التلميذ -->
+        <div id="login-section" class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-lg space-y-4 text-center">
+            <div class="w-16 h-16 bg-blue-600/20 text-blue-400 rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner">
                 <i class="fa-solid fa-id-card"></i>
             </div>
-            <h2 class="text-sm font-bold text-white">تسجيل الدخول برمز التلميذ</h2>
-            <p class="text-[11px] text-slate-400">أدخل كود الدخول المخصص الذي استلمته من المعلم:</p>
-            <input type="text" id="student-code-input" placeholder="مثال: STU-XXXX" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-center text-amber-400 font-bold font-mono text-sm uppercase">
-            <button onclick="loginStudent()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold p-3 rounded-xl text-xs shadow-lg transition">دخول إلى صفحة التلميذ 🚀</button>
+            <div class="space-y-1">
+                <h2 class="text-base font-bold text-white">تسجيل دخول التلميذ / ولي الأمر</h2>
+                <p class="text-xs text-slate-400">أدخل كود الدخول الخاص بك (مثال: STU-1234) لعرض سجلك بالكامل.</p>
+            </div>
+            <div class="space-y-2">
+                <input type="text" id="student-code-input" placeholder="أدخل كود التلميذ هنا..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-center text-white font-mono font-bold tracking-widest text-sm focus:border-amber-400 outline-none">
+                <button onclick="loginStudent()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold p-3 rounded-xl text-xs shadow-lg transition">دخول إلى البوابة الشخصية 🚀</button>
+            </div>
         </div>
 
-        <!-- لوحة عرض بيانات التلميذ ودرجاته وواجباته -->
+        <!-- لوحة عرض بيانات التلميذ (تظهر بعد الدخول الناجح) -->
         <div id="student-dashboard" class="space-y-4 hidden">
-            
-            <!-- بطاقة معلومات التلميذ -->
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg flex justify-between items-center">
                 <div>
-                    <span id="p-student-class" class="text-[10px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded font-bold block w-fit mb-1"></span>
-                    <h2 id="p-student-name" class="text-sm font-black text-white"></h2>
-                    <span class="text-[11px] text-slate-400">كود الدخول: <strong id="p-student-id" class="text-amber-400 font-mono"></strong></span>
+                    <span class="text-[10px] text-amber-400 font-bold block">مرحباً بك يا أستاذنا/ولي الأمر:</span>
+                    <h3 id="display-student-name" class="text-base font-black text-white">---</h3>
+                    <p id="display-student-class" class="text-xs text-slate-400">---</p>
                 </div>
-                <button onclick="logoutStudent()" class="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-red-400 rounded-xl text-xs font-bold" title="خروج">
-                    <i class="fa-solid fa-right-from-bracket"></i> خروج
-                </button>
+                <button onclick="logoutStudent()" class="bg-red-900/40 hover:bg-red-900/60 text-red-400 px-3 py-2 rounded-xl text-xs font-bold transition">خروج 🚪</button>
             </div>
 
-            <!-- إشعار الشهادة التقديرية الواردة من المعلم -->
-            <div id="student-certificate-banner" class="hidden bg-gradient-to-r from-amber-500/20 to-blue-500/20 border-2 border-amber-500 rounded-2xl p-4 shadow-lg text-center space-y-2">
-                <div class="text-amber-400 text-2xl animate-bounce"><i class="fa-solid fa-trophy"></i></div>
-                <h3 class="text-sm font-black text-amber-400">مبروك! لقد استلمت شهادة تقديرية جديدة 🌟</h3>
-                <p id="s-cert-details" class="text-xs text-white font-medium"></p>
+            <!-- فقرة: رسائل وتوجيهات المعلم الخاصة للتلميذ (تظهر إن وجدت) -->
+            <div id="private-message-box" class="hidden bg-gradient-to-r from-amber-500/20 to-slate-900 border-2 border-amber-500 rounded-2xl p-4 shadow-xl space-y-2">
+                <div class="flex items-center gap-2 text-amber-400 font-black text-xs border-b border-amber-500/30 pb-2">
+                    <i class="fa-solid fa-envelope-open-text text-base animate-pulse"></i>
+                    <span>رسالة وتوجيه خاص من معلمي إلى ولي الأمر:</span>
+                </div>
+                <h4 id="msg-box-title" class="text-xs font-bold text-white">---</h4>
+                <p id="msg-box-content" class="text-xs text-slate-200 leading-relaxed bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/80"></p>
+                <span id="msg-box-date" class="text-[9px] text-slate-400 block text-left"></span>
             </div>
 
-            <!-- سجل الدرجات الخاص بالتلميذ -->
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <h3 class="font-bold text-sm text-amber-400 border-b border-slate-700 pb-2"><i class="fa-solid fa-graduation-cap"></i> سجل الدرجات والتقييمات</h3>
-                
-                <!-- سجل الدرجات الإداري -->
-                <div class="bg-slate-900 p-3 rounded-xl border border-slate-700 space-y-2 text-xs">
-                    <span class="font-bold text-amber-300 block border-b border-slate-800 pb-1">📊 السجل الإداري:</span>
-                    <div class="grid grid-cols-2 gap-2 text-slate-300">
-                        <div>تشرين الأول: <strong id="s-oct" class="text-white">-</strong></div>
-                        <div>تشرين الثاني: <strong id="s-nov" class="text-white">-</strong></div>
-                        <div>كانون الأول: <strong id="s-dec" class="text-white">-</strong></div>
-                        <div>كانون الثاني: <strong id="s-jan" class="text-white">-</strong></div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 pt-1 border-t border-slate-800 text-amber-400 font-bold">
-                        <div>معدل النصف الأول: <strong id="s-mid-avg">-</strong></div>
-                        <div>نصف السنة: <strong id="s-mid">-</strong></div>
-                    </div>
-                    <div class="grid grid-cols-3 gap-2 pt-1 border-t border-slate-800 text-slate-300">
-                        <div>شباط: <strong id="s-feb" class="text-white">-</strong></div>
-                        <div>أذار: <strong id="s-mar" class="text-white">-</strong></div>
-                        <div>نيسان: <strong id="s-apr" class="text-white">-</strong></div>
-                    </div>
-                    <div class="grid grid-cols-3 gap-2 pt-1 border-t border-slate-800 text-amber-400">
-                        <div>معدل الثاني: <strong id="s-sec-avg">-</strong></div>
-                        <div>السعي السنوي: <strong id="s-annual">-</strong></div>
-                        <div>النهائي: <strong id="s-final">-</strong></div>
-                    </div>
-                    <div class="pt-2 border-t border-slate-800 text-center bg-slate-800 p-2 rounded-lg">
-                        <span class="text-slate-300 block text-[10px]">الدرجة النهائية:</span>
-                        <strong id="s-total-final" class="text-amber-400 text-base font-black">-</strong>
-                    </div>
-                </div>
+            <!-- تبويبات البوابة -->
+            <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                <button onclick="switchStudentTab('homework')" id="s-tab-homework" class="p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition">📖 الواجبات</button>
+                <button onclick="switchStudentTab('grades')" id="s-tab-grades" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">📊 درجاتي</button>
+                <button onclick="switchStudentTab('certificate')" id="s-tab-certificate" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">🏆 شهاداتي</button>
+            </div>
 
-                <!-- سجل المعلم للشهور -->
-                <div class="bg-slate-900 p-3 rounded-xl border border-slate-700 space-y-2 text-xs">
-                    <span class="font-bold text-blue-400 block border-b border-slate-800 pb-1">📝 امتحانات الشهور (سجل المعلم):</span>
-                    <div class="grid grid-cols-3 gap-2 text-slate-300 text-center">
-                        <div class="bg-slate-800 p-1.5 rounded">شهر 1: <strong id="s-m1" class="text-white block">-</strong></div>
-                        <div class="bg-slate-800 p-1.5 rounded">شهر 2: <strong id="s-m2" class="text-white block">-</strong></div>
-                        <div class="bg-slate-800 p-1.5 rounded">شهر 3: <strong id="s-m3" class="text-white block">-</strong></div>
-                        <div class="bg-slate-800 p-1.5 rounded">شهر 4: <strong id="s-m4" class="text-white block">-</strong></div>
-                        <div class="bg-slate-800 p-1.5 rounded">شهر 5: <strong id="s-m5" class="text-white block">-</strong></div>
-                        <div class="bg-slate-800 p-1.5 rounded">شهر 6: <strong id="s-m6" class="text-white block">-</strong></div>
-                    </div>
+            <!-- محتوى تبويب: الواجبات -->
+            <div id="student-tab-homework" class="space-y-3">
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-book-open"></i> الواجبات المدرسية اليومية</h3>
+                    <div id="student-homework-list" class="space-y-2 max-h-70 overflow-y-auto pr-1"></div>
                 </div>
             </div>
 
-            <!-- الواجبات والمهام المخصصة -->
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <h3 class="font-bold text-sm text-amber-400 border-b border-slate-700 pb-2"><i class="fa-solid fa-book-open-reader"></i> الواجبات المدرسية الموجهة إليك 📖</h3>
-                <div id="student-homework-container" class="space-y-2.5 max-h-60 overflow-y-auto pr-1">
-                    <p class="text-xs text-slate-400 text-center py-2">لا توجد واجبات منشورة حالياً.</p>
+            <!-- محتوى تبويب: درجاتي -->
+            <div id="student-tab-grades" class="space-y-3 hidden">
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-graduation-cap"></i> السجل الدراسي والدرجات</h3>
+                    <div id="student-grades-container" class="space-y-3 text-xs"></div>
+                </div>
+            </div>
+
+            <!-- محتوى تبويب: شهاداتي -->
+            <div id="student-tab-certificate" class="space-y-3 hidden">
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3 text-center">
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-award"></i> شهادات التقدير والتميز</h3>
+                    <div id="student-certificate-container" class="space-y-3">
+                        <p class="text-xs text-slate-400 py-6">لا توجد شهادات تقدير مرسلة حتى الآن.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
+        let currentStudent = null;
+
         function loginStudent() {
-            const code = document.getElementById('student-code-input').value.trim().toUpperCase();
+            const code = document.getElementById('student-code-input').value.trim();
             if(!code) { alert('الرجاء إدخال كود التلميذ.'); return; }
 
             const studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || [];
-            const student = studentsData.find(s => s.id.toUpperCase() === code);
+            const student = studentsData.find(s => s.id === code);
 
-            if(!student) { alert('الكود غير صحيح أو غير مسجل في النظام. تأكد من المعلم.'); return; }
+            if(!student) { alert('كود الدخول غير صحيح! تأكد من الكود المدخل أو اطلبه من إدارة المدرسة.'); return; }
 
-            localStorage.setItem('current_student_session', JSON.stringify(student));
-            loadStudentDashboard(student);
-        }
+            currentStudent = student;
+            localStorage.setItem('dhariyat_current_student', JSON.stringify(student));
 
-        function loadStudentDashboard(student) {
             document.getElementById('login-section').classList.add('hidden');
             document.getElementById('student-dashboard').classList.remove('hidden');
 
-            document.getElementById('p-student-name').innerText = student.name;
-            document.getElementById('p-student-class').innerText = `${student.class} - شعبة ${student.section}`;
-            document.getElementById('p-student-id').innerText = student.id;
+            document.getElementById('display-student-name').innerText = student.name;
+            document.getElementById('display-student-class').innerText = `${student.class} - شعبة ${student.section}`;
 
-            document.getElementById('s-oct').innerText = student.oct || '-';
-            document.getElementById('s-nov').innerText = student.nov || '-';
-            document.getElementById('s-dec').innerText = student.dec || '-';
-            document.getElementById('s-jan').innerText = student.jan || '-';
-            document.getElementById('s-mid-avg').innerText = student.midAvg || '-';
-            document.getElementById('s-mid').innerText = student.mid || '-';
-            document.getElementById('s-feb').innerText = student.feb || '-';
-            document.getElementById('s-mar').innerText = student.mar || '-';
-            document.getElementById('s-apr').innerText = student.apr || '-';
-            document.getElementById('s-sec-avg').innerText = student.secAvg || '-';
-            document.getElementById('s-annual').innerText = student.annual || '-';
-            document.getElementById('s-final').innerText = student.final || '-';
-            document.getElementById('s-total-final').innerText = student.totalFinal || '-';
+            loadStudentData();
+        }
 
-            document.getElementById('s-m1').innerText = student.m1 || '-';
-            document.getElementById('s-m2').innerText = student.m2 || '-';
-            document.getElementById('s-m3').innerText = student.m3 || '-';
-            document.getElementById('s-m4').innerText = student.m4 || '-';
-            document.getElementById('s-m5').innerText = student.m5 || '-';
-            document.getElementById('s-m6').innerText = student.m6 || '-';
+        function logoutStudent() {
+            localStorage.removeItem('dhariyat_current_student');
+            currentStudent = null;
+            document.getElementById('student-code-input').value = '';
+            document.getElementById('student-dashboard').classList.add('hidden');
+            document.getElementById('login-section').classList.remove('hidden');
+        }
 
-            // التحقق من وجود شهادة تقديرية مرسلة للتلميذ
-            const certificatesList = JSON.parse(localStorage.getItem('dhariyat_certificates')) || [];
-            const myCert = certificatesList.find(c => c.studentId === student.id);
-            const certBanner = document.getElementById('student-certificate-banner');
-            if(myCert) {
-                certBanner.classList.remove('hidden');
-                document.getElementById('s-cert-details').innerText = `شهادة تفوق وسلوك تام (100%) مجهزة لك في مادة (${myCert.subject}) بتوقيع المعلم أ. حيدر محمد ومدير المدرسة أ. عدي حليم.`;
+        function switchStudentTab(tab) {
+            ['homework', 'grades', 'certificate'].forEach(t => {
+                const el = document.getElementById(`student-tab-${t}`);
+                const btn = document.getElementById(`s-tab-${t}`);
+                if(el) el.classList.add('hidden');
+                if(btn) btn.className = "p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-xs";
+            });
+            document.getElementById(`student-tab-${tab}`).classList.remove('hidden');
+            document.getElementById(`s-tab-${tab}`).className = "p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition text-xs";
+        }
+
+        function loadStudentData() {
+            if(!currentStudent) return;
+
+            // 1. فحص وجود رسالة وتوجيه خاص للتلميذ
+            const messagesData = JSON.parse(localStorage.getItem('dhariyat_messages')) || [];
+            const myMsg = messagesData.find(m => m.studentId === currentStudent.id);
+            const msgBox = document.getElementById('private-message-box');
+
+            if(myMsg) {
+                document.getElementById('msg-box-title').innerText = myMsg.title;
+                document.getElementById('msg-box-content').innerText = myMsg.content;
+                document.getElementById('msg-box-date').innerText = `تاريخ التوجيه: ${myMsg.date}`;
+                msgBox.classList.remove('hidden');
             } else {
-                certBanner.classList.add('hidden');
+                msgBox.classList.add('hidden');
             }
 
-            const homeworkContainer = document.getElementById('student-homework-container');
-            const allHomework = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
-            
-            const filteredHomework = allHomework.filter(hw => 
-                (hw.cls === student.class || hw.cls === 'الجميع') && 
-                (hw.sec === student.section || hw.sec === 'الجميع')
+            // 2. تحميل الواجبات
+            const homeworkData = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
+            const hwContainer = document.getElementById('student-homework-list');
+            hwContainer.innerHTML = '';
+
+            const filteredHw = homeworkData.filter(hw => 
+                (hw.cls === currentStudent.class || hw.cls === 'الجميع') && 
+                (hw.sec === currentStudent.section || hw.sec === 'الجميع')
             );
 
-            homeworkContainer.innerHTML = '';
-            if(filteredHomework.length === 0) {
-                homeworkContainer.innerHTML = '<p class="text-xs text-slate-400 text-center py-2">لا توجد واجبات منشورة حالياً.</p>';
+            if(filteredHw.length === 0) {
+                hwContainer.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">لا توجد واجبات منشورة حالياً.</p>';
             } else {
-                filteredHomework.forEach(hw => {
-                    let imgTag = hw.img ? `<img src="${hw.img}" class="w-full h-28 object-cover rounded-lg mt-2">` : '';
-                    homeworkContainer.innerHTML += `<div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-1.5 text-xs">
-                        <div class="flex justify-between items-center text-[10px] text-slate-400 border-b border-slate-800 pb-1">
-                            <span class="text-amber-400 font-bold">${hw.sub}</span>
-                            <span>${hw.date}</span>
+                filteredHw.forEach(hw => {
+                    let imgTag = hw.img ? `<img src="${hw.img}" class="w-full h-32 object-cover rounded-lg mt-2">` : '';
+                    hwContainer.innerHTML += `<div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-1.5">
+                        <div class="flex justify-between items-center text-[10px]">
+                            <span class="font-bold text-amber-400">${hw.sub}</span>
+                            <span class="text-slate-400">${hw.date}</span>
                         </div>
-                        <p class="text-white font-bold">${hw.title}</p>
-                        <p class="text-slate-300 text-[11px]">${hw.notes || ''}</p>
+                        <p class="text-white font-bold text-xs">${hw.title}</p>
+                        <p class="text-slate-300 text-[11px] leading-relaxed">${hw.notes || ''}</p>
                         ${imgTag}
                     </div>`;
                 });
             }
+
+            // 3. تحميل الدرجات
+            const gradesContainer = document.getElementById('student-grades-container');
+            gradesContainer.innerHTML = `
+                <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2">
+                    <h4 class="font-bold text-amber-400 border-b border-slate-800 pb-1">📊 السجل الإداري ونصف السنة</h4>
+                    <div class="grid grid-cols-2 gap-2 text-slate-300">
+                        <div>تشرين الأول: <strong class="text-white">${currentStudent.oct || '-'}</strong></div>
+                        <div>تشرين الثاني: <strong class="text-white">${currentStudent.nov || '-'}</strong></div>
+                        <div>كانون الأول: <strong class="text-white">${currentStudent.dec || '-'}</strong></div>
+                        <div>كانون الثاني: <strong class="text-white">${currentStudent.jan || '-'}</strong></div>
+                        <div class="col-span-2 pt-1 border-t border-slate-800 text-amber-300">معدل النصف الأول: <strong>${currentStudent.midAvg || '-'}</strong> | نصف السنة: <strong>${currentStudent.mid || '-'}</strong></div>
+                    </div>
+                </div>
+                <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2">
+                    <h4 class="font-bold text-blue-400 border-b border-slate-800 pb-1">📝 درجات امتحانات الشهور</h4>
+                    <div class="grid grid-cols-3 gap-2 text-slate-300 text-center">
+                        <div class="bg-slate-800 p-1.5 rounded">شهر 1: <br><strong class="text-white">${currentStudent.m1 || '-'}</strong></div>
+                        <div class="bg-slate-800 p-1.5 rounded">شهر 2: <br><strong class="text-white">${currentStudent.m2 || '-'}</strong></div>
+                        <div class="bg-slate-800 p-1.5 rounded">شهر 3: <br><strong class="text-white">${currentStudent.m3 || '-'}</strong></div>
+                    </div>
+                </div>
+            `;
+
+            // 4. تحميل شهادة التقدير إن وجدت
+            const certList = JSON.parse(localStorage.getItem('dhariyat_certificates')) || [];
+            const myCert = certList.find(c => c.studentId === currentStudent.id);
+            const certContainer = document.getElementById('student-certificate-container');
+
+            if(myCert) {
+                certContainer.innerHTML = `
+                    <div class="bg-gradient-to-br from-amber-50 via-white to-amber-100 text-slate-900 p-5 rounded-2xl border-4 border-amber-500 shadow-xl space-y-3 text-right">
+                        <div class="text-center space-y-0.5">
+                            <span class="text-[9px] font-bold text-slate-600 block">جمهورية العراق - وزارة التربية</span>
+                            <h2 class="text-sm font-black text-amber-700">مدرسة الذاريات الابتدائية المختلطة</h2>
+                        </div>
+                        <div class="text-center py-1"><span class="bg-amber-500 text-slate-950 text-[11px] font-black px-4 py-1 rounded-full inline-block">شهادة تقديرية</span></div>
+                        <p class="text-xs text-center font-bold text-blue-900">إلى التلميذ النجم: ${myCert.studentName}</p>
+                        <p class="text-[10px] bg-white p-2.5 rounded-xl border border-amber-300 text-slate-800 text-center font-medium leading-relaxed">
+                            "تقديراً للتميز السلوكي الرفيع والمواظبة المستمرة والحرص على التفوق والاجتهاد في المدرسة، لكونك نموذجاً يُحتذى به في الأخلاق والعلم."
+                        </p>
+                        <div class="grid grid-cols-2 text-[10px] font-bold pt-2 border-t border-amber-300">
+                            <div>معلم المادة والمرشد: <br><strong>أ. حيدر محمد عبد الكريم</strong></div>
+                            <div class="text-left">مدير المدرسة: <br><strong>أ. عدي حليم علي</strong></div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                certContainer.innerHTML = '<p class="text-xs text-slate-400 py-6">لا توجد شهادات تقدير مرسلة حتى الآن.</p>';
+            }
         }
 
-        function logoutStudent() {
-            localStorage.removeItem('current_student_session');
-            document.getElementById('student-dashboard').classList.add('hidden');
-            document.getElementById('login-section').classList.remove('hidden');
-            document.getElementById('student-code-input').value = '';
-        }
-
+        // فحص وجود تلميذ مسجل مسبقاً في الجلسة
         window.onload = function() {
-            const savedSession = localStorage.getItem('current_student_session');
-            if(savedSession) {
-                const student = JSON.parse(savedSession);
-                const studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || [];
-                const latestStudent = studentsData.find(s => s.id === student.id) || student;
-                loadStudentDashboard(latestStudent);
+            const savedStudent = localStorage.getItem('dhariyat_current_student');
+            if(savedStudent) {
+                currentStudent = JSON.parse(savedStudent);
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('student-dashboard').classList.remove('hidden');
+                document.getElementById('display-student-name').innerText = currentStudent.name;
+                document.getElementById('display-student-class').innerText = `${currentStudent.class} - شعبة ${currentStudent.section}`;
+                loadStudentData();
             }
         };
     </script>
