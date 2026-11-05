@@ -18,7 +18,7 @@
     </header>
 
     <main class="w-full max-w-md space-y-4">
-        <!-- لوحة التحكم والتبويبات الرئيسية -->
+        <!-- التبويبات الرئيسية -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg">
             <h2 class="text-sm font-bold text-amber-400 mb-3 flex items-center gap-2">
                 <i class="fa-solid fa-gauge-high"></i> التبويبات الرئيسية
@@ -286,11 +286,11 @@
                             <input type="time" id="sch-start" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center text-white font-mono">
                         </div>
                         <div>
-                            <label class="text-[10px] text-slate-400 block mb-1">وقت الانتهاء (يطلق تنبيه النهاية):</label>
+                            <label class="text-[10px] text-slate-400 block mb-1">وقت الانتهاء:</label>
                             <input type="time" id="sch-end" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center text-white font-mono">
                         </div>
                     </div>
-                    <button onclick="addScheduleItem()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl mt-2">حفظ الحصة وتفعيل منبه البدء والنهاية ⏰</button>
+                    <button onclick="addScheduleItem()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl mt-2">حفظ الحصة وتفعيل المنبه ⏰</button>
                 </div>
                 <div id="schedule-list-container" class="space-y-2 max-h-55 overflow-y-auto pr-1"></div>
             </div>
@@ -368,7 +368,6 @@
                     <button onclick="generateCertificatePreview()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2.5 rounded-xl mt-1">تحديث ومعاينة الشهادة الرسمية 👁️‍🗨️</button>
                 </div>
 
-                <!-- معاينة الشهادة الرسمية (بدون خط تحت الاسم) -->
                 <div id="certificate-preview-box" class="hidden bg-gradient-to-br from-amber-50 via-white to-amber-100 text-slate-900 p-6 rounded-2xl border-4 border-amber-500 shadow-2xl space-y-4 relative overflow-hidden text-center">
                     <div class="absolute top-2 right-2 text-amber-400/30 text-3xl"><i class="fa-solid fa-star"></i></div>
                     <div class="absolute top-2 left-2 text-amber-400/30 text-3xl"><i class="fa-solid fa-graduation-cap"></i></div>
@@ -432,9 +431,31 @@
         let tasksData = JSON.parse(localStorage.getItem('dhariyat_tasks')) || [];
         let scheduleData = JSON.parse(localStorage.getItem('dhariyat_schedule')) || [];
 
-        let alarmAudio = new Audio('https://upload.wikimedia.org/wikipedia/commons/9/9b/Telephone_ring.ogg');
-        alarmAudio.loop = true;
         let lastTriggeredMinute = '';
+        let audioCtx = null;
+        let alarmInterval = null;
+
+        function playBeepSound() {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime); // نغمة مرتفعة
+                gain.gain.setValueAtTime(1, audioCtx.currentTime);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.8);
+            } catch(e) {
+                console.log(e);
+            }
+        }
 
         function saveData() {
             localStorage.setItem('dhariyat_students', JSON.stringify(studentsData));
@@ -745,7 +766,7 @@
             }
             scheduleData.push({ day, num, cls, sec, sub, startTime, endTime });
             saveData();
-            alert('تمت إضافة الحصة وتفعيل تنبيه البدء والنهاية بنجاح! ⏰');
+            alert('تمت إضافة الحصة وتفعيل المنبه بنجاح! ⏰');
         }
 
         function renderScheduleList() {
@@ -767,7 +788,7 @@
 
         function deleteSchedule(i) { scheduleData.splice(i, 1); saveData(); }
 
-        setInterval(() => {
+        function checkScheduleTimes() {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
@@ -785,7 +806,12 @@
                     triggerAlarm(item, 'end');
                 }
             });
-        }, 1000);
+        }
+
+        setInterval(checkScheduleTimes, 1000);
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) { checkScheduleTimes(); }
+        });
 
         function triggerAlarm(item, type) {
             let detailText = item.sub.includes('شاغر') ? `وقت شاغر (استراحة)` : `للصف (${item.cls} - ${item.sec})`;
@@ -798,16 +824,16 @@
             document.getElementById('alarm-details').innerText = descMsg;
             document.getElementById('alarm-modal').classList.remove('hidden');
             
-            alarmAudio.play().catch(e => console.log('Requires user interaction'));
+            if (alarmInterval) clearInterval(alarmInterval);
+            alarmInterval = setInterval(playBeepSound, 1000);
             
             if ("vibrate" in navigator) {
-                navigator.vibrate([1000, 500, 1000, 500, 1000, 500, 1000]);
+                navigator.vibrate([1000, 500, 1000, 500, 1000]);
             }
         }
 
         function stopAlarm() {
-            alarmAudio.pause();
-            alarmAudio.currentTime = 0;
+            if (alarmInterval) clearInterval(alarmInterval);
             if ("vibrate" in navigator) {
                 navigator.vibrate(0);
             }
