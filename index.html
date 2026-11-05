@@ -3,86 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة ولي الأمر والتلميذ - مدرسة الذاريات الابتدائية</title>
+    <title>بوابة ولي الأمر والتلميذ - مدرسة الذاريات الابتدائية المختلطة</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Cairo', sans-serif; background-color: #0f172a; color: #f8fafc; }</style>
+    <style>
+        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: #f8fafc; }
+        .uppercase-input { text-transform: uppercase; }
+    </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start p-3 sm:p-4">
 
-    <!-- رأس البوابة -->
-    <header class="w-full max-w-md bg-slate-800/90 backdrop-blur border border-slate-700 rounded-2xl p-4 mb-4 shadow-xl text-center space-y-1">
-        <span class="text-xs bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full font-bold inline-block">بوابة ولي الأمر والتلميذ المستقلة</span>
-        <h1 class="text-xl font-black text-amber-400">مدرسة الذاريات الابتدائية</h1>
-        <p class="text-xs text-slate-300">متابعة الواجبات، الدرجات، والتوجيهات التربوية</p>
+    <!-- رأس البوابة المحدث -->
+    <header class="w-full max-w-md bg-slate-800/90 backdrop-blur border-2 border-amber-500/40 rounded-3xl p-5 mb-4 shadow-2xl text-center space-y-2">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 text-xl mb-1 shadow-inner">
+            <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <span class="text-xs bg-amber-500 text-slate-950 px-3 py-1 rounded-full font-black block w-fit mx-auto shadow">بوابة ولي الأمر</span>
+        <h1 class="text-lg font-black text-amber-400">مدرسة الذاريات الابتدائية المختلطة</h1>
+        <p class="text-xs font-bold text-slate-300">إشراف المعلم: حيدر محمد عبد الكريم</p>
     </header>
 
     <main class="w-full max-w-md space-y-4">
         <!-- شاشة تسجيل الدخول بكود التلميذ -->
-        <div id="login-section" class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-lg space-y-4 text-center">
-            <div class="w-16 h-16 bg-blue-600/20 text-blue-400 rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner">
-                <i class="fa-solid fa-id-card"></i>
+        <div id="login-section" class="bg-slate-800/90 border border-slate-700 rounded-3xl p-6 shadow-2xl space-y-5 text-center">
+            <div class="w-20 h-20 bg-amber-500/10 text-amber-400 rounded-full flex items-center justify-center mx-auto text-3xl shadow-inner border border-amber-500/30">
+                <i class="fa-solid fa-child-reaching"></i>
             </div>
-            <div class="space-y-1">
-                <h2 class="text-base font-bold text-white">تسجيل دخول التلميذ / ولي الأمر</h2>
-                <p class="text-xs text-slate-400">أدخل كود الدخول الخاص بك (مثال: STU-1234) لعرض سجلك بالكامل.</p>
+            <div class="space-y-1.5">
+                <h2 class="text-base font-black text-white">تسجيل دخول التلميذ / ولي الأمر</h2>
+                <p class="text-[11px] text-slate-400">أدخل كود الدخول الخاص بك (مثال: STU-1234) وسيتم تحويل الحروف تلقائياً لتسهيل الدخول.</p>
             </div>
-            <div class="space-y-2">
-                <input type="text" id="student-code-input" placeholder="أدخل كود التلميذ هنا..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-center text-white font-mono font-bold tracking-widest text-sm focus:border-amber-400 outline-none">
-                <button onclick="loginStudent()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold p-3 rounded-xl text-xs shadow-lg transition">دخول إلى البوابة الشخصية 🚀</button>
+            <div class="space-y-3">
+                <input type="text" id="student-code-input" placeholder="أدخل الكود هنا (مثال: STU-1234)..." class="uppercase-input w-full bg-slate-900 border-2 border-slate-700 rounded-2xl p-3.5 text-center text-white font-mono font-black tracking-widest text-sm focus:border-amber-400 outline-none transition shadow-inner">
+                <button onclick="loginStudent()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-3.5 rounded-2xl text-xs shadow-xl transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> دخول إلى البوابة الشخصية 🚀
+                </button>
             </div>
         </div>
 
         <!-- لوحة عرض بيانات التلميذ (تظهر بعد الدخول الناجح) -->
         <div id="student-dashboard" class="space-y-4 hidden">
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg flex justify-between items-center">
+            <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg flex justify-between items-center">
                 <div>
                     <span class="text-[10px] text-amber-400 font-bold block">مرحباً بك يا أستاذنا/ولي الأمر:</span>
                     <h3 id="display-student-name" class="text-base font-black text-white">---</h3>
                     <p id="display-student-class" class="text-xs text-slate-400">---</p>
                 </div>
-                <button onclick="logoutStudent()" class="bg-red-900/40 hover:bg-red-900/60 text-red-400 px-3 py-2 rounded-xl text-xs font-bold transition">خروج 🚪</button>
+                <button onclick="logoutStudent()" class="bg-red-900/40 hover:bg-red-900/60 text-red-400 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1">
+                    <i class="fa-solid fa-right-from-bracket"></i> خروج
+                </button>
             </div>
 
-            <!-- فقرة: رسائل وتوجيهات المعلم الخاصة للتلميذ (تظهر إن وجدت) -->
+            <!-- فقرة: رسائل وتوجيهات المعلم الخاصة للتلميذ -->
             <div id="private-message-box" class="hidden bg-gradient-to-r from-amber-500/20 to-slate-900 border-2 border-amber-500 rounded-2xl p-4 shadow-xl space-y-2">
                 <div class="flex items-center gap-2 text-amber-400 font-black text-xs border-b border-amber-500/30 pb-2">
                     <i class="fa-solid fa-envelope-open-text text-base animate-pulse"></i>
-                    <span>رسالة وتوجيه خاص من معلمي إلى ولي الأمر:</span>
+                    <span>رسالة وتوجيه خاص من المعلم حيدر محمد عبد الكريم:</span>
                 </div>
                 <h4 id="msg-box-title" class="text-xs font-bold text-white">---</h4>
-                <p id="msg-box-content" class="text-xs text-slate-200 leading-relaxed bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/80"></p>
+                <p id="msg-box-content" class="text-xs text-slate-200 leading-relaxed bg-slate-900/80 p-3 rounded-xl border border-slate-700/80"></p>
                 <span id="msg-box-date" class="text-[9px] text-slate-400 block text-left"></span>
             </div>
 
             <!-- تبويبات البوابة -->
             <div class="grid grid-cols-3 gap-2 text-center text-xs">
-                <button onclick="switchStudentTab('homework')" id="s-tab-homework" class="p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition">📖 الواجبات</button>
-                <button onclick="switchStudentTab('grades')" id="s-tab-grades" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">📊 درجاتي</button>
-                <button onclick="switchStudentTab('certificate')" id="s-tab-certificate" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">🏆 شهاداتي</button>
+                <button onclick="switchStudentTab('homework')" id="s-tab-homework" class="p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition shadow">📖 الواجبات</button>
+                <button onclick="switchStudentTab('grades')" id="s-tab-grades" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">📊 درجاتي</button>
+                <button onclick="switchStudentTab('certificate')" id="s-tab-certificate" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">🏆 شهاداتي</button>
             </div>
 
             <!-- محتوى تبويب: الواجبات -->
             <div id="student-tab-homework" class="space-y-3">
-                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-book-open"></i> الواجبات المدرسية اليومية</h3>
+                <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                    <h3 class="font-bold text-sm text-amber-400 flex items-center gap-1.5"><i class="fa-solid fa-book-open"></i> الواجبات المدرسية اليومية</h3>
                     <div id="student-homework-list" class="space-y-2 max-h-70 overflow-y-auto pr-1"></div>
                 </div>
             </div>
 
             <!-- محتوى تبويب: درجاتي -->
             <div id="student-tab-grades" class="space-y-3 hidden">
-                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
-                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-graduation-cap"></i> السجل الدراسي والدرجات</h3>
+                <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
+                    <h3 class="font-bold text-sm text-amber-400 flex items-center gap-1.5"><i class="fa-solid fa-graduation-cap"></i> السجل الدراسي والدرجات</h3>
                     <div id="student-grades-container" class="space-y-3 text-xs"></div>
                 </div>
             </div>
 
             <!-- محتوى تبويب: شهاداتي -->
             <div id="student-tab-certificate" class="space-y-3 hidden">
-                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3 text-center">
-                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-award"></i> شهادات التقدير والتميز</h3>
+                <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3 text-center">
+                    <h3 class="font-bold text-sm text-amber-400 flex items-center gap-1.5 justify-center"><i class="fa-solid fa-award"></i> شهادات التقدير والتميز</h3>
                     <div id="student-certificate-container" class="space-y-3">
                         <p class="text-xs text-slate-400 py-6">لا توجد شهادات تقدير مرسلة حتى الآن.</p>
                     </div>
@@ -95,11 +105,11 @@
         let currentStudent = null;
 
         function loginStudent() {
-            const code = document.getElementById('student-code-input').value.trim();
+            const code = document.getElementById('student-code-input').value.trim().toUpperCase();
             if(!code) { alert('الرجاء إدخال كود التلميذ.'); return; }
 
             const studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || [];
-            const student = studentsData.find(s => s.id === code);
+            const student = studentsData.find(s => s.id.toUpperCase() === code);
 
             if(!student) { alert('كود الدخول غير صحيح! تأكد من الكود المدخل أو اطلبه من إدارة المدرسة.'); return; }
 
@@ -128,10 +138,10 @@
                 const el = document.getElementById(`student-tab-${t}`);
                 const btn = document.getElementById(`s-tab-${t}`);
                 if(el) el.classList.add('hidden');
-                if(btn) btn.className = "p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-xs";
+                if(btn) btn.className = "p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow text-xs";
             });
             document.getElementById(`student-tab-${tab}`).classList.remove('hidden');
-            document.getElementById(`s-tab-${tab}`).className = "p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition text-xs";
+            document.getElementById(`s-tab-${tab}`).className = "p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition shadow text-xs";
         }
 
         function loadStudentData() {
