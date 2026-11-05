@@ -29,9 +29,40 @@
                 <button onclick="switchTeacherTab('students')" id="t-tab-students" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">إدارة التلاميذ</button>
             </div>
             <div class="grid grid-cols-3 gap-2 text-center text-xs">
-                <button onclick="switchTeacherTab('certificate')" id="t-tab-certificate" class="p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition">🏆 شهادة تقدير</button>
-                <button onclick="switchTeacherTab('tasks')" id="t-tab-tasks" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">✅ مهامي</button>
+                <button onclick="switchTeacherTab('certificate')" id="t-tab-certificate" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">🏆 شهادة</button>
+                <button onclick="switchTeacherTab('guidance')" id="t-tab-guidance" class="p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition">💌 توجيه خاص</button>
                 <button onclick="switchTeacherTab('schedule')" id="t-tab-schedule" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">📚 دروسي</button>
+            </div>
+        </div>
+
+        <!-- تبويب: توجيهات ورسائل خاصة لولي الأمر -->
+        <div id="teacher-tab-guidance" class="space-y-4 hidden">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-envelope-open-text"></i> إرسال رسالة أو توجيه خاص لولي أمر تلميذ 💌</h3>
+                <p class="text-[11px] text-slate-300">اختر التلميذ واكتب التوجيه (مثل متابعة السلوك، الغياب، أو التفوق)، لتظهر حصرياً في بوابته الخاصة.</p>
+                
+                <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
+                    <div>
+                        <label class="text-[10px] text-slate-400 block mb-1">اختر التلميذ المعني:</label>
+                        <select id="msg-student-select" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white font-bold">
+                            <option value="">اختر التلميذ...</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-slate-400 block mb-1">عنوان الرسالة / التوجيه:</label>
+                        <input type="text" id="msg-title" value="توجيه تربوي وملاحظة سلوكية" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-slate-400 block mb-1">نص الرسالة إلى ولي الأمر:</label>
+                        <textarea id="msg-content" rows="3" placeholder="مثال: يرجى متابعة سلوك التلميذ وكثرة غياباته، فهذا يؤثر سلباً على مستواه..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></textarea>
+                    </div>
+                    <button onclick="sendPrivateMessage()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl mt-1">إرسال التوجيه إلى صفحة ولي الأمر 🚀</button>
+                </div>
+
+                <div class="border-t border-slate-700 pt-3">
+                    <h4 class="font-bold text-xs text-slate-200 mb-2">الرسائل الخاصة المرسلة مسبقاً (<span id="total-msgs">0</span>):</h4>
+                    <div id="messages-list-container" class="space-y-2 max-h-50 overflow-y-auto pr-1"></div>
+                </div>
             </div>
         </div>
 
@@ -296,40 +327,6 @@
             </div>
         </div>
 
-        <!-- تبويب: مهامي -->
-        <div id="teacher-tab-tasks" class="space-y-4 hidden">
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-list-check"></i> مذكرة مهامي الشخصية (خاصة بك وحدك)</h3>
-                <p class="text-[11px] text-slate-300">سجل هنا مهامك وملاحظاتك الخاصة بتنسيق احترافي:</p>
-                
-                <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
-                    <div>
-                        <label class="text-[10px] text-slate-400 block mb-1">📅 اليوم والتاريخ:</label>
-                        <input type="text" id="task-date" placeholder="مثال: الخميس 2026/11/5..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
-                    </div>
-                    <div>
-                        <label class="text-[10px] text-slate-400 block mb-1">📌 نوع المهمة:</label>
-                        <select id="task-type" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
-                            <option value="مهمة إدارية">مهمة إدارية</option>
-                            <option value="واجب مدرسي">واجب مدرسي</option>
-                            <option value="اجتماع / نشاط">اجتماع / نشاط</option>
-                            <option value="ملاحظة شخصية">ملاحظة شخصية</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-[10px] text-slate-400 block mb-1">📝 التفاصيل:</label>
-                        <textarea id="task-details" rows="2" placeholder="اكتب تفاصيل المهمة هنا..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></textarea>
-                    </div>
-                    <button onclick="addNewTask()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl mt-1">حفظ المهمة في المذكرة 📌</button>
-                </div>
-
-                <div class="border-t border-slate-700 pt-3">
-                    <h4 class="font-bold text-xs text-slate-200 mb-2">قائمة المهام المحفوظة:</h4>
-                    <div id="tasks-list-container" class="space-y-2.5 max-h-60 overflow-y-auto pr-1"></div>
-                </div>
-            </div>
-        </div>
-
         <!-- تبويب: شهادة تقديرية -->
         <div id="teacher-tab-certificate" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
@@ -430,6 +427,7 @@
         let homeworkData = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
         let tasksData = JSON.parse(localStorage.getItem('dhariyat_tasks')) || [];
         let scheduleData = JSON.parse(localStorage.getItem('dhariyat_schedule')) || [];
+        let messagesData = JSON.parse(localStorage.getItem('dhariyat_messages')) || [];
 
         let lastTriggeredMinute = '';
         let audioCtx = null;
@@ -437,24 +435,18 @@
 
         function playBeepSound() {
             try {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
+                if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+                if (audioCtx.state === 'suspended') { audioCtx.resume(); }
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(880, audioCtx.currentTime); // نغمة مرتفعة
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime);
                 gain.gain.setValueAtTime(1, audioCtx.currentTime);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.start();
                 osc.stop(audioCtx.currentTime + 0.8);
-            } catch(e) {
-                console.log(e);
-            }
+            } catch(e) { console.log(e); }
         }
 
         function saveData() {
@@ -462,14 +454,15 @@
             localStorage.setItem('dhariyat_homework', JSON.stringify(homeworkData));
             localStorage.setItem('dhariyat_tasks', JSON.stringify(tasksData));
             localStorage.setItem('dhariyat_schedule', JSON.stringify(scheduleData));
+            localStorage.setItem('dhariyat_messages', JSON.stringify(messagesData));
             renderStudentsList();
             renderHomeworkList();
-            renderTasksList();
+            renderMessagesList();
             renderScheduleList();
         }
 
         function switchTeacherTab(tab) {
-            ['students', 'grades', 'homework', 'schedule', 'tasks', 'certificate'].forEach(t => {
+            ['students', 'grades', 'homework', 'schedule', 'guidance', 'certificate'].forEach(t => {
                 const el = document.getElementById(`teacher-tab-${t}`);
                 const btn = document.getElementById(`t-tab-${t}`);
                 if(el) el.classList.add('hidden');
@@ -482,10 +475,61 @@
 
             if(tab === 'grades') populateGradeSelect();
             if(tab === 'homework') renderHomeworkList();
-            if(tab === 'tasks') renderTasksList();
+            if(tab === 'guidance') populateMessageSelect();
             if(tab === 'schedule') renderScheduleList();
             if(tab === 'certificate') populateCertificateSelect();
         }
+
+        function populateMessageSelect() {
+            const select = document.getElementById('msg-student-select');
+            if(!select) return;
+            select.innerHTML = '<option value="">اختر التلميذ...</option>';
+            studentsData.forEach(s => { select.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`; });
+            renderMessagesList();
+        }
+
+        function sendPrivateMessage() {
+            const sId = document.getElementById('msg-student-select').value;
+            const student = studentsData.find(s => s.id === sId);
+            const title = document.getElementById('msg-title').value.trim();
+            const content = document.getElementById('msg-content').value.trim();
+
+            if(!student) { alert('الرجاء اختيار التلميذ المعني بالرسالة.'); return; }
+            if(!content) { alert('الرجاء كتابة نص التوجيه أو الملاحظة.'); return; }
+
+            messagesData = messagesData.filter(m => m.studentId !== sId);
+            messagesData.push({
+                studentId: sId,
+                studentName: student.name,
+                title: title || 'توجيه تربوي',
+                content: content,
+                date: new Date().toLocaleDateString('ar-IQ')
+            });
+
+            document.getElementById('msg-content').value = '';
+            saveData();
+            alert(`تم إرسال التوجيه التربوي بنجاح إلى ولي أمر التلميذ (${student.name}) 💌`);
+        }
+
+        function renderMessagesList() {
+            const c = document.getElementById('messages-list-container');
+            if(!c) return;
+            c.innerHTML = '';
+            document.getElementById('total-msgs').innerText = messagesData.length;
+            messagesData.forEach((m, idx) => {
+                c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl space-y-1 text-xs">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-amber-400">${m.studentName}</span>
+                        <button onclick="deleteMessage(${idx})" class="px-2 py-0.5 bg-red-900/40 text-red-400 rounded">🗑️</button>
+                    </div>
+                    <p class="text-white font-bold">${m.title}</p>
+                    <p class="text-slate-300 text-[11px]">${m.content}</p>
+                    <span class="text-[9px] text-slate-500 block">التاريخ: ${m.date}</span>
+                </div>`;
+            });
+        }
+
+        function deleteMessage(i) { messagesData.splice(i, 1); saveData(); }
 
         function populateCertificateSelect() {
             const select = document.getElementById('cert-student-select');
@@ -500,16 +544,6 @@
             if(student) {
                 document.getElementById('edit-cert-name').value = student.name;
                 document.getElementById('edit-cert-class').value = `${student.class} - شعبة ${student.section}`;
-                
-                const firstName = student.name.split(' ')[0];
-                const femaleNames = ['زهراء', 'فاطمة', 'مريم', 'زينب', 'رقية', 'نور', 'سارة', 'آية', 'بنين', 'يقين', 'مروة', 'هبة', 'فرح', 'آمنة'];
-                let isFemale = femaleNames.includes(firstName) || firstName.endsWith('ة') || firstName.endsWith('ى');
-                
-                if(isFemale) {
-                    document.getElementById('edit-cert-text').value = "تقديراً للتميز السلوكي الرفيع والمواظبة المستمرة والحرص على التفوق والاجتهاد في المدرسه، لكونكِ نموذجاً يُحتذى به في الأخلاق والعلم.";
-                } else {
-                    document.getElementById('edit-cert-text').value = "تقديراً للتميز السلوكي الرفيع والمواظبة المستمرة والحرص على التفوق والاجتهاد في المدرسه، لكونك نموذجاً يُحتذى به في الأخلاق والعلم.";
-                }
             }
         }
 
@@ -517,7 +551,6 @@
         function generateCertificatePreview() {
             const name = document.getElementById('edit-cert-name').value;
             if(!name) { alert('الرجاء اختيار التلميذ أو إدخال اسمه.'); return; }
-
             const title = document.getElementById('edit-cert-title').value;
             const cls = document.getElementById('edit-cert-class').value;
             const text = document.getElementById('edit-cert-text').value;
@@ -840,53 +873,12 @@
             document.getElementById('alarm-modal').classList.add('hidden');
         }
 
-        function addNewTask() {
-            const taskDate = document.getElementById('task-date').value.trim();
-            const taskType = document.getElementById('task-type').value;
-            const taskDetails = document.getElementById('task-details').value.trim();
-
-            if(!taskDate || !taskDetails) { alert('يرجى إدخال التاريخ وتفاصيل المهمة.'); return; }
-
-            tasksData.push({ date: taskDate, type: taskType, details: taskDetails, done: false });
-            document.getElementById('task-date').value = '';
-            document.getElementById('task-details').value = '';
-            saveData();
-            alert('تمت إضافة المهمة بنجاح إلى مذكرتك الشخصية! 📌');
-        }
-
-        function renderTasksList() {
-            const c = document.getElementById('tasks-list-container');
-            if(!c) return;
-            c.innerHTML = '';
-            tasksData.forEach((t, i) => {
-                c.innerHTML += `<div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-1.5 text-xs">
-                    <div class="flex justify-between items-center border-b border-slate-800 pb-1">
-                        <span class="text-amber-400 font-bold"><i class="fa-solid fa-calendar-days"></i> ${t.date}</span>
-                        <span class="bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">${t.type}</span>
-                    </div>
-                    <p class="${t.done ? 'line-through text-slate-500' : 'text-white'} font-medium pt-1">${t.details}</p>
-                    <div class="flex justify-end gap-1 pt-1">
-                        <button onclick="toggleTask(${i})" class="px-2 py-1 bg-slate-800 text-amber-400 rounded text-[10px]">✔️ إنجاز</button>
-                        <button onclick="deleteTask(${i})" class="px-2 py-1 bg-red-900/40 text-red-400 rounded text-[10px]">🗑️ حذف</button>
-                    </div>
-                </div>`;
-            });
-        }
-
-        function toggleTask(i) { tasksData[i].done = !tasksData[i].done; saveData(); }
-        function deleteTask(i) { tasksData.splice(i, 1); saveData(); }
-
-        function exportBackup() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(studentsData));
-            const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "dhariyat_backup.json");
-            document.body.appendChild(dl); dl.click(); dl.remove();
-        }
-
         switchTeacherTab('homework');
         renderStudentsList();
         renderHomeworkList();
-        renderTasksList();
+        renderMessagesList();
         renderScheduleList();
     </script>
 </body>
 </html>
+
