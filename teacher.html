@@ -39,37 +39,60 @@
         <div id="teacher-tab-students" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-user-plus"></i> القسم الأول: إدخال وتوزيع التلاميذ</h3>
+                
+                <!-- الإضافة الفردية -->
                 <div class="bg-slate-900/70 p-3 rounded-xl border border-slate-700/80 space-y-2">
-                    <span class="text-[11px] text-slate-300 font-bold block">إضافة فردي:</span>
+                    <span class="text-[11px] text-amber-400 font-bold block"><i class="fa-solid fa-user"></i> الإضافة الفردية:</span>
                     <div class="grid grid-cols-2 gap-2">
-                        <select id="new-student-class" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
-                            <option value="السادس الابتدائي">السادس الابتدائي</option>
-                            <option value="الخامس الابتدائي">الخامس الابتدائي</option>
-                        </select>
-                        <select id="new-student-section" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
-                            <option value="أ">شعبة أ</option>
-                            <option value="ب">شعبة ب</option>
-                        </select>
+                        <div>
+                            <label class="text-[9px] text-slate-400 block mb-1">الصف:</label>
+                            <select id="new-student-class" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                                <option value="السادس الابتدائي">السادس الابتدائي</option>
+                                <option value="الخامس الابتدائي">الخامس الابتدائي</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[9px] text-slate-400 block mb-1">الشعبة:</label>
+                            <select id="new-student-section" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                                <option value="أ">شعبة أ</option>
+                                <option value="ب">شعبة ب</option>
+                            </select>
+                        </div>
                     </div>
-                    <input type="text" id="new-student-name" placeholder="اسم التلميذ الثلاثي..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
-                    <button onclick="addNewStudent()" class="w-full bg-amber-500 text-slate-950 font-bold p-2 rounded-lg text-xs">حفظ التلميذ وتوليد كود الدخول ➕</button>
+                    <div>
+                        <label class="text-[9px] text-slate-400 block mb-1">اسم التلميذ الثلاثي:</label>
+                        <input type="text" id="new-student-name" placeholder="مثال: أحمد علي حسن..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                    </div>
+                    <button onclick="addNewStudent()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-lg text-xs mt-1">حفظ التلميذ وتوليد كود الدخول ➕</button>
                 </div>
+
+                <!-- الإضافة الجماعية -->
                 <div class="bg-slate-900/70 p-3 rounded-xl border border-slate-700/80 space-y-2">
                     <span class="text-[11px] text-amber-400 font-bold block"><i class="fa-solid fa-file-lines"></i> الإضافة الجماعية (من نوت باد أو ورد):</span>
-                    <textarea id="bulk-names-input" rows="3" placeholder="محمد أحمد علي&#10;حسن جاسم محمد" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"></textarea>
                     <div class="grid grid-cols-2 gap-2">
-                        <select id="bulk-class" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
-                            <option value="السادس الابتدائي">السادس الابتدائي</option>
-                            <option value="الخامس الابتدائي">الخامس الابتدائي</option>
-                        </select>
-                        <select id="bulk-section" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
-                            <option value="أ">شعبة أ</option>
-                            <option value="ب">شعبة ب</option>
-                        </select>
+                        <div>
+                            <label class="text-[9px] text-slate-400 block mb-1">الصف المستهدف:</label>
+                            <select id="bulk-class" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                                <option value="السادس الابتدائي">السادس الابتدائي</option>
+                                <option value="الخامس الابتدائي">الخامس الابتدائي</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[9px] text-slate-400 block mb-1">الشعبة:</label>
+                            <select id="bulk-section" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                                <option value="أ">شعبة أ</option>
+                                <option value="ب">شعبة ب</option>
+                            </select>
+                        </div>
                     </div>
-                    <button onclick="importBulkStudents()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2 rounded-lg text-xs">استيراد القائمة وتوزيعها جماعياً 📥</button>
+                    <div>
+                        <label class="text-[9px] text-slate-400 block mb-1">الصق الأسماء (كل اسم في سطر):</label>
+                        <textarea id="bulk-names-input" rows="3" placeholder="محمد أحمد علي&#10;حسن جاسم محمد" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"></textarea>
+                    </div>
+                    <button onclick="importBulkStudents()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2.5 rounded-lg text-xs mt-1">استيراد القائمة وتوزيعها جماعياً 📥</button>
                 </div>
             </div>
+
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <div class="flex justify-between items-center border-b border-slate-700 pb-2">
                     <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-id-card"></i> القسم الثاني: كشوفات الأكواد والشعب</h3>
@@ -770,10 +793,8 @@
             document.getElementById('alarm-details').innerText = `حان موعد (${item.num}: ${item.sub}) ${detailText} ليوم (${item.day}) من ${item.startTime} إلى ${item.endTime}`;
             document.getElementById('alarm-modal').classList.remove('hidden');
             
-            // تشغيل صوت المنبه
             alarmAudio.play().catch(e => console.log('Requires interaction'));
             
-            // اهتزاز الهاتف (Vibration) لضمان التنبيه
             if ("vibrate" in navigator) {
                 navigator.vibrate([500, 250, 500, 250, 500]);
             }
@@ -783,7 +804,7 @@
             alarmAudio.pause();
             alarmAudio.currentTime = 0;
             if ("vibrate" in navigator) {
-                navigator.vibrate(0); // إيقاف الاهتزاز
+                navigator.vibrate(0);
             }
             document.getElementById('alarm-modal').classList.add('hidden');
         }
