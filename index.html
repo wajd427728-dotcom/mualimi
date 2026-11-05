@@ -76,14 +76,15 @@
                 <span id="msg-box-date" class="text-[9px] text-slate-400 block text-left"></span>
             </div>
 
-            <!-- تبويبات البوابة -->
-            <div class="grid grid-cols-6 gap-1 text-center text-[10px]">
+            <!-- تبويبات البوابة (7 تبويبات شاملة تحدث مع المعلم) -->
+            <div class="grid grid-cols-7 gap-1 text-center text-[10px]">
                 <button onclick="switchStudentTab('homework')" id="s-tab-homework" class="p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition shadow">📖 الواجبات</button>
                 <button onclick="switchStudentTab('grades')" id="s-tab-grades" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">📊 درجاتي</button>
                 <button onclick="switchStudentTab('behavior')" id="s-tab-behavior" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">⭐ سلوكي</button>
                 <button onclick="switchStudentTab('honor')" id="s-tab-honor" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">🌟 الشرف</button>
                 <button onclick="switchStudentTab('quiz')" id="s-tab-quiz" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">❓ اختبار</button>
-                <button onclick="switchStudentTab('certificate')" id="s-tab-certificate" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">🏆 شهاداتي</button>
+                <button onclick="switchStudentTab('certificate')" id="s-tab-certificate" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">🏆 شهادات</button>
+                <button onclick="switchStudentTab('chat')" id="s-tab-chat" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">💬 تحدث</button>
             </div>
 
             <!-- تبويب: الواجبات -->
@@ -94,7 +95,7 @@
                 </div>
             </div>
 
-            <!-- تبويب: درجاتي (خالٍ من أي التباس أو شريط معدل) -->
+            <!-- تبويب: درجاتي الرسمية -->
             <div id="student-tab-grades" class="space-y-3 hidden">
                 <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
                     <h3 class="font-bold text-sm text-amber-400 flex items-center gap-1.5"><i class="fa-solid fa-graduation-cap"></i> السجل الدراسي والدرجات الرسمية</h3>
@@ -102,7 +103,7 @@
                 </div>
             </div>
 
-            <!-- تبويب: سلوكي التحفيزي (مستقل بمؤشر التحفيز نحو الـ 100) -->
+            <!-- تبويب: سلوكي التحفيزي -->
             <div id="student-tab-behavior" class="space-y-3 hidden">
                 <div class="bg-slate-800/90 border-2 border-amber-500/60 rounded-2xl p-5 shadow-2xl space-y-4 text-center relative overflow-hidden">
                     <div class="absolute top-0 right-0 bg-amber-500 text-slate-950 text-[10px] font-black px-3 py-1 rounded-bl-xl shadow">لوحة التحفيز 🌟</div>
@@ -156,6 +157,29 @@
                     </div>
                 </div>
             </div>
+
+            <!-- تبويب: تحدث مع معلمي (جديد) -->
+            <div id="student-tab-chat" class="space-y-3 hidden">
+                <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
+                    <h3 class="font-bold text-sm text-amber-400 flex items-center gap-1.5"><i class="fa-solid fa-comments"></i> تحدث مع المعلم حيدر محمد عبد الكريم</h3>
+                    
+                    <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-3">
+                        <h4 class="text-xs font-bold text-slate-300">إرسال استفسار أو ملاحظة جديدة:</h4>
+                        <input type="text" id="parent-msg-title" placeholder="عنوان الرسالة (مثال: استفسار عن واجب التربية الإسلامية)..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                        <textarea id="parent-msg-content" rows="3" placeholder="اكتب رسالتك أو استفسارك هنا..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white"></textarea>
+                        <button onclick="sendParentMessageToTeacher()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-2.5 rounded-xl text-xs transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> إرسال إلى المعلم 🚀
+                        </button>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-bold text-slate-400">سجل رسائلك السابقة:</h4>
+                        <div id="parent-sent-messages-list" class="space-y-2 max-h-50 overflow-y-auto pr-1">
+                            <p class="text-xs text-slate-400 text-center py-4">لا توجد رسائل مرسلة بعد.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -196,7 +220,7 @@
         }
 
         function switchStudentTab(tab) {
-            ['homework', 'grades', 'behavior', 'honor', 'quiz', 'certificate'].forEach(t => {
+            ['homework', 'grades', 'behavior', 'honor', 'quiz', 'certificate', 'chat'].forEach(t => {
                 const el = document.getElementById(`student-tab-${t}`);
                 const btn = document.getElementById(`s-tab-${t}`);
                 if(el) el.classList.add('hidden');
@@ -267,7 +291,7 @@
                 });
             }
 
-            // درجاتي الرسمية (خالية من أي حسابات معدل مضللة)
+            // درجاتي الرسمية
             const gradesContainer = document.getElementById('student-grades-container');
             gradesContainer.innerHTML = `
                 <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2">
@@ -339,6 +363,58 @@
                     </div>
                 `;
             } else { certContainer.innerHTML = '<p class="text-xs text-slate-400 py-6">لا توجد شهادات مرسلة حتى الآن.</p>'; }
+
+            loadParentMessages();
+        }
+
+        function sendParentMessageToTeacher() {
+            const title = document.getElementById('parent-msg-title').value.trim();
+            const content = document.getElementById('parent-msg-content').value.trim();
+            if(!title || !content) { alert('يرجى كتابة عنوان الرسالة ومضمونها.'); return; }
+
+            let parentInboxes = JSON.parse(localStorage.getItem('dhariyat_parent_inboxes')) || [];
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} - ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+            parentInboxes.unshift({
+                id: 'MSG-' + Date.now(),
+                studentId: currentStudent.id,
+                studentName: currentStudent.name,
+                classInfo: `${currentStudent.class} - شعبة ${currentStudent.section}`,
+                title,
+                content,
+                date: dateStr
+            });
+
+            localStorage.setItem('dhariyat_parent_inboxes', JSON.stringify(parentInboxes));
+            document.getElementById('parent-msg-title').value = '';
+            document.getElementById('parent-msg-content').value = '';
+            loadParentMessages();
+            alert('تم إرسال رسالتك إلى المعلم بنجاح 🚀');
+        }
+
+        function loadParentMessages() {
+            if(!currentStudent) return;
+            const parentInboxes = JSON.parse(localStorage.getItem('dhariyat_parent_inboxes')) || [];
+            const myInboxes = parentInboxes.filter(m => m.studentId === currentStudent.id);
+            const container = document.getElementById('parent-sent-messages-list');
+            container.innerHTML = '';
+
+            if(myInboxes.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">لا توجد رسائل مرسلة بعد.</p>';
+            } else {
+                myInboxes.forEach(m => {
+                    container.innerHTML += `
+                        <div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-1 text-xs">
+                            <div class="flex justify-between text-[10px] text-amber-400 font-bold">
+                                <span>${m.title}</span>
+                                <span>${m.date}</span>
+                            </div>
+                            <p class="text-slate-200">${m.content}</p>
+                        </div>
+                    `;
+                });
+            }
         }
 
         function checkQuizAnswer(btn, correctOpt, chosenOpt, questionText, chosenText) {
