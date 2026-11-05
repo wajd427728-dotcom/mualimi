@@ -108,6 +108,83 @@
             </div>
         </div>
 
+        <!-- تبويب: الواجبات المدرسية -->
+        <div id="teacher-tab-homework" class="space-y-4 hidden">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-book-open"></i> نشر الواجبات المدرسية</h3>
+                <input type="text" id="hw-sub" placeholder="المادة الدراسية (مثال: الرياضيات)..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white">
+                <input type="text" id="hw-title" placeholder="عنوان الواجب أو الصفحة..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white">
+                <textarea id="hw-notes" rows="2" placeholder="ملاحظات تفصيلية..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white"></textarea>
+                <button onclick="publishHomework()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs">نشر الواجب 🚀</button>
+                <div id="teacher-homework-list" class="space-y-2 max-h-50 overflow-y-auto pt-2"></div>
+            </div>
+        </div>
+
+        <!-- تبويب: مفكرتي -->
+        <div id="teacher-tab-mybook" class="space-y-4 hidden">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-note-sticky"></i> مفكرة المعلم الشخصية</h3>
+                <textarea id="teacher-notes-text" rows="4" placeholder="اكتب ملاحظاتك اليومية هنا..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white"></textarea>
+                <button onclick="saveTeacherNotes()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs">حفظ المفكرة 💾</button>
+            </div>
+        </div>
+
+        <!-- تبويب: لوحة الشرف -->
+        <div id="teacher-tab-honor" class="space-y-4 hidden">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-medal"></i> لوحة الشرف</h3>
+                <select id="honor-student-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white"><option value="">اختر التلميذة...</option></select>
+                <input type="text" id="honor-reason" placeholder="سبب التكريم (مثال: التفوق المستمر)..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white">
+                <button onclick="addHonorStudent()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs">إضافة للوحة الشرف 🌟</button>
+                <div id="teacher-honor-list" class="space-y-2 max-h-40 overflow-y-auto"></div>
+            </div>
+        </div>
+
+        <!-- تبويب: الاختبارات -->
+        <div id="teacher-tab-quiz" class="space-y-4 hidden">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-circle-question"></i> نشر اختبار قصير</h3>
+                <input type="text" id="quiz-question" placeholder="نص السؤال..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white">
+                <input type="text" id="quiz-opt1" placeholder="الخيار الأول..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white">
+                <input type="text" id="quiz-opt2" placeholder="الخيار الثاني..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white">
+                <input type="text" id="quiz-opt3" placeholder="الخيار الثالث..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white">
+                <select id="quiz-correct" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white"><option value="0">الإجابة الصحيحة: الخيار الأول</option><option value="1">الإجابة الصحيحة: الخيار الثاني</option><option value="2">الإجابة الصحيحة: الخيار الثالث</option></select>
+                <button onclick="publishQuiz()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs">نشر الاختبار 🚀</button>
+            </div>
+        </div>
+
+        <!-- تبويب: شهادة تقدير -->
+        <div id="teacher-tab-certificate" class="space-y-4 hidden">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-award"></i> إرسال شهادة تقدير</h3>
+                <select id="cert-student-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white"><option value="">اختر التلميذة...</option></select>
+                <input type="text" id="cert-title" placeholder="عنوان الشهادة (مثال: شكر وتقدير للتفوق)..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white">
+                <button onclick="sendCertificate()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs">إرسال الشهادة 🏆</button>
+            </div>
+        </div>
+
+        <!-- تبويب: توجيه / رسالة خاصة -->
+        <div id="teacher-tab-guidance" class="space-y-4 hidden">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-envelope-open-text"></i> توجيه أو رسالة خاصة لتلميذة</h3>
+                <select id="msg-student-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white"><option value="">اختر التلميذة...</option></select>
+                <input type="text" id="msg-title" placeholder="عنوان الرسالة..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white">
+                <textarea id="msg-content" rows="3" placeholder="مضمون التوجيه أو الرسالة..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white"></textarea>
+                <button onclick="sendPrivateMessage()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs">إرسال التوجيه 🚀</button>
+            </div>
+        </div>
+
+        <!-- تبويب: سلوكي -->
+        <div id="teacher-tab-behavior" class="space-y-4 hidden">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-star"></i> تقييم السلوك والتميز</h3>
+                <select id="beh-student-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white"><option value="">اختر التلميذة...</option></select>
+                <input type="number" id="beh-score" placeholder="الدرجة من 100 (مثال: 98)..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white">
+                <textarea id="beh-note" rows="2" placeholder="ملاحظة السلوك أو التحفيز..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-white"></textarea>
+                <button onclick="saveBehaviorScore()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs">حفظ التقييم ⭐</button>
+            </div>
+        </div>
+
         <!-- تبويب: سجل الدرجات -->
         <div id="teacher-tab-grades" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
@@ -136,7 +213,6 @@
     <script>
         const ADMIN_SECRET_CODE = "1122";
 
-        // القائمة المركزية المتطابقة تماماً مع بوابة ولي الأمر
         const BASE_STUDENTS = [
             { id: "STU-8959", name: "اساور محسن سلمان", class: "السادس الابتدائي", section: "أ" },
             { id: "STU-1042", name: "اسماء قيصر مخلص", class: "السادس الابتدائي", section: "أ" },
@@ -244,10 +320,11 @@
             renderStudentsList();
             renderNotificationsList();
             renderParentInboxes();
+            populateAllSelects();
         }
 
         function switchTeacherTab(tab) {
-            ['students', 'grades', 'homework', 'guidance', 'behavior', 'certificate', 'honor', 'quiz', 'notifications', 'parentinbox'].forEach(t => {
+            ['students', 'grades', 'homework', 'guidance', 'behavior', 'certificate', 'honor', 'quiz', 'notifications', 'parentinbox', 'mybook'].forEach(t => {
                 const el = document.getElementById(`teacher-tab-${t}`);
                 const btn = document.getElementById(`t-tab-${t}`);
                 if(el) el.classList.add('hidden');
@@ -258,14 +335,28 @@
             const activeBtn = document.getElementById(`t-tab-${tab}`);
             if(activeBtn) activeBtn.className = "p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition text-[9px]";
 
-            if(tab === 'grades') populateGradeSelect();
+            if(['grades', 'honor', 'cert', 'msg', 'beh'].some(x => tab.includes(x))) {
+                populateAllSelects();
+            }
+        }
+
+        function populateAllSelects() {
+            const selects = ['grade-student-select', 'honor-student-select', 'cert-student-select', 'msg-student-select', 'beh-student-select'];
+            selects.forEach(id => {
+                const sel = document.getElementById(id);
+                if(sel) {
+                    sel.innerHTML = '<option value="">اختر التلميذة...</option>';
+                    studentsData.forEach(s => {
+                        sel.innerHTML += `<option value="${s.id}">${s.name} (${s.id})</option>`;
+                    });
+                }
+            });
         }
 
         function renderStudentsList() {
             const c = document.getElementById('teacher-students-list');
             if(!c) return; 
             c.innerHTML = '';
-            
             const badge = document.getElementById('students-count-badge');
             if(badge) badge.innerText = studentsData.length;
 
@@ -281,10 +372,77 @@
             });
         }
 
-        function populateGradeSelect() {
-            const select = document.getElementById('grade-student-select');
-            if(!select) return; select.innerHTML = '<option value="">اختر التلميذة...</option>';
-            studentsData.forEach(s => { select.innerHTML += `<option value="${s.id}">${s.name} (${s.id})</option>`; });
+        // الوظائف الإضافية للتبويبات
+        function publishHomework() {
+            const sub = document.getElementById('hw-sub').value.trim();
+            const title = document.getElementById('hw-title').value.trim();
+            const notes = document.getElementById('hw-notes').value.trim();
+            if(!title) { alert('يرجى إدخال عنوان الواجب.'); return; }
+            homeworkData.unshift({ sub, title, notes, cls: 'السادس الابتدائي', sec: 'أ', date: new Date().toLocaleDateString('ar-IQ') });
+            saveData();
+            document.getElementById('hw-title').value = '';
+            document.getElementById('hw-notes').value = '';
+            alert('تم نشر الواجب بنجاح 🚀');
+        }
+
+        function saveTeacherNotes() {
+            const note = document.getElementById('teacher-notes-text').value;
+            localStorage.setItem('dhariyat_my_book', note);
+            alert('تم حفظ المفكرة بنجاح 💾');
+        }
+
+        function addHonorStudent() {
+            const id = document.getElementById('honor-student-select').value;
+            const reason = document.getElementById('honor-reason').value.trim();
+            if(!id || !reason) { alert('يرجى اختيار التلميذة وكتب سبب التكريم.'); return; }
+            const s = studentsData.find(x => x.id === id);
+            honorData.unshift({ studentName: s.name, reason });
+            saveData();
+            alert('تمت الإضافة لوحة الشرف 🌟');
+        }
+
+        function publishQuiz() {
+            const q = document.getElementById('quiz-question').value.trim();
+            const o1 = document.getElementById('quiz-opt1').value.trim();
+            const o2 = document.getElementById('quiz-opt2').value.trim();
+            const o3 = document.getElementById('quiz-opt3').value.trim();
+            const corr = document.getElementById('quiz-correct').value;
+            if(!q || !o1 || !o2) { alert('يرجى ملء تفاصيل السؤال والخيارات.'); return; }
+            quizData.unshift({ question: q, options: [o1, o2, o3], correct: parseInt(corr) });
+            saveData();
+            alert('تم نشر الاختبار بنجاح 🚀');
+        }
+
+        function sendCertificate() {
+            const id = document.getElementById('cert-student-select').value;
+            const title = document.getElementById('cert-title').value.trim();
+            if(!id || !title) { alert('يرجى اختيار التلميذة وعنوان الشهادة.'); return; }
+            const s = studentsData.find(x => x.id === id);
+            let certs = JSON.parse(localStorage.getItem('dhariyat_certificates')) || [];
+            certs.unshift({ studentId: id, title });
+            localStorage.setItem('dhariyat_certificates', JSON.stringify(certs));
+            alert('تم إرسال الشهادة بنجاح 🏆');
+        }
+
+        function sendPrivateMessage() {
+            const id = document.getElementById('msg-student-select').value;
+            const title = document.getElementById('msg-title').value.trim();
+            const content = document.getElementById('msg-content').value.trim();
+            if(!id || !title || !content) { alert('يرجى إكمال بيانات الرسالة.'); return; }
+            const s = studentsData.find(x => x.id === id);
+            messagesData.unshift({ studentId: id, studentName: s.name, title, content, date: new Date().toLocaleDateString('ar-IQ') });
+            saveData();
+            alert('تم إرسال التوجيه بنجاح 🚀');
+        }
+
+        function saveBehaviorScore() {
+            const id = document.getElementById('beh-student-select').value;
+            const score = document.getElementById('beh-score').value.trim();
+            const note = document.getElementById('beh-note').value.trim();
+            if(!id || !score) { alert('يرجى اختيار التلميذة وإدخال الدرجة.'); return; }
+            behaviorData[id] = { score: parseInt(score), note: note || 'استمري هكذا نحو القمة!' };
+            saveData();
+            alert('تم حفظ التقييم وسلوكي بنجاح ⭐');
         }
 
         document.getElementById('grade-student-select')?.addEventListener('change', function() {
