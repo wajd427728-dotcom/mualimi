@@ -18,7 +18,7 @@
     </header>
 
     <main class="w-full max-w-md space-y-4">
-        <!-- التبويبات الرئيسية -->
+        <!-- التبويبات الرئيسية (متكاملة ومحدثة) -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg">
             <h2 class="text-sm font-bold text-amber-400 mb-3 flex items-center gap-2">
                 <i class="fa-solid fa-gauge-high"></i> التبويبات الرئيسية
@@ -28,10 +28,11 @@
                 <button onclick="switchTeacherTab('grades')" id="t-tab-grades" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">سجل الدرجات</button>
                 <button onclick="switchTeacherTab('students')" id="t-tab-students" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">إدارة التلاميذ</button>
             </div>
-            <div class="grid grid-cols-3 gap-2 text-center text-xs">
-                <button onclick="switchTeacherTab('certificate')" id="t-tab-certificate" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">🏆 شهادة</button>
-                <button onclick="switchTeacherTab('guidance')" id="t-tab-guidance" class="p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition">💌 توجيه خاص</button>
-                <button onclick="switchTeacherTab('schedule')" id="t-tab-schedule" class="p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition">📚 دروسي</button>
+            <div class="grid grid-cols-4 gap-1.5 text-center text-xs">
+                <button onclick="switchTeacherTab('certificate')" id="t-tab-certificate" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[11px]">🏆 شهادة</button>
+                <button onclick="switchTeacherTab('guidance')" id="t-tab-guidance" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[11px]">💌 توجيه</button>
+                <button onclick="switchTeacherTab('tasks')" id="t-tab-tasks" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[11px]">✅ مهامي</button>
+                <button onclick="switchTeacherTab('schedule')" id="t-tab-schedule" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[11px]">📚 دروسي</button>
             </div>
         </div>
 
@@ -62,6 +63,40 @@
                 <div class="border-t border-slate-700 pt-3">
                     <h4 class="font-bold text-xs text-slate-200 mb-2">الرسائل الخاصة المرسلة مسبقاً (<span id="total-msgs">0</span>):</h4>
                     <div id="messages-list-container" class="space-y-2 max-h-50 overflow-y-auto pr-1"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- تبويب: مهامي -->
+        <div id="teacher-tab-tasks" class="space-y-4 hidden">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-list-check"></i> مذكرة مهامي الشخصية (خاصة بك وحدك)</h3>
+                <p class="text-[11px] text-slate-300">سجل هنا مهامك وملاحظاتك الخاصة:</p>
+                
+                <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
+                    <div>
+                        <label class="text-[10px] text-slate-400 block mb-1">📅 اليوم والتاريخ:</label>
+                        <input type="text" id="task-date" placeholder="مثال: الخميس 2026/11/5..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-slate-400 block mb-1">📌 نوع المهمة:</label>
+                        <select id="task-type" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
+                            <option value="مهمة إدارية">مهمة إدارية</option>
+                            <option value="واجب مدرسي">واجب مدرسي</option>
+                            <option value="اجتماع / نشاط">اجتماع / نشاط</option>
+                            <option value="ملاحظة شخصية">ملاحظة شخصية</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-slate-400 block mb-1">📝 التفاصيل:</label>
+                        <textarea id="task-details" rows="2" placeholder="اكتب تفاصيل المهمة هنا..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></textarea>
+                    </div>
+                    <button onclick="addNewTask()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl mt-1">حفظ المهمة في المذكرة 📌</button>
+                </div>
+
+                <div class="border-t border-slate-700 pt-3">
+                    <h4 class="font-bold text-xs text-slate-200 mb-2">قائمة المهام المحفوظة:</h4>
+                    <div id="tasks-list-container" class="space-y-2.5 max-h-60 overflow-y-auto pr-1"></div>
                 </div>
             </div>
         </div>
@@ -457,25 +492,27 @@
             localStorage.setItem('dhariyat_messages', JSON.stringify(messagesData));
             renderStudentsList();
             renderHomeworkList();
+            renderTasksList();
             renderMessagesList();
             renderScheduleList();
         }
 
         function switchTeacherTab(tab) {
-            ['students', 'grades', 'homework', 'schedule', 'guidance', 'certificate'].forEach(t => {
+            ['students', 'grades', 'homework', 'schedule', 'guidance', 'tasks', 'certificate'].forEach(t => {
                 const el = document.getElementById(`teacher-tab-${t}`);
                 const btn = document.getElementById(`t-tab-${t}`);
                 if(el) el.classList.add('hidden');
-                if(btn) btn.className = "p-2.5 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-xs";
+                if(btn) btn.className = "p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[11px]";
             });
             const activeEl = document.getElementById(`teacher-tab-${tab}`);
             const activeBtn = document.getElementById(`t-tab-${tab}`);
             if(activeEl) activeEl.classList.remove('hidden');
-            if(activeBtn) activeBtn.className = "p-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold transition text-xs";
+            if(activeBtn) activeBtn.className = "p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition text-[11px]";
 
             if(tab === 'grades') populateGradeSelect();
             if(tab === 'homework') renderHomeworkList();
             if(tab === 'guidance') populateMessageSelect();
+            if(tab === 'tasks') renderTasksList();
             if(tab === 'schedule') renderScheduleList();
             if(tab === 'certificate') populateCertificateSelect();
         }
@@ -873,12 +910,54 @@
             document.getElementById('alarm-modal').classList.add('hidden');
         }
 
+        function addNewTask() {
+            const taskDate = document.getElementById('task-date').value.trim();
+            const taskType = document.getElementById('task-type').value;
+            const taskDetails = document.getElementById('task-details').value.trim();
+
+            if(!taskDate || !taskDetails) { alert('يرجى إدخال التاريخ وتفاصيل المهمة.'); return; }
+
+            tasksData.push({ date: taskDate, type: taskType, details: taskDetails, done: false });
+            document.getElementById('task-date').value = '';
+            document.getElementById('task-details').value = '';
+            saveData();
+            alert('تمت إضافة المهمة بنجاح إلى مذكرتك الشخصية! 📌');
+        }
+
+        function renderTasksList() {
+            const c = document.getElementById('tasks-list-container');
+            if(!c) return;
+            c.innerHTML = '';
+            tasksData.forEach((t, i) => {
+                c.innerHTML += `<div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-1.5 text-xs">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-1">
+                        <span class="text-amber-400 font-bold"><i class="fa-solid fa-calendar-days"></i> ${t.date}</span>
+                        <span class="bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">${t.type}</span>
+                    </div>
+                    <p class="${t.done ? 'line-through text-slate-500' : 'text-white'} font-medium pt-1">${t.details}</p>
+                    <div class="flex justify-end gap-1 pt-1">
+                        <button onclick="toggleTask(${i})" class="px-2 py-1 bg-slate-800 text-amber-400 rounded text-[10px]">✔️ إنجاز</button>
+                        <button onclick="deleteTask(${i})" class="px-2 py-1 bg-red-900/40 text-red-400 rounded text-[10px]">🗑️ حذف</button>
+                    </div>
+                </div>`;
+            });
+        }
+
+        function toggleTask(i) { tasksData[i].done = !tasksData[i].done; saveData(); }
+        function deleteTask(i) { tasksData.splice(i, 1); saveData(); }
+
+        function exportBackup() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(studentsData));
+            const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "dhariyat_backup.json");
+            document.body.appendChild(dl); dl.click(); dl.remove();
+        }
+
         switchTeacherTab('homework');
         renderStudentsList();
         renderHomeworkList();
+        renderTasksList();
         renderMessagesList();
         renderScheduleList();
     </script>
 </body>
 </html>
-
