@@ -66,7 +66,7 @@
                 <span id="msg-box-date" class="text-[9px] text-slate-400 block text-left"></span>
             </div>
 
-            <!-- تبويبات البوابة (6 تبويبات متكاملة) -->
+            <!-- تبويبات البوابة -->
             <div class="grid grid-cols-6 gap-1 text-center text-[10px]">
                 <button onclick="switchStudentTab('homework')" id="s-tab-homework" class="p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition shadow">📖 الواجبات</button>
                 <button onclick="switchStudentTab('grades')" id="s-tab-grades" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">📊 درجاتي</button>
@@ -117,7 +117,7 @@
                 </div>
             </div>
 
-            <!-- تبويب: لوحة الشرف (جديد) -->
+            <!-- تبويب: لوحة الشرف -->
             <div id="student-tab-honor" class="space-y-3 hidden">
                 <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-5 shadow-lg space-y-3 text-center">
                     <h3 class="font-bold text-sm text-amber-400 flex items-center justify-center gap-1.5"><i class="fa-solid fa-medal"></i> لوحة الشرف ونجوم المدرسة</h3>
@@ -127,7 +127,7 @@
                 </div>
             </div>
 
-            <!-- تبويب: الاختبارات القصيرة التفاعلية (جديد) -->
+            <!-- تبويب: الاختبارات القصيرة التفاعلية (مع إرسال إشعار للمعلم) -->
             <div id="student-tab-quiz" class="space-y-3 hidden">
                 <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-5 shadow-lg space-y-4">
                     <h3 class="font-bold text-sm text-amber-400 flex items-center gap-1.5"><i class="fa-solid fa-circle-question"></i> الأسئلة والاختبارات القصيرة</h3>
@@ -275,8 +275,8 @@
                             <span class="text-[10px] text-amber-400 font-bold">${q.sub} - ${q.date}</span>
                             <p class="text-white font-bold">${q.question}</p>
                             <div class="grid grid-cols-2 gap-2 pt-1">
-                                <button onclick="checkQuizAnswer(this, '${q.correct}', '1')" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 p-2 rounded-lg text-white font-bold transition">أ) ${q.opt1}</button>
-                                <button onclick="checkQuizAnswer(this, '${q.correct}', '2')" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 p-2 rounded-lg text-white font-bold transition">ب) ${q.opt2}</button>
+                                <button onclick="checkQuizAnswer(this, '${q.correct}', '1', '${q.question.replace(/'/g, "")}', '${q.opt1.replace(/'/g, "")}')" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 p-2 rounded-lg text-white font-bold transition">أ) ${q.opt1}</button>
+                                <button onclick="checkQuizAnswer(this, '${q.correct}', '2', '${q.question.replace(/'/g, "")}', '${q.opt2.replace(/'/g, "")}')" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 p-2 rounded-lg text-white font-bold transition">ب) ${q.opt2}</button>
                             </div>
                         </div>
                     `;
@@ -298,16 +298,39 @@
             } else { certContainer.innerHTML = '<p class="text-xs text-slate-400 py-6">لا توجد شهادات مرسلة حتى الآن.</p>'; }
         }
 
-        function checkQuizAnswer(btn, correctOpt, chosenOpt) {
+        // إرسال الإشعار للمعلم عند إجابة التلميذ
+        function checkQuizAnswer(btn, correctOpt, chosenOpt, questionText, chosenText) {
             const parent = btn.parentElement;
             const buttons = parent.querySelectorAll('button');
             buttons.forEach(b => b.disabled = true);
-            if(chosenOpt === correctOpt) {
+
+            const isCorrect = (chosenOpt === correctOpt);
+
+            if(isCorrect) {
                 btn.className = "bg-emerald-600 text-white border border-emerald-500 p-2 rounded-lg font-bold";
                 alert('إجابة صحيحة وصحيحة تماماً! أحسنت يا بطل 🌟');
             } else {
                 btn.className = "bg-red-600 text-white border border-red-500 p-2 rounded-lg font-bold";
                 alert('إجابة خاطئة، حاول مرة أخرى في الأسئلة القادمة 💪');
+            }
+
+            // تسجيل الإشعار للمعلم
+            if(currentStudent) {
+                let notifs = JSON.parse(localStorage.getItem('dhariyat_notifications')) || [];
+                const now = new Date();
+                const timeStr = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+                
+                notifs.unshift({
+                    studentId: currentStudent.id,
+                    studentName: currentStudent.name,
+                    classInfo: `${currentStudent.class} - شعبة ${currentStudent.section}`,
+                    question: questionText,
+                    chosenText: chosenText,
+                    isCorrect: isCorrect,
+                    time: timeStr
+                });
+
+                localStorage.setItem('dhariyat_notifications', JSON.stringify(notifs));
             }
         }
 
