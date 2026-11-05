@@ -3,320 +3,300 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة ولي الأمر - مدرسة الذاريات الابتدائية المختلطة</title>
+    <title>إدارة المعلم - مدرسة الذاريات الابتدائية</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: #f8fafc; }
+        body { font-family: 'Cairo', sans-serif; background-color: #0f172a; color: #f8fafc; }
         .uppercase-input { text-transform: uppercase; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start p-3 sm:p-4">
 
-    <!-- رأس البوابة -->
-    <header class="w-full max-w-md bg-slate-800/95 backdrop-blur border-2 border-amber-500/40 rounded-3xl p-5 mb-4 shadow-2xl text-center space-y-1.5">
-        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 text-xl mb-1 shadow-inner">
-            <i class="fa-solid fa-graduation-cap"></i>
+    <!-- شاشة تسجيل الدخول الإدارية الآمنة -->
+    <div id="teacher-login-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-amber-500/60 w-full max-w-sm rounded-3xl p-6 text-center space-y-5 shadow-2xl">
+            <div class="w-16 h-16 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner border border-amber-500/40">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div class="space-y-1">
+                <h2 class="text-base font-black text-white">بوابة المعلم الإلكترونية</h2>
+                <p class="text-[11px] text-slate-400">أدخل كود المعلم السري للوصول إلى لوحة التحكم.</p>
+            </div>
+            <div class="space-y-3">
+                <input type="password" id="teacher-secret-code" placeholder="أدخل الكود السري..." class="w-full bg-slate-950 border-2 border-slate-700 rounded-2xl p-3.5 text-center text-white font-mono font-black tracking-widest text-sm focus:border-amber-400 outline-none transition shadow-inner">
+                <button onclick="verifyTeacherLogin()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-3.5 rounded-2xl text-xs shadow-xl transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-key"></i> دخول آمن للنظام 🔓
+                </button>
+            </div>
         </div>
-        <span class="text-xs bg-amber-500 text-slate-950 px-3 py-1 rounded-full font-black block w-fit mx-auto shadow">بوابة ولي الأمر</span>
-        <h1 class="text-lg font-black text-amber-400">مدرسة الذاريات الابتدائية المختلطة</h1>
-        <p class="text-xs font-bold text-slate-300">المعلم: حيدر محمد عبد الكريم</p>
+    </div>
+
+    <!-- رأس لوحة التحكم -->
+    <header class="w-full max-w-md bg-slate-800/90 backdrop-blur border border-slate-700 rounded-2xl p-4 shadow-xl flex justify-between items-center mb-4">
+        <button onclick="teacherLogout()" class="bg-red-900/40 hover:bg-red-900/60 text-red-300 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1 shadow">
+            <i class="fa-solid fa-right-from-bracket"></i> قفل
+        </button>
+        
+        <div class="text-center space-y-0.5">
+            <span class="text-[9px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full font-bold">لوحة المعلم الآمنة</span>
+            <h1 class="text-sm font-black text-amber-400">مدرسة الذاريات الابتدائية</h1>
+            <p class="text-[11px] font-bold text-slate-300">المعلم حيدر محمد عبد الكريم</p>
+        </div>
+
+        <div id="live-clock" class="text-xs font-mono font-black text-amber-300 bg-slate-900/80 px-2.5 py-1.5 rounded-xl border border-slate-700 shadow-inner">
+            00:00
+        </div>
     </header>
 
     <main class="w-full max-w-md space-y-4">
-        <!-- شاشة تسجيل الدخول -->
-        <div id="login-section" class="bg-slate-800/90 border border-slate-700 rounded-3xl p-6 shadow-2xl space-y-5 text-center">
-            <div class="w-20 h-20 bg-amber-500/10 text-amber-400 rounded-full flex items-center justify-center mx-auto text-3xl shadow-inner border border-amber-500/30">
-                <i class="fa-solid fa-child-reaching"></i>
-            </div>
-            <div class="space-y-1.5">
-                <h2 class="text-base font-black text-white">تسجيل دخول التلميذ / ولي الأمر</h2>
-                <p class="text-[11px] text-slate-400">أدخل كود الدخول الخاص بك (مثال: STU-1234) لتسجيل الدخول بسهولة.</p>
-            </div>
-            <div class="space-y-3">
-                <input type="text" id="student-code-input" placeholder="أدخل الكود هنا..." class="uppercase-input w-full bg-slate-900 border-2 border-slate-700 rounded-2xl p-3.5 text-center text-white font-mono font-black tracking-widest text-sm focus:border-amber-400 outline-none transition shadow-inner">
-                <button onclick="loginStudent()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-3.5 rounded-2xl text-xs shadow-xl transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-right-to-bracket"></i> دخول إلى البوابة الشخصية 🚀
+        <!-- التبويبات الرئيسية -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg">
+            <h2 class="text-sm font-bold text-amber-400 mb-3 flex items-center gap-2">
+                <i class="fa-solid fa-gauge-high"></i> التبويبات الرئيسية
+            </h2>
+            <div class="grid grid-cols-4 gap-1.5 text-center text-xs mb-2">
+                <button onclick="switchTeacherTab('notifications')" id="t-tab-notifications" class="p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition text-[10px] flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-bell"></i> 🔔 إشعارات (<span id="notif-count">0</span>)
                 </button>
+                <button onclick="switchTeacherTab('parentinbox')" id="t-tab-parentinbox" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[10px]">📥 رسائل الأهل (<span id="inbox-count">0</span>)</button>
+                <button onclick="switchTeacherTab('homework')" id="t-tab-homework" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[10px]">📖 الواجبات</button>
+                <button onclick="switchTeacherTab('grades')" id="t-tab-grades" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[10px]">سجل الدرجات</button>
+            </div>
+            <div class="grid grid-cols-7 gap-1 text-center text-xs">
+                <button onclick="switchTeacherTab('students')" id="t-tab-students" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]">التلاميذ</button>
+                <button onclick="switchTeacherTab('mybook')" id="t-tab-mybook" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]">📌 مفكرتي</button>
+                <button onclick="switchTeacherTab('honor')" id="t-tab-honor" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]">🌟 الشرف</button>
+                <button onclick="switchTeacherTab('quiz')" id="t-tab-quiz" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]">❓ اختبار</button>
+                <button onclick="switchTeacherTab('certificate')" id="t-tab-certificate" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]">🏆 شهادة</button>
+                <button onclick="switchTeacherTab('guidance')" id="t-tab-guidance" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]">💌 توجيه</button>
+                <button onclick="switchTeacherTab('behavior')" id="t-tab-behavior" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]">⭐ سلوكي</button>
             </div>
         </div>
 
-        <!-- لوحة عرض بيانات التلميذ -->
-        <div id="student-dashboard" class="space-y-4 hidden">
-            <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg flex justify-between items-center">
-                <div>
-                    <span class="text-[10px] text-amber-400 font-bold block">مرحباً بك:</span>
-                    <h3 id="display-student-name" class="text-base font-black text-white">---</h3>
-                    <p id="display-student-class" class="text-xs text-slate-400">---</p>
+        <!-- تبويب: إشعارات وإجابات التلاميذ -->
+        <div id="teacher-tab-notifications" class="space-y-4">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-bell"></i> سجل تفاعلات وإجابات التلاميذ 🔔</h3>
+                    <button onclick="clearNotifications()" class="text-[10px] bg-red-900/50 hover:bg-red-800 text-red-300 px-2 py-1 rounded">مسح السجل 🗑️</button>
                 </div>
-                <button onclick="logoutStudent()" class="bg-red-900/40 hover:bg-red-900/60 text-red-400 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1">
-                    <i class="fa-solid fa-right-from-bracket"></i> خروج
-                </button>
+                <div id="notifications-list-container" class="space-y-2 max-h-70 overflow-y-auto pr-1"></div>
             </div>
+        </div>
 
-            <!-- بطاقة المساعد التربوي الذكي -->
-            <div class="bg-gradient-to-br from-indigo-900/40 via-slate-900 to-slate-900 border-2 border-indigo-500/60 rounded-2xl p-4 shadow-xl space-y-2 relative overflow-hidden">
-                <div class="absolute -top-4 -left-4 w-16 h-16 bg-indigo-500/10 rounded-full blur-xl"></div>
-                <div class="flex items-center gap-2 text-indigo-400 font-black text-xs border-b border-indigo-500/30 pb-2">
-                    <i class="fa-solid fa-robot text-base animate-pulse text-indigo-300"></i>
-                    <span>المساعد التربوي الذكي (مرشدك نحو الـ 100):</span>
+        <!-- تبويب: رسائل أولياء الأمور الواردة -->
+        <div id="teacher-tab-parentinbox" class="space-y-4 hidden">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-inbox"></i> رسائل واستفسارات أولياء الأمور 📥</h3>
+                    <button onclick="clearParentInboxes()" class="text-[10px] bg-red-900/50 hover:bg-red-800 text-red-300 px-2 py-1 rounded">حذف الكل 🗑️</button>
                 </div>
-                <p id="ai-assistant-message" class="text-xs text-slate-200 leading-relaxed font-medium">جاري تحليل مستواك لتوليد التوجيه المناسب...</p>
+                <div id="teacher-parentinbox-container" class="space-y-2 max-h-75 overflow-y-auto pr-1"></div>
             </div>
+        </div>
 
-            <!-- رسائل المعلم الخاصة -->
-            <div id="private-message-box" class="hidden bg-gradient-to-r from-amber-500/20 to-slate-900 border-2 border-amber-500 rounded-2xl p-4 shadow-xl space-y-2">
-                <div class="flex items-center gap-2 text-amber-400 font-black text-xs border-b border-amber-500/30 pb-2">
-                    <i class="fa-solid fa-envelope-open-text text-base animate-pulse"></i>
-                    <span>رسالة وتوجيه خاص من المعلم حيدر محمد عبد الكريم:</span>
-                </div>
-                <h4 id="msg-box-title" class="text-xs font-bold text-white">---</h4>
-                <p id="msg-box-content" class="text-xs text-slate-200 leading-relaxed bg-slate-900/80 p-3 rounded-xl border border-slate-700/80"></p>
-                <span id="msg-box-date" class="text-[9px] text-slate-400 block text-left"></span>
-            </div>
-
-            <!-- تبويبات البوابة -->
-            <div class="grid grid-cols-7 gap-1 text-center text-[10px]">
-                <button onclick="switchStudentTab('homework')" id="s-tab-homework" class="p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition shadow">📖 الواجبات</button>
-                <button onclick="switchStudentTab('grades')" id="s-tab-grades" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">📊 درجاتي</button>
-                <button onclick="switchStudentTab('behavior')" id="s-tab-behavior" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">⭐ سلوكي</button>
-                <button onclick="switchStudentTab('honor')" id="s-tab-honor" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">🌟 الشرف</button>
-                <button onclick="switchStudentTab('quiz')" id="s-tab-quiz" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">❓ اختبار</button>
-                <button onclick="switchStudentTab('certificate')" id="s-tab-certificate" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">🏆 شهادات</button>
-                <button onclick="switchStudentTab('chat')" id="s-tab-chat" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">💬 تحدث</button>
-            </div>
-
-            <!-- تبويب: الواجبات -->
-            <div id="student-tab-homework" class="space-y-3">
-                <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                    <h3 class="font-bold text-sm text-amber-400 flex items-center gap-1.5"><i class="fa-solid fa-book-open"></i> الواجبات المدرسية اليومية</h3>
-                    <div id="student-homework-list" class="space-y-2 max-h-70 overflow-y-auto pr-1"></div>
-                </div>
-            </div>
-
-            <!-- تبويب: درجاتي الرسمية -->
-            <div id="student-tab-grades" class="space-y-3 hidden">
-                <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
-                    <h3 class="font-bold text-sm text-amber-400 flex items-center gap-1.5"><i class="fa-solid fa-graduation-cap"></i> السجل الدراسي والدرجات الرسمية</h3>
-                    <div id="student-grades-container" class="space-y-3 text-xs"></div>
-                </div>
-            </div>
-
-            <!-- تبويب: سلوكي التحفيزي -->
-            <div id="student-tab-behavior" class="space-y-3 hidden">
-                <div class="bg-slate-800/90 border-2 border-amber-500/60 rounded-2xl p-5 shadow-2xl space-y-4 text-center relative overflow-hidden">
-                    <div class="absolute top-0 right-0 bg-amber-500 text-slate-950 text-[10px] font-black px-3 py-1 rounded-bl-xl shadow">لوحة التحفيز 🌟</div>
-                    <div class="w-16 h-16 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner border border-amber-500/30 mt-2">
-                        <i class="fa-solid fa-trophy animate-bounce"></i>
+        <!-- تبويب: إدارة التلاميذ -->
+        <div id="teacher-tab-students" class="space-y-4 hidden">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-user-plus"></i> إدخال التلاميذ</h3>
+                <div class="bg-slate-900/70 p-3 rounded-xl border border-slate-700 space-y-2">
+                    <div class="grid grid-cols-2 gap-2">
+                        <select id="new-student-class" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">الخامس</option></select>
+                        <select id="new-student-section" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"><option value="أ">شعبة أ</option><option value="ب">شعبة ب</option></select>
                     </div>
-                    <h3 class="font-black text-base text-amber-400">وسام السلوك والتفوق الدراسي</h3>
-                    <p id="student-beh-motto" class="text-xs font-bold text-emerald-400">"خطوة بخطوة نحو الـ 100!"</p>
-                    <div class="bg-slate-900 p-4 rounded-2xl border border-slate-700 space-y-3 shadow-inner">
-                        <div class="flex justify-between items-center text-xs font-bold">
-                            <span class="text-slate-300">مؤشر السلوك والتميز:</span>
-                            <span id="student-beh-score-text" class="text-amber-400 font-black text-base">95 / 100</span>
-                        </div>
-                        <div class="w-full bg-slate-800 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-700">
-                            <div id="student-beh-progress" class="bg-gradient-to-r from-amber-600 via-yellow-400 to-amber-300 h-full rounded-full transition-all duration-1000 shadow-lg" style="width: 95%;"></div>
-                        </div>
-                    </div>
-                    <div class="bg-slate-900 p-4 rounded-2xl border border-slate-700 space-y-1.5 text-right shadow-inner">
-                        <span class="text-[10px] font-bold text-amber-400 block"><i class="fa-solid fa-feather-pointed"></i> رسالة معلمك:</span>
-                        <p id="student-beh-note" class="text-xs text-slate-200 leading-relaxed p-3 bg-slate-800/80 rounded-xl border border-slate-700">---</p>
-                    </div>
+                    <input type="text" id="new-student-name" placeholder="اسم التلميذ الثلاثي..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                    <button onclick="addNewStudent()" class="w-full bg-amber-500 text-slate-950 font-bold p-2 rounded-lg text-xs">حفظ وتوليد كود الدخول ➕</button>
                 </div>
+                <div id="teacher-students-list" class="space-y-2 max-h-45 overflow-y-auto pr-1"></div>
             </div>
+        </div>
 
-            <!-- تبويب: لوحة الشرف -->
-            <div id="student-tab-honor" class="space-y-3 hidden">
-                <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-5 shadow-lg space-y-3 text-center">
-                    <h3 class="font-bold text-sm text-amber-400 flex items-center justify-center gap-1.5"><i class="fa-solid fa-medal"></i> لوحة الشرف ونجوم المدرسة</h3>
-                    <div id="student-honor-box" class="space-y-2">
-                        <p class="text-xs text-slate-400 py-6">لم يتم إدراج التلميذ في لوحة الشرف بعد.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- تبويب: الاختبارات القصيرة التفاعلية -->
-            <div id="student-tab-quiz" class="space-y-3 hidden">
-                <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-5 shadow-lg space-y-4">
-                    <h3 class="font-bold text-sm text-amber-400 flex items-center gap-1.5"><i class="fa-solid fa-circle-question"></i> الأسئلة والاختبارات القصيرة</h3>
-                    <div id="student-quiz-container" class="space-y-3 text-xs">
-                        <p class="text-xs text-slate-400 text-center py-6">لا توجد أسئلة منشورة حالياً.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- تبويب: شهاداتي -->
-            <div id="student-tab-certificate" class="space-y-3 hidden">
-                <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3 text-center">
-                    <h3 class="font-bold text-sm text-amber-400 flex items-center gap-1.5 justify-center"><i class="fa-solid fa-award"></i> شهادات التقدير والتميز</h3>
-                    <div id="student-certificate-container" class="space-y-3">
-                        <p class="text-xs text-slate-400 py-6">لا توجد شهادات مرسلة حتى الآن.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- تبويب: تحدث مع معلمي -->
-            <div id="student-tab-chat" class="space-y-3 hidden">
-                <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
-                    <h3 class="font-bold text-sm text-amber-400 flex items-center gap-1.5"><i class="fa-solid fa-comments"></i> تحدث مع المعلم حيدر محمد عبد الكريم</h3>
-                    
+        <!-- تبويب: سجل الدرجات -->
+        <div id="teacher-tab-grades" class="space-y-4 hidden">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-graduation-cap"></i> سجل درجات التلاميذ</h3>
+                <select id="grade-student-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white"><option value="">اختر التلميذ...</option></select>
+                <div id="grade-inputs-container" class="space-y-4 hidden">
                     <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-3">
-                        <h4 class="text-xs font-bold text-slate-300">إرسال استفسار أو ملاحظة جديدة:</h4>
-                        <input type="text" id="parent-msg-title" placeholder="عنوان الرسالة (مثال: استفسار عن واجب التربية الإسلامية)..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white">
-                        <textarea id="parent-msg-content" rows="3" placeholder="اكتب رسالتك أو استفسارك هنا..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white"></textarea>
-                        <button onclick="sendParentMessageToTeacher()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-2.5 rounded-xl text-xs transition flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-paper-plane"></i> إرسال إلى المعلم 🚀
-                        </button>
-                    </div>
-
-                    <div class="space-y-2">
-                        <h4 class="text-xs font-bold text-slate-400">سجل رسائلك السابقة:</h4>
-                        <div id="parent-sent-messages-list" class="space-y-2 max-h-50 overflow-y-auto pr-1">
-                            <p class="text-xs text-slate-400 text-center py-4">لا توجد رسائل مرسلة بعد.</p>
+                        <h4 class="text-xs font-bold text-amber-400 border-b border-slate-700 pb-1.5">📊 السجل الإداري</h4>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div><label class="text-[10px] text-slate-400">تشرين الأول:</label><input type="number" id="g-oct" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+                            <div><label class="text-[10px] text-slate-400">تشرين الثاني:</label><input type="number" id="g-nov" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+                            <div><label class="text-[10px] text-slate-400">كانون الأول:</label><input type="number" id="g-dec" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+                            <div><label class="text-[10px] text-slate-400">كانون الثاني:</label><input type="number" id="g-jan" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+                            <div><label class="text-[10px] text-amber-300">معدل الأول:</label><input type="number" id="g-mid-avg" class="w-full bg-slate-800 border border-amber-500/50 rounded-lg p-2 text-white font-bold"></div>
+                            <div><label class="text-[10px] text-amber-300">نصف السنة:</label><input type="number" id="g-mid" class="w-full bg-slate-800 border border-amber-500/50 rounded-lg p-2 text-white font-bold"></div>
                         </div>
                     </div>
+                    <button onclick="saveStudentGrades()" class="w-full bg-amber-500 text-slate-950 font-bold p-3 rounded-xl text-xs">حفظ الدرجات 💾</button>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        let currentStudent = null;
+        const ADMIN_SECRET_CODE = "1122";
 
-        // 🌟 قائمة التلاميذ الأساسية والثابتة (يمكنك إضافة كل أكواد التلاميذ هنا لتفتح عند الجميع فوراً)
-        const DEFAULT_STUDENTS = [
-            { id: "STU-1234", name: "اساور محسن سلمان", class: "السادس الابتدائي", section: "ب" }
-            // ضع هنا بقية التلاميذ هكذا:
-            // { id: "STU-XXXX", name: "اسم التلميذ الثلاثي", class: "السادس الابتدائي", section: "أ" },
-        ];
-
-        function getStudentGender(fullName) {
-            if(!fullName) return 'male';
-            const firstName = fullName.trim().split(' ')[0];
-            const femaleNames = ['فاطمة', 'زينب', 'مريم', 'زهراء', 'رقية', 'عائشة', 'نور', 'سارة', 'آية', 'بنين', 'تقى', 'هدى', 'يمامة', 'درة', 'شمس', 'مروة', 'أسماء', 'يقين', 'غفران', 'تبارك', 'آلاء', 'دعاء', 'سجى', 'رواء', 'بشرى', 'حوراء', 'بتول', 'كوثر', 'سلسبيل', 'مروج', 'غيداء', 'يسرى', 'إسراء'];
-            if(femaleNames.includes(firstName) || firstName.endsWith('ة') || firstName.endsWith('ه')) {
-                return 'female';
-            }
-            return 'male';
-        }
-
-        function loginStudent() {
-            const code = document.getElementById('student-code-input').value.trim().toUpperCase();
-            if(!code) { alert('الرجاء إدخال كود التلميذ.'); return; }
-            
-            const student = DEFAULT_STUDENTS.find(s => s.id.toUpperCase() === code);
-            if(!student) { 
-                alert('كود الدخول غير صحيح! تأكد من إدخال الكود بدقة.'); 
-                return; 
-            }
-            
-            currentStudent = student;
-            localStorage.setItem('dhariyat_current_student', JSON.stringify(student));
-            document.getElementById('login-section').classList.add('hidden');
-            document.getElementById('student-dashboard').classList.remove('hidden');
-            document.getElementById('display-student-name').innerText = student.name;
-            document.getElementById('display-student-class').innerText = `${student.class} - شعبة ${student.section}`;
-            loadStudentData();
-        }
-
-        function logoutStudent() {
-            localStorage.removeItem('dhariyat_current_student');
-            currentStudent = null;
-            document.getElementById('student-code-input').value = '';
-            document.getElementById('student-dashboard').classList.add('hidden');
-            document.getElementById('login-section').classList.remove('hidden');
-        }
-
-        function switchStudentTab(tab) {
-            ['homework', 'grades', 'behavior', 'honor', 'quiz', 'certificate', 'chat'].forEach(t => {
-                const el = document.getElementById(`student-tab-${t}`);
-                const btn = document.getElementById(`s-tab-${t}`);
-                if(el) el.classList.add('hidden');
-                if(btn) btn.className = "p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow text-[10px]";
-            });
-            document.getElementById(`student-tab-${tab}`).classList.remove('hidden');
-            document.getElementById(`s-tab-${tab}`).className = "p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition shadow text-[10px]";
-        }
-
-        function loadStudentData() {
-            if(!currentStudent) return;
-
-            const gender = getStudentGender(currentStudent.name);
-            const firstName = currentStudent.name.split(' ')[0];
-
-            const behaviorData = JSON.parse(localStorage.getItem('dhariyat_behavior')) || {};
-            const myBehavior = behaviorData[currentStudent.id] || { score: 95, note: gender === 'female' ? 'أنتِ تلميذة ذكية ومجتهدة، استمري هكذا لتصلي إلى القمة!' : 'أنت تلميذ ذكي ومجتهد، استمر هكذا لتصل إلى القمة!' };
-            
-            document.getElementById('student-beh-score-text').innerText = `${myBehavior.score} / 100`;
-            document.getElementById('student-beh-progress').style.width = `${myBehavior.score}%`;
-            document.getElementById('student-beh-note').innerText = myBehavior.note;
-
-            const homeworkData = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
-            const hwContainer = document.getElementById('student-homework-list');
-            hwContainer.innerHTML = '';
-            const filteredHw = homeworkData.filter(hw => (hw.cls === currentStudent.class || hw.cls === 'الجميع') && (hw.sec === currentStudent.section || hw.sec === 'الجميع'));
-            if(filteredHw.length === 0) {
-                hwContainer.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">لا توجد واجبات منشورة حالياً.</p>';
-            } else {
-                filteredHw.forEach(hw => {
-                    hwContainer.innerHTML += `<div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-1"><div class="flex justify-between text-[10px] text-amber-400 font-bold"><span>${hw.sub || ''}</span><span>${hw.date}</span></div><p class="text-white font-bold text-xs">${hw.title}</p><p class="text-slate-300 text-[11px]">${hw.notes || ''}</p></div>`;
-                });
-            }
-
-            const gradesContainer = document.getElementById('student-grades-container');
-            gradesContainer.innerHTML = `
-                <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2">
-                    <h4 class="font-bold text-amber-400 border-b border-slate-800 pb-1">📊 السجل الإداري ونصف السنة</h4>
-                    <div class="grid grid-cols-2 gap-2 text-slate-300">
-                        <div>تشرين الأول: <strong class="text-white">${currentStudent.oct || '-'}</strong></div>
-                        <div>تشرين الثاني: <strong class="text-white">${currentStudent.nov || '-'}</strong></div>
-                        <div>كانون الأول: <strong class="text-white">${currentStudent.dec || '-'}</strong></div>
-                        <div>كانون الثاني: <strong class="text-white">${currentStudent.jan || '-'}</strong></div>
-                        <div class="col-span-2 pt-1 border-t border-slate-800 text-amber-300">معدل الأول: <strong>${currentStudent.midAvg || '-'}</strong> | نصف السنة: <strong>${currentStudent.mid || '-'}</strong></div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function sendParentMessageToTeacher() {
-            const title = document.getElementById('parent-msg-title').value.trim();
-            const content = document.getElementById('parent-msg-content').value.trim();
-            if(!title || !content) { alert('يرجى كتابة عنوان الرسالة ومضمونها.'); return; }
-
-            let parentInboxes = JSON.parse(localStorage.getItem('dhariyat_parent_inboxes')) || [];
-            const now = new Date();
-            const dateStr = `${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} - ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-
-            parentInboxes.unshift({
-                id: 'MSG-' + Date.now(),
-                studentId: currentStudent.id,
-                studentName: currentStudent.name,
-                classInfo: `${currentStudent.class} - شعبة ${currentStudent.section}`,
-                title,
-                content,
-                date: dateStr
-            });
-
-            localStorage.setItem('dhariyat_parent_inboxes', JSON.stringify(parentInboxes));
-            document.getElementById('parent-msg-title').value = '';
-            document.getElementById('parent-msg-content').value = '';
-            alert('تم إرسال رسالتك إلى المعلم بنجاح 🚀');
-        }
+        let studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || [];
+        let homeworkData = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
+        let messagesData = JSON.parse(localStorage.getItem('dhariyat_messages')) || [];
+        let behaviorData = JSON.parse(localStorage.getItem('dhariyat_behavior')) || {};
+        let honorData = JSON.parse(localStorage.getItem('dhariyat_honor')) || [];
+        let quizData = JSON.parse(localStorage.getItem('dhariyat_quiz')) || [];
+        let notificationsData = JSON.parse(localStorage.getItem('dhariyat_notifications')) || [];
+        let parentInboxesData = JSON.parse(localStorage.getItem('dhariyat_parent_inboxes')) || [];
 
         window.onload = function() {
-            const savedStudent = localStorage.getItem('dhariyat_current_student');
-            if(savedStudent) {
-                currentStudent = JSON.parse(savedStudent);
-                document.getElementById('login-section').classList.add('hidden');
-                document.getElementById('student-dashboard').classList.remove('hidden');
-                document.getElementById('display-student-name').innerText = currentStudent.name;
-                document.getElementById('display-student-class').innerText = `${currentStudent.class} - شعبة ${currentStudent.section}`;
-                loadStudentData();
+            const isAuthorized = sessionStorage.getItem('dhariyat_admin_logged');
+            if(isAuthorized === 'true') {
+                document.getElementById('teacher-login-modal').classList.add('hidden');
+                initTeacherDashboard();
+            } else {
+                document.getElementById('teacher-login-modal').classList.remove('hidden');
             }
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
         };
+
+        function updateLiveClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const clockEl = document.getElementById('live-clock');
+            if(clockEl) clockEl.innerText = `${hours}:${minutes}:${seconds}`;
+        }
+
+        function verifyTeacherLogin() {
+            const enteredCode = document.getElementById('teacher-secret-code').value.trim();
+            if(enteredCode === ADMIN_SECRET_CODE) {
+                sessionStorage.setItem('dhariyat_admin_logged', 'true');
+                document.getElementById('teacher-login-modal').classList.add('hidden');
+                initTeacherDashboard();
+            } else {
+                alert('كود الدخول السري غير صحيح!');
+                document.getElementById('teacher-secret-code').value = '';
+            }
+        }
+
+        function teacherLogout() {
+            sessionStorage.removeItem('dhariyat_admin_logged');
+            location.reload();
+        }
+
+        function initTeacherDashboard() {
+            switchTeacherTab('notifications');
+            saveData();
+        }
+
+        function saveData() {
+            localStorage.setItem('dhariyat_students', JSON.stringify(studentsData));
+            // 🌟 تحديث السجل العام المشترك تلقائياً ليزامنه نظام ولي الأمر
+            localStorage.setItem('dhariyat_global_students', JSON.stringify(studentsData));
+            
+            localStorage.setItem('dhariyat_homework', JSON.stringify(homeworkData));
+            localStorage.setItem('dhariyat_messages', JSON.stringify(messagesData));
+            localStorage.setItem('dhariyat_behavior', JSON.stringify(behaviorData));
+            localStorage.setItem('dhariyat_honor', JSON.stringify(honorData));
+            localStorage.setItem('dhariyat_quiz', JSON.stringify(quizData));
+            localStorage.setItem('dhariyat_notifications', JSON.stringify(notificationsData));
+            localStorage.setItem('dhariyat_parent_inboxes', JSON.stringify(parentInboxesData));
+
+            renderStudentsList();
+            renderNotificationsList();
+            renderParentInboxes();
+        }
+
+        function switchTeacherTab(tab) {
+            ['students', 'grades', 'homework', 'guidance', 'behavior', 'certificate', 'honor', 'quiz', 'notifications', 'parentinbox'].forEach(t => {
+                const el = document.getElementById(`teacher-tab-${t}`);
+                const btn = document.getElementById(`t-tab-${t}`);
+                if(el) el.classList.add('hidden');
+                if(btn) btn.className = "p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]";
+            });
+            const targetEl = document.getElementById(`teacher-tab-${tab}`);
+            if(targetEl) targetEl.classList.remove('hidden');
+            const activeBtn = document.getElementById(`t-tab-${tab}`);
+            if(activeBtn) activeBtn.className = "p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition text-[9px]";
+
+            if(tab === 'grades') populateGradeSelect();
+        }
+
+        function addNewStudent() {
+            const name = document.getElementById('new-student-name').value.trim();
+            if(!name) { alert('أدخل اسم التلميذ.'); return; }
+            const id = 'STU-' + Math.floor(1000 + Math.random() * 9000);
+            studentsData.push({ id, name, class: document.getElementById('new-student-class').value, section: document.getElementById('new-student-section').value });
+            document.getElementById('new-student-name').value = ''; 
+            saveData(); 
+            alert(`تم الحفظ بنجاح! كود التلميذ هو: ${id}`);
+        }
+
+        function renderStudentsList() {
+            const c = document.getElementById('teacher-students-list');
+            if(!c) return; c.innerHTML = '';
+            studentsData.forEach((s, idx) => { 
+                c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl flex justify-between text-xs items-center"><span><b>${s.name}</b> (${s.id})</span><button onclick="studentsData.splice(${idx},1);saveData();" class="text-red-400 hover:text-red-300">🗑️ حذف</button></div>`; 
+            });
+        }
+
+        function populateGradeSelect() {
+            const select = document.getElementById('grade-student-select');
+            if(!select) return; select.innerHTML = '<option value="">اختر التلميذ...</option>';
+            studentsData.forEach(s => { select.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`; });
+        }
+
+        document.getElementById('grade-student-select')?.addEventListener('change', function() {
+            const s = studentsData.find(x => x.id === this.value);
+            const container = document.getElementById('grade-inputs-container');
+            if(!s) { container.classList.add('hidden'); return; }
+            container.classList.remove('hidden');
+            document.getElementById('g-oct').value = s.oct || '';
+            document.getElementById('g-nov').value = s.nov || '';
+            document.getElementById('g-dec').value = s.dec || '';
+            document.getElementById('g-jan').value = s.jan || '';
+            document.getElementById('g-mid-avg').value = s.midAvg || '';
+            document.getElementById('g-mid').value = s.mid || '';
+        });
+
+        function saveStudentGrades() {
+            const s = studentsData.find(x => x.id === document.getElementById('grade-student-select').value);
+            if(s) {
+                s.oct = document.getElementById('g-oct').value; 
+                s.nov = document.getElementById('g-nov').value;
+                s.dec = document.getElementById('g-dec').value; 
+                s.jan = document.getElementById('g-jan').value;
+                s.midAvg = document.getElementById('g-mid-avg').value; 
+                s.mid = document.getElementById('g-mid').value;
+                saveData(); 
+                alert('تم حفظ الدرجات وتحديث المزامنة بنجاح 💾');
+            }
+        }
+
+        function renderNotificationsList() {
+            const c = document.getElementById('notifications-list-container');
+            if(!c) return; c.innerHTML = '';
+            document.getElementById('notif-count').innerText = notificationsData.length;
+            if(notificationsData.length === 0) {
+                c.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">لا توجد إشعارات حتى الآن.</p>';
+            } else {
+                notificationsData.forEach((n) => {
+                    c.innerHTML += `<div class="p-3 bg-slate-900 border rounded-xl text-xs"><b>${n.studentName}:</b> أجاب على السؤال (${n.chosenText}) - ${n.isCorrect ? 'صح 🌟' : 'خطأ ❌'}</div>`;
+                });
+            }
+        }
+
+        function clearNotifications() { notificationsData = []; saveData(); }
+        function renderParentInboxes() {
+            const c = document.getElementById('teacher-parentinbox-container');
+            if(!c) return; document.getElementById('inbox-count').innerText = parentInboxesData.length;
+            c.innerHTML = parentInboxesData.length === 0 ? '<p class="text-xs text-slate-400 text-center py-6">لا توجد رسائل واردة.</p>' : parentInboxesData.map((m, i) => `<div class="p-3 bg-slate-900 border rounded-xl text-xs"><b>${m.studentName}:</b> ${m.title} <button onclick="parentInboxesData.splice(${i},1);saveData();" class="text-red-400 float-left">حذف</button></div>`).join('');
+        }
+        function clearParentInboxes() { parentInboxesData = []; saveData(); }
     </script>
 </body>
 </html>
