@@ -94,28 +94,15 @@
                 </div>
             </div>
 
-            <!-- تبويب: درجاتي (مع شريط النمو التصاعدي الجديد) -->
+            <!-- تبويب: درجاتي (خالٍ من أي التباس أو شريط معدل) -->
             <div id="student-tab-grades" class="space-y-3 hidden">
                 <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
-                    <h3 class="font-bold text-sm text-amber-400 flex items-center gap-1.5"><i class="fa-solid fa-chart-line"></i> رحلة النمو التصاعدي نحو الـ 100 📈</h3>
-                    
-                    <!-- شريط النمو التصاعدي البصري الجديد -->
-                    <div class="bg-slate-900 p-4 rounded-2xl border border-slate-700 space-y-3 shadow-inner">
-                        <div class="flex justify-between items-center text-xs font-bold">
-                            <span class="text-slate-300">مستوى التقدم العام:</span>
-                            <span id="journey-score-text" class="text-amber-400 font-black text-base">95%</span>
-                        </div>
-                        <div class="w-full bg-slate-800 h-4 rounded-full overflow-hidden p-0.5 border border-slate-700 relative">
-                            <div id="journey-progress-bar" class="bg-gradient-to-r from-blue-600 via-amber-500 to-emerald-400 h-full rounded-full transition-all duration-1000 shadow-lg" style="width: 95%;"></div>
-                        </div>
-                        <p id="journey-motto-text" class="text-[11px] font-bold text-amber-300 text-center pt-1">"خطوات قليلة وتصل إلى القمة الكاملة!"</p>
-                    </div>
-
+                    <h3 class="font-bold text-sm text-amber-400 flex items-center gap-1.5"><i class="fa-solid fa-graduation-cap"></i> السجل الدراسي والدرجات الرسمية</h3>
                     <div id="student-grades-container" class="space-y-3 text-xs"></div>
                 </div>
             </div>
 
-            <!-- تبويب: سلوكي التحفيزي -->
+            <!-- تبويب: سلوكي التحفيزي (مستقل بمؤشر التحفيز نحو الـ 100) -->
             <div id="student-tab-behavior" class="space-y-3 hidden">
                 <div class="bg-slate-800/90 border-2 border-amber-500/60 rounded-2xl p-5 shadow-2xl space-y-4 text-center relative overflow-hidden">
                     <div class="absolute top-0 right-0 bg-amber-500 text-slate-950 text-[10px] font-black px-3 py-1 rounded-bl-xl shadow">لوحة التحفيز 🌟</div>
@@ -225,34 +212,6 @@
             const gender = getStudentGender(currentStudent.name);
             const firstName = currentStudent.name.split(' ')[0];
 
-            // حساب متوسط الدرجات لشريط النمو التصاعدي
-            let totalGradeSum = 0;
-            let countGrades = 0;
-            ['oct', 'nov', 'dec', 'jan', 'mid', 'm1', 'm2', 'm3'].forEach(k => {
-                if(currentStudent[k] && !isNaN(currentStudent[k])) {
-                    totalGradeSum += parseFloat(currentStudent[k]);
-                    countGrades++;
-                }
-            });
-            let journeyScore = countGrades > 0 ? Math.round(totalGradeSum / countGrades) : 85;
-            if(journeyScore > 100) journeyScore = 100;
-
-            // تحديث شريط النمو التصاعدي البصري
-            document.getElementById('journey-score-text').innerText = `${journeyScore}%`;
-            document.getElementById('journey-progress-bar').style.width = `${journeyScore}%`;
-            
-            let journeyMotto = "";
-            if (journeyScore == 100) {
-                journeyMotto = gender === 'female' ? '"أنتِ في قمة المجد والعلامة الكاملة 100! مبارك التألق 🌟"' : '"أنت في قمة المجد والعلامة الكاملة 100! مبارك التألق 🌟"';
-            } else if (journeyScore >= 90) {
-                journeyMotto = gender === 'female' ? '"مستواكِ في تصاعد رائع نحو الـ 100، واصلي الإبداع 🚀"' : '"مستواك في تصاعد رائع نحو الـ 100، واصل الإبداع 🚀"';
-            } else if (journeyScore >= 75) {
-                journeyMotto = gender === 'female' ? '"أنتِ تسيرين بخطوات ثابتة نحو القمة، اجتهدي أكثر لتصلي للـ 100 💪"' : '"أنت تسير بخطوات ثابتة نحو القمة، اجتهد أكثر لتصل للـ 100 💪"';
-            } else {
-                journeyMotto = gender === 'female' ? '"انطلقي بقوة في رحلة الصعود لتصلي إلى قمة الـ 100 يا بطلة!"' : '"انطلق بقوة في رحلة الصعود لتصل إلى قمة الـ 100 يا بطل!"';
-            }
-            document.getElementById('journey-motto-text').innerText = journeyMotto;
-
             // التقييم السلوكي التحفيزي
             const behaviorData = JSON.parse(localStorage.getItem('dhariyat_behavior')) || {};
             const myBehavior = behaviorData[currentStudent.id] || { score: 95, note: gender === 'female' ? 'أنتِ تلميذة ذكية ومجتهدة، استمري هكذا لتصلي إلى القمة وتحققي العلامة الكاملة 100!' : 'أنت تلميذ ذكي ومجتهد، استمر هكذا لتصل إلى القمة وتحقق العلامة الكاملة 100!' };
@@ -308,7 +267,7 @@
                 });
             }
 
-            // درجاتي
+            // درجاتي الرسمية (خالية من أي حسابات معدل مضللة)
             const gradesContainer = document.getElementById('student-grades-container');
             gradesContainer.innerHTML = `
                 <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2">
