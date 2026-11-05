@@ -11,14 +11,14 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start p-3 sm:p-4">
 
-    <header class="w-full max-w-md bg-slate-800/90 backdrop-blur border border-slate-700 rounded-2xl p-4 mb-4 shadow-xl text-center">
+    <header class="w-full max-w-md bg-slate-800/90 backdrop-blur border border-slate-700 rounded-2xl p-4 shadow-xl text-center">
         <span class="text-xs bg-amber-500/20 text-amber-400 px-2.5 py-1 rounded-full font-bold">لوحة تحكم المعلم والمرشد</span>
         <h1 class="text-xl font-black text-amber-400 mt-2">مدرسة الذاريات الابتدائية</h1>
         <p class="text-sm text-slate-300 mt-1">أ. حيدر محمد عبد الكريم</p>
     </header>
 
     <main class="w-full max-w-md space-y-4">
-        <!-- التبويبات الرئيسية -->
+        <!-- التبويبات الرئيسية (شاملة زر الرسائل الواردة من الأهل) -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg">
             <h2 class="text-sm font-bold text-amber-400 mb-3 flex items-center gap-2">
                 <i class="fa-solid fa-gauge-high"></i> التبويبات الرئيسية
@@ -27,22 +27,22 @@
                 <button onclick="switchTeacherTab('notifications')" id="t-tab-notifications" class="p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition text-[10px] flex items-center justify-center gap-1">
                     <i class="fa-solid fa-bell"></i> 🔔 إشعارات (<span id="notif-count">0</span>)
                 </button>
+                <button onclick="switchTeacherTab('parentinbox')" id="t-tab-parentinbox" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[10px]">📥 رسائل الأهل (<span id="inbox-count">0</span>)</button>
                 <button onclick="switchTeacherTab('homework')" id="t-tab-homework" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[10px]">📖 الواجبات</button>
                 <button onclick="switchTeacherTab('grades')" id="t-tab-grades" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[10px]">سجل الدرجات</button>
-                <button onclick="switchTeacherTab('students')" id="t-tab-students" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[10px]">إدارة التلاميذ</button>
             </div>
             <div class="grid grid-cols-7 gap-1 text-center text-xs">
+                <button onclick="switchTeacherTab('students')" id="t-tab-students" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]">التلاميذ</button>
                 <button onclick="switchTeacherTab('mybook')" id="t-tab-mybook" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]">📌 مفكرتي</button>
                 <button onclick="switchTeacherTab('honor')" id="t-tab-honor" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]">🌟 الشرف</button>
                 <button onclick="switchTeacherTab('quiz')" id="t-tab-quiz" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]">❓ اختبار</button>
                 <button onclick="switchTeacherTab('certificate')" id="t-tab-certificate" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]">🏆 شهادة</button>
                 <button onclick="switchTeacherTab('guidance')" id="t-tab-guidance" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]">💌 توجيه</button>
                 <button onclick="switchTeacherTab('behavior')" id="t-tab-behavior" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]">⭐ سلوكي</button>
-                <button onclick="switchTeacherTab('schedule')" id="t-tab-schedule" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]">📚 دروسي</button>
             </div>
         </div>
 
-        <!-- تبويب: إشعارات وإجابات التلاميذ (جديد) -->
+        <!-- تبويب: إشعارات وإجابات التلاميذ -->
         <div id="teacher-tab-notifications" class="space-y-4">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <div class="flex justify-between items-center border-b border-slate-700 pb-2">
@@ -50,6 +50,17 @@
                     <button onclick="clearNotifications()" class="text-[10px] bg-red-900/50 hover:bg-red-800 text-red-300 px-2 py-1 rounded">مسح السجل 🗑️</button>
                 </div>
                 <div id="notifications-list-container" class="space-y-2 max-h-70 overflow-y-auto pr-1"></div>
+            </div>
+        </div>
+
+        <!-- تبويب: رسائل أولياء الأمور الواردة (جديد) -->
+        <div id="teacher-tab-parentinbox" class="space-y-4 hidden">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-inbox"></i> رسائل واستفسارات أولياء الأمور 📥</h3>
+                    <button onclick="clearParentInboxes()" class="text-[10px] bg-red-900/50 hover:bg-red-800 text-red-300 px-2 py-1 rounded">حذف الكل 🗑️</button>
+                </div>
+                <div id="teacher-parentinbox-container" class="space-y-2 max-h-75 overflow-y-auto pr-1"></div>
             </div>
         </div>
 
@@ -115,7 +126,7 @@
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <select id="my-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">الخامس</option></select>
-                        <select id="my-section" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="شعبة أ">شعبة أ</option><option value="شعبة ب">شعبة ب</option></select>
+                        <select id="my-section" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="شعبة أ">شعبة أ</option><option value="ب">شعبة ب</option></select>
                     </div>
                     <select id="my-sub" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold"><option value="التربية الإسلامية">التربية الإسلامية</option><option value="اللغة العربية">اللغة العربية</option></select>
                     <input type="text" id="my-title" placeholder="عنوان الدرس أو المذكرة..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
@@ -132,7 +143,7 @@
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-book-open-reader"></i> نشر الواجبات المدرسية 📖</h3>
                 <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
                     <div class="grid grid-cols-2 gap-2">
-                        <select id="hw-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">الخامس</option><option value="الجميع">كافة الصفوف</option></select>
+                        <select id="hw-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">السادس</option><option value="الجميع">كافة الصفوف</option></select>
                         <select id="hw-section" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="أ">شعبة أ</option><option value="ب">شعبة ب</option><option value="الجميع">كافة الشعب</option></select>
                     </div>
                     <select id="hw-sub" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold"><option value="التربية الإسلامية">التربية الإسلامية</option><option value="اللغة العربية">اللغة العربية</option></select>
@@ -222,30 +233,6 @@
             </div>
         </div>
 
-        <!-- تبويب: دروسي -->
-        <div id="teacher-tab-schedule" class="space-y-4 hidden">
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-calendar-days"></i> جدول دروسي الأسبوعي ⏰</h3>
-                <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
-                    <div class="grid grid-cols-2 gap-2">
-                        <select id="sch-day" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="الأحد">الأحد</option><option value="الإثنين">الإثنين</option><option value="الثلاثاء">الثلاثاء</option><option value="الأربعاء">الأربعاء</option><option value="الخميس">الخميس</option></select>
-                        <select id="sch-number" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold text-amber-400"><option value="الحصة الأولى">الحصة الأولى</option><option value="الحصة الثانية">الحصة الثانية</option><option value="الحصة الثالثة">الحصة الثالثة</option><option value="الحصة الرابعة">الحصة الرابعة</option></select>
-                    </div>
-                    <select id="sch-subject" onchange="toggleScheduleFields()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold"><option value="التربية الإسلامية">التربية الإسلامية</option><option value="اللغة العربية">اللغة العربية</option><option value="شاغر 🟡 (استراحة)">شاغر 🟡 (استراحة)</option></select>
-                    <div id="sch-class-section-box" class="grid grid-cols-2 gap-2">
-                        <select id="sch-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">الخامس</option></select>
-                        <select id="sch-section" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="شعبة أ">شعبة أ</option><option value="ب">شعبة ب</option></select>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 pt-1">
-                        <input type="time" id="sch-start" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-center text-white font-mono">
-                        <input type="time" id="sch-end" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-center text-white font-mono">
-                    </div>
-                    <button onclick="addScheduleItem()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl">حفظ الحصة وتفعيل المنبه ⏰</button>
-                </div>
-                <div id="schedule-list-container" class="space-y-2 max-h-45 overflow-y-auto pr-1"></div>
-            </div>
-        </div>
-
         <!-- تبويب: شهادة تقديرية -->
         <div id="teacher-tab-certificate" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
@@ -289,6 +276,7 @@
         let honorData = JSON.parse(localStorage.getItem('dhariyat_honor')) || [];
         let quizData = JSON.parse(localStorage.getItem('dhariyat_quiz')) || [];
         let notificationsData = JSON.parse(localStorage.getItem('dhariyat_notifications')) || [];
+        let parentInboxesData = JSON.parse(localStorage.getItem('dhariyat_parent_inboxes')) || [];
 
         function saveData() {
             localStorage.setItem('dhariyat_students', JSON.stringify(studentsData));
@@ -300,18 +288,20 @@
             localStorage.setItem('dhariyat_honor', JSON.stringify(honorData));
             localStorage.setItem('dhariyat_quiz', JSON.stringify(quizData));
             localStorage.setItem('dhariyat_notifications', JSON.stringify(notificationsData));
+            localStorage.setItem('dhariyat_parent_inboxes', JSON.stringify(parentInboxesData));
+
             renderStudentsList();
             renderHomeworkList();
             renderMyBookList();
             renderMessagesList();
-            renderScheduleList();
             renderHonorList();
             renderQuizList();
             renderNotificationsList();
+            renderParentInboxes();
         }
 
         function switchTeacherTab(tab) {
-            ['students', 'grades', 'homework', 'schedule', 'guidance', 'mybook', 'behavior', 'certificate', 'honor', 'quiz', 'notifications'].forEach(t => {
+            ['students', 'grades', 'homework', 'schedule', 'guidance', 'mybook', 'behavior', 'certificate', 'honor', 'quiz', 'notifications', 'parentinbox'].forEach(t => {
                 const el = document.getElementById(`teacher-tab-${t}`);
                 const btn = document.getElementById(`t-tab-${t}`);
                 if(el) el.classList.add('hidden');
@@ -325,15 +315,53 @@
             if(tab === 'homework') renderHomeworkList();
             if(tab === 'mybook') renderMyBookList();
             if(tab === 'guidance') populateMessageSelect();
-            if(tab === 'schedule') renderScheduleList();
             if(tab === 'behavior') populateBehaviorSelect();
             if(tab === 'certificate') populateCertificateSelect();
             if(tab === 'honor') populateHonorSelect();
             if(tab === 'quiz') renderQuizList();
             if(tab === 'notifications') renderNotificationsList();
+            if(tab === 'parentinbox') renderParentInboxes();
         }
 
-        // عرض الإشعارات والتفاعلات
+        function renderParentInboxes() {
+            const c = document.getElementById('teacher-parentinbox-container');
+            if(!c) return;
+            c.innerHTML = '';
+            document.getElementById('inbox-count').innerText = parentInboxesData.length;
+
+            if(parentInboxesData.length === 0) {
+                c.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">لا توجد رسائل واردة من أولياء الأمور حتى الآن.</p>';
+            } else {
+                parentInboxesData.forEach((msg, idx) => {
+                    c.innerHTML += `
+                        <div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-1.5 text-xs">
+                            <div class="flex justify-between items-center border-b border-slate-800 pb-1">
+                                <span class="font-bold text-amber-400">${msg.studentName} (${msg.classInfo})</span>
+                                <span class="text-[10px] text-slate-400">${msg.date}</span>
+                            </div>
+                            <p class="font-bold text-white">${msg.title}</p>
+                            <p class="text-slate-300 bg-slate-800/80 p-2.5 rounded-lg border border-slate-700/60">${msg.content}</p>
+                            <div class="text-left pt-1">
+                                <button onclick="deleteParentInbox(${idx})" class="text-[10px] text-red-400 hover:text-red-300">حذف الرسالة 🗑️</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        function deleteParentInbox(idx) {
+            parentInboxesData.splice(idx, 1);
+            saveData();
+        }
+
+        function clearParentInboxes() {
+            if(confirm('هل أنت متأكد من حذف جميع الرسائل الواردة؟')) {
+                parentInboxesData = [];
+                saveData();
+            }
+        }
+
         function renderNotificationsList() {
             const c = document.getElementById('notifications-list-container');
             if(!c) return; c.innerHTML = '';
@@ -342,17 +370,16 @@
             if(notificationsData.length === 0) {
                 c.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">لا توجد إشعارات أو تفاعلات جديدة حتى الآن.</p>';
             } else {
-                notificationsData.forEach((n, idx) => {
-                    let isCorrect = n.isCorrect;
+                notificationsData.forEach((n) => {
                     c.innerHTML += `
-                        <div class="p-3 bg-slate-900 border ${isCorrect ? 'border-emerald-500/50' : 'border-red-500/50'} rounded-xl space-y-1 text-xs">
+                        <div class="p-3 bg-slate-900 border ${n.isCorrect ? 'border-emerald-500/50' : 'border-red-500/50'} rounded-xl space-y-1 text-xs">
                             <div class="flex justify-between items-center">
                                 <span class="font-bold text-amber-400">${n.studentName} (${n.classInfo})</span>
                                 <span class="text-[10px] text-slate-400">${n.time}</span>
                             </div>
                             <p class="text-slate-200">أجاب على السؤال: <strong class="text-white">"${n.question}"</strong></p>
-                            <p class="font-bold ${isCorrect ? 'text-emerald-400' : 'text-red-400'}">
-                                الإجابة المختارة: (${n.chosenText}) - ${isCorrect ? 'إجابة صحيحة 🌟' : 'إجابة خاطئة ❌'}
+                            <p class="font-bold ${n.isCorrect ? 'text-emerald-400' : 'text-red-400'}">
+                                الإجابة: (${n.chosenText}) - ${n.isCorrect ? 'إجابة صحيحة 🌟' : 'إجابة خاطئة ❌'}
                             </p>
                         </div>
                     `;
@@ -367,7 +394,6 @@
             }
         }
 
-        // دوال لوحة الشرف
         function populateHonorSelect() {
             const select = document.getElementById('honor-student-select');
             if(!select) return;
@@ -393,7 +419,6 @@
             });
         }
 
-        // دوال بنك الأسئلة والاختبارات
         function publishQuiz() {
             const question = document.getElementById('quiz-question').value.trim();
             const opt1 = document.getElementById('quiz-opt1').value.trim();
@@ -420,7 +445,6 @@
             });
         }
 
-        // دوال باقي الأقسام
         function addMyNote() {
             const title = document.getElementById('my-title').value.trim();
             if(!title) { alert('أدخل عنوان المذكرة.'); return; }
@@ -433,29 +457,6 @@
             if(!c) return; c.innerHTML = '';
             myBookData.forEach((item, idx) => {
                 c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs flex justify-between"><span><b>${item.sub}:</b> ${item.title}</span><button onclick="myBookData.splice(${idx},1);saveData();" class="text-red-400">🗑️</button></div>`;
-            });
-        }
-
-        function toggleScheduleFields() {
-            const sub = document.getElementById('sch-subject').value;
-            const box = document.getElementById('sch-class-section-box');
-            if(sub.includes('شاغر')) box.classList.add('hidden'); else box.classList.remove('hidden');
-        }
-        function addScheduleItem() {
-            const startTime = document.getElementById('sch-start').value;
-            const endTime = document.getElementById('sch-end').value;
-            if(!startTime || !endTime) { alert('أدخل الوقت.'); return; }
-            let cls = '', sec = '';
-            const sub = document.getElementById('sch-subject').value;
-            if(!sub.includes('شاغر')) { cls = document.getElementById('sch-class').value; sec = document.getElementById('sch-section').value; }
-            scheduleData.push({ day: document.getElementById('sch-day').value, num: document.getElementById('sch-number').value, sub, cls, sec, startTime, endTime });
-            saveData(); alert('تم الحفظ ⏰');
-        }
-        function renderScheduleList() {
-            const c = document.getElementById('schedule-list-container');
-            if(!c) return; c.innerHTML = '';
-            scheduleData.forEach((s, idx) => {
-                c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs flex justify-between"><span>${s.day} - ${s.num} (${s.sub})</span><button onclick="scheduleData.splice(${idx},1);saveData();" class="text-red-400">🗑️</button></div>`;
             });
         }
 
@@ -589,30 +590,6 @@
             if(!c) return; c.innerHTML = '';
             homeworkData.forEach((hw, i) => { c.innerHTML += `<div class="p-2 bg-slate-900 border border-slate-700 rounded-xl text-xs flex justify-between"><span>${hw.sub}: ${hw.title}</span><button onclick="homeworkData.splice(${i},1);saveData();" class="text-red-400">🗑️</button></div>`; });
         }
-
-        let audioCtx = null, alarmInterval = null;
-        function playBeep() {
-            try {
-                if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = audioCtx.createOscillator(); const g = audioCtx.createGain();
-                osc.connect(g); g.connect(audioCtx.destination);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.5);
-            } catch(e){}
-        }
-        setInterval(() => {
-            const now = new Date();
-            const cur = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-            const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-            scheduleData.forEach(item => {
-                if(item.day === days[now.getDay()] && item.startTime === cur) {
-                    document.getElementById('alarm-details').innerText = `حان موعد (${item.num}: ${item.sub})`;
-                    document.getElementById('alarm-modal').classList.remove('hidden');
-                    if(alarmInterval) clearInterval(alarmInterval);
-                    alarmInterval = setInterval(playBeep, 1000);
-                }
-            });
-        }, 1000);
-        function stopAlarm() { if(alarmInterval) clearInterval(alarmInterval); document.getElementById('alarm-modal').classList.add('hidden'); }
 
         switchTeacherTab('notifications');
         saveData();
