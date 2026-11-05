@@ -14,7 +14,7 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start p-3 sm:p-4">
 
-    <!-- شاشة تسجيل الدخول الإدارية (تظهر أولاً لحماية النظام) -->
+    <!-- شاشة تسجيل الدخول الإدارية الآمنة -->
     <div id="teacher-login-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-50 flex items-center justify-center p-4">
         <div class="bg-slate-900 border-2 border-amber-500/60 w-full max-w-sm rounded-3xl p-6 text-center space-y-5 shadow-2xl">
             <div class="w-16 h-16 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner border border-amber-500/40">
@@ -33,15 +33,21 @@
         </div>
     </div>
 
-    <!-- رأس لوحة التحكم -->
-    <header class="w-full max-w-md bg-slate-800/90 backdrop-blur border border-slate-700 rounded-2xl p-4 shadow-xl text-center flex justify-between items-center mb-4">
-        <div class="text-right">
-            <span class="text-[10px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full font-bold">لوحة المعلم الآمنة</span>
-            <h1 class="text-base font-black text-amber-400 mt-1">مدرسة الذاريات</h1>
-        </div>
-        <button onclick="teacherLogout()" class="bg-red-900/40 hover:bg-red-900/60 text-red-300 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1">
-            <i class="fa-solid fa-right-from-bracket"></i> قفل النظام
+    <!-- رأس لوحة التحكم المحدث (العنوان، اسم المعلم بخط أصغر، الساعة في اليسار، وزر القفل) -->
+    <header class="w-full max-w-md bg-slate-800/90 backdrop-blur border border-slate-700 rounded-2xl p-4 shadow-xl flex justify-between items-center mb-4">
+        <button onclick="teacherLogout()" class="bg-red-900/40 hover:bg-red-900/60 text-red-300 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1 shadow">
+            <i class="fa-solid fa-right-from-bracket"></i> قفل
         </button>
+        
+        <div class="text-center space-y-0.5">
+            <span class="text-[9px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full font-bold">لوحة المعلم الآمنة</span>
+            <h1 class="text-sm font-black text-amber-400">مدرسة الذاريات الابتدائية</h1>
+            <p class="text-[11px] font-bold text-slate-300">المعلم حيدر محمد عبد الكريم</p>
+        </div>
+
+        <div id="live-clock" class="text-xs font-mono font-black text-amber-300 bg-slate-900/80 px-2.5 py-1.5 rounded-xl border border-slate-700 shadow-inner">
+            00:00
+        </div>
     </header>
 
     <main class="w-full max-w-md space-y-4">
@@ -294,8 +300,8 @@
     </main>
 
     <script>
-        // الكود السري الخاص بك لإدارة اللوحة (يمكنك تغييره هنا إلى أي رمز تحبه، مثلاً "DHARIYAT2026")
-        const ADMIN_SECRET_CODE = "had12";
+        // الكود السري الخاص بك لإدارة اللوحة (يمكنك تغييره هنا إلى أي رمز تحبه)
+        const ADMIN_SECRET_CODE = "HAYDER100";
 
         let studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || [];
         let homeworkData = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
@@ -308,7 +314,7 @@
         let notificationsData = JSON.parse(localStorage.getItem('dhariyat_notifications')) || [];
         let parentInboxesData = JSON.parse(localStorage.getItem('dhariyat_parent_inboxes')) || [];
 
-        // التحقق من الجلسة عند تحميل الصفحة
+        // تشغيل الساعة الحية والتأكد من جلسة الدخول
         window.onload = function() {
             const isAuthorized = sessionStorage.getItem('dhariyat_admin_logged');
             if(isAuthorized === 'true') {
@@ -317,7 +323,18 @@
             } else {
                 document.getElementById('teacher-login-modal').classList.remove('hidden');
             }
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
         };
+
+        function updateLiveClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const clockEl = document.getElementById('live-clock');
+            if(clockEl) clockEl.innerText = `${hours}:${minutes}:${seconds}`;
+        }
 
         function verifyTeacherLogin() {
             const enteredCode = document.getElementById('teacher-secret-code').value.trim();
