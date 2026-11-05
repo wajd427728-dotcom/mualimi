@@ -7,18 +7,45 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Cairo', sans-serif; background-color: #0f172a; color: #f8fafc; }</style>
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .uppercase-input { text-transform: uppercase; }
+    </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start p-3 sm:p-4">
 
-    <header class="w-full max-w-md bg-slate-800/90 backdrop-blur border border-slate-700 rounded-2xl p-4 shadow-xl text-center">
-        <span class="text-xs bg-amber-500/20 text-amber-400 px-2.5 py-1 rounded-full font-bold">لوحة تحكم المعلم والمرشد</span>
-        <h1 class="text-xl font-black text-amber-400 mt-2">مدرسة الذاريات الابتدائية</h1>
-        <p class="text-sm text-slate-300 mt-1">أ. حيدر محمد عبد الكريم</p>
+    <!-- شاشة تسجيل الدخول الإدارية (تظهر أولاً لحماية النظام) -->
+    <div id="teacher-login-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-amber-500/60 w-full max-w-sm rounded-3xl p-6 text-center space-y-5 shadow-2xl">
+            <div class="w-16 h-16 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner border border-amber-500/40">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div class="space-y-1">
+                <h2 class="text-base font-black text-white">منطقة الإدارة الآمنة</h2>
+                <p class="text-[11px] text-slate-400">أدخل كود المعلم السري للوصول إلى لوحة التحكم.</p>
+            </div>
+            <div class="space-y-3">
+                <input type="password" id="teacher-secret-code" placeholder="أدخل الكود السري..." class="w-full bg-slate-950 border-2 border-slate-700 rounded-2xl p-3.5 text-center text-white font-mono font-black tracking-widest text-sm focus:border-amber-400 outline-none transition shadow-inner">
+                <button onclick="verifyTeacherLogin()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-3.5 rounded-2xl text-xs shadow-xl transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-key"></i> دخول آمن للنظام 🔓
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- رأس لوحة التحكم -->
+    <header class="w-full max-w-md bg-slate-800/90 backdrop-blur border border-slate-700 rounded-2xl p-4 shadow-xl text-center flex justify-between items-center mb-4">
+        <div class="text-right">
+            <span class="text-[10px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full font-bold">لوحة المعلم الآمنة</span>
+            <h1 class="text-base font-black text-amber-400 mt-1">مدرسة الذاريات</h1>
+        </div>
+        <button onclick="teacherLogout()" class="bg-red-900/40 hover:bg-red-900/60 text-red-300 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1">
+            <i class="fa-solid fa-right-from-bracket"></i> قفل النظام
+        </button>
     </header>
 
     <main class="w-full max-w-md space-y-4">
-        <!-- التبويبات الرئيسية (شاملة زر الرسائل الواردة من الأهل) -->
+        <!-- التبويبات الرئيسية -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg">
             <h2 class="text-sm font-bold text-amber-400 mb-3 flex items-center gap-2">
                 <i class="fa-solid fa-gauge-high"></i> التبويبات الرئيسية
@@ -53,7 +80,7 @@
             </div>
         </div>
 
-        <!-- تبويب: رسائل أولياء الأمور الواردة (جديد) -->
+        <!-- تبويب: رسائل أولياء الأمور الواردة -->
         <div id="teacher-tab-parentinbox" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <div class="flex justify-between items-center border-b border-slate-700 pb-2">
@@ -143,7 +170,7 @@
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-book-open-reader"></i> نشر الواجبات المدرسية 📖</h3>
                 <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
                     <div class="grid grid-cols-2 gap-2">
-                        <select id="hw-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">السادس</option><option value="الجميع">كافة الصفوف</option></select>
+                        <select id="hw-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">الخامس</option><option value="الجميع">كافة الصفوف</option></select>
                         <select id="hw-section" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="أ">شعبة أ</option><option value="ب">شعبة ب</option><option value="الجميع">كافة الشعب</option></select>
                     </div>
                     <select id="hw-sub" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold"><option value="التربية الإسلامية">التربية الإسلامية</option><option value="اللغة العربية">اللغة العربية</option></select>
@@ -267,6 +294,9 @@
     </main>
 
     <script>
+        // الكود السري الخاص بك لإدارة اللوحة (يمكنك تغييره هنا إلى أي رمز تحبه، مثلاً "DHARIYAT2026")
+        const ADMIN_SECRET_CODE = "HAYDER100";
+
         let studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || [];
         let homeworkData = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
         let myBookData = JSON.parse(localStorage.getItem('dhariyat_mybook')) || [];
@@ -277,6 +307,39 @@
         let quizData = JSON.parse(localStorage.getItem('dhariyat_quiz')) || [];
         let notificationsData = JSON.parse(localStorage.getItem('dhariyat_notifications')) || [];
         let parentInboxesData = JSON.parse(localStorage.getItem('dhariyat_parent_inboxes')) || [];
+
+        // التحقق من الجلسة عند تحميل الصفحة
+        window.onload = function() {
+            const isAuthorized = sessionStorage.getItem('dhariyat_admin_logged');
+            if(isAuthorized === 'true') {
+                document.getElementById('teacher-login-modal').classList.add('hidden');
+                initTeacherDashboard();
+            } else {
+                document.getElementById('teacher-login-modal').classList.remove('hidden');
+            }
+        };
+
+        function verifyTeacherLogin() {
+            const enteredCode = document.getElementById('teacher-secret-code').value.trim();
+            if(enteredCode === ADMIN_SECRET_CODE) {
+                sessionStorage.setItem('dhariyat_admin_logged', 'true');
+                document.getElementById('teacher-login-modal').classList.add('hidden');
+                initTeacherDashboard();
+            } else {
+                alert('كود الدخول السري غير صحيح! حاول مرة أخرى.');
+                document.getElementById('teacher-secret-code').value = '';
+            }
+        }
+
+        function teacherLogout() {
+            sessionStorage.removeItem('dhariyat_admin_logged');
+            location.reload();
+        }
+
+        function initTeacherDashboard() {
+            switchTeacherTab('notifications');
+            saveData();
+        }
 
         function saveData() {
             localStorage.setItem('dhariyat_students', JSON.stringify(studentsData));
@@ -590,9 +653,6 @@
             if(!c) return; c.innerHTML = '';
             homeworkData.forEach((hw, i) => { c.innerHTML += `<div class="p-2 bg-slate-900 border border-slate-700 rounded-xl text-xs flex justify-between"><span>${hw.sub}: ${hw.title}</span><button onclick="homeworkData.splice(${i},1);saveData();" class="text-red-400">🗑️</button></div>`; });
         }
-
-        switchTeacherTab('notifications');
-        saveData();
     </script>
 </body>
 </html>
