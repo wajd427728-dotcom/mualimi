@@ -33,7 +33,7 @@
         </div>
     </div>
 
-    <!-- رأس لوحة التحكم (العنوان، اسم المعلم، الساعة في اليسار، وزر القفل) -->
+    <!-- رأس لوحة التحكم -->
     <header class="w-full max-w-md bg-slate-800/90 backdrop-blur border border-slate-700 rounded-2xl p-4 shadow-xl flex justify-between items-center mb-4">
         <button onclick="teacherLogout()" class="bg-red-900/40 hover:bg-red-900/60 text-red-300 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1 shadow">
             <i class="fa-solid fa-right-from-bracket"></i> قفل
@@ -97,127 +97,6 @@
             </div>
         </div>
 
-        <!-- تبويب: لوحة الشرف الشهرية -->
-        <div id="teacher-tab-honor" class="space-y-4 hidden">
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-medal"></i> إضافة تلميذ إلى لوحة الشرف 🌟</h3>
-                <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
-                    <div>
-                        <label class="text-[10px] text-slate-400 block mb-1">اختر التلميذ المتفوق:</label>
-                        <select id="honor-student-select" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white font-bold">
-                            <option value="">اختر التلميذ...</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-[10px] text-slate-400 block mb-1">سبب التكريم / الإنجاز:</label>
-                        <input type="text" id="honor-reason" placeholder="مثال: الحصول على الدرجة الكاملة في التربية الإسلامية..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
-                    </div>
-                    <button onclick="addHonorStudent()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl">إضافة إلى لوحة الشرف العامة 🏅</button>
-                </div>
-                <div id="honor-list-container" class="space-y-2 max-h-45 overflow-y-auto pr-1"></div>
-            </div>
-        </div>
-
-        <!-- تبويب: بنك الأسئلة والاختبارات القصيرة -->
-        <div id="teacher-tab-quiz" class="space-y-4 hidden">
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-circle-question"></i> نشر سؤال تفاعلي أو اختبار قصير ❓</h3>
-                <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
-                    <div class="grid grid-cols-2 gap-2">
-                        <select id="quiz-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">الخامس</option><option value="الجميع">كافة الصفوف</option></select>
-                        <select id="quiz-sub" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold"><option value="التربية الإسلامية">التربية الإسلامية</option><option value="اللغة العربية">اللغة العربية</option></select>
-                    </div>
-                    <div>
-                        <label class="text-[10px] text-slate-400 block mb-1">نص السؤال:</label>
-                        <textarea id="quiz-question" rows="2" placeholder="اكتب السؤال هنا..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></textarea>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="quiz-opt1" placeholder="الخيار أ..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
-                        <input type="text" id="quiz-opt2" placeholder="الخيار ب..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
-                    </div>
-                    <div>
-                        <label class="text-[10px] text-amber-400 block mb-1">الخيار الصحيح:</label>
-                        <select id="quiz-correct" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
-                            <option value="1">الخيار (أ)</option>
-                            <option value="2">الخيار (ب)</option>
-                        </select>
-                    </div>
-                    <button onclick="publishQuiz()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl">نشر السؤال للبوابة التفاعلية 🚀</button>
-                </div>
-                <div id="quiz-list-container" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
-            </div>
-        </div>
-
-        <!-- تبويب: مفكرتي الشخصية -->
-        <div id="teacher-tab-mybook" class="space-y-4 hidden">
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-book-bookmark"></i> مفكرتي الشخصية 📌</h3>
-                <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
-                    <div class="grid grid-cols-2 gap-2">
-                        <select id="my-day" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="الأحد">الأحد</option><option value="الإثنين">الإثنين</option><option value="الثلاثاء">الثلاثاء</option><option value="الأربعاء">الأربعاء</option><option value="الخميس">الخميس</option></select>
-                        <input type="text" id="my-date" placeholder="التاريخ (مثال: 2026/11/8)..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-center font-mono">
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <select id="my-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">الخامس</option></select>
-                        <select id="my-section" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="شعبة أ">شعبة أ</option><option value="ب">شعبة ب</option></select>
-                    </div>
-                    <select id="my-sub" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold"><option value="التربية الإسلامية">التربية الإسلامية</option><option value="اللغة العربية">اللغة العربية</option></select>
-                    <input type="text" id="my-title" placeholder="عنوان الدرس أو المذكرة..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
-                    <textarea id="my-notes" rows="2" placeholder="تفاصيل..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></textarea>
-                    <button onclick="addMyNote()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl">حفظ في مفكرتي 📌</button>
-                </div>
-                <div id="mybook-list-container" class="space-y-2 max-h-45 overflow-y-auto pr-1"></div>
-            </div>
-        </div>
-
-        <!-- تبويب: نشر الواجبات -->
-        <div id="teacher-tab-homework" class="space-y-4 hidden">
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-book-open-reader"></i> نشر الواجبات المدرسية 📖</h3>
-                <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
-                    <div class="grid grid-cols-2 gap-2">
-                        <select id="hw-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">الخامس</option><option value="الجميع">كافة الصفوف</option></select>
-                        <select id="hw-section" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="أ">شعبة أ</option><option value="ب">شعبة ب</option><option value="الجميع">كافة الشعب</option></select>
-                    </div>
-                    <select id="hw-sub" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold"><option value="التربية الإسلامية">التربية الإسلامية</option><option value="اللغة العربية">اللغة العربية</option></select>
-                    <input type="text" id="hw-title" placeholder="عنوان الواجب..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
-                    <textarea id="hw-notes" rows="2" placeholder="التفاصيل..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></textarea>
-                    <button onclick="publishHomework()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl">نشر الواجب 🚀</button>
-                </div>
-                <div id="homework-list-container" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
-            </div>
-        </div>
-
-        <!-- تبويب: التقييم السلوكي -->
-        <div id="teacher-tab-behavior" class="space-y-4 hidden">
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-star"></i> التقييم السلوكي نحو الـ 100 ⭐</h3>
-                <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
-                    <select id="beh-student-select" onchange="loadStudentBehavior()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white font-bold"><option value="">اختر التلميذ...</option></select>
-                    <div class="flex items-center gap-3">
-                        <input type="range" id="beh-score-range" min="0" max="100" value="95" oninput="document.getElementById('beh-score-val').innerText=this.value" class="w-full accent-amber-500 cursor-pointer">
-                        <span id="beh-score-val" class="text-amber-400 font-black text-sm bg-slate-800 px-3 py-1 rounded-lg border border-slate-700">95</span>
-                    </div>
-                    <textarea id="beh-note" rows="3" placeholder="رسالة التشجيع..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></textarea>
-                    <button onclick="saveStudentBehavior()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl">حفظ وإرسال التقييم 🚀</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- تبويب: توجيه خاص -->
-        <div id="teacher-tab-guidance" class="space-y-4 hidden">
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-envelope-open-text"></i> توجيه خاص لولي الأمر 💌</h3>
-                <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
-                    <select id="msg-student-select" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white font-bold"><option value="">اختر التلميذ...</option></select>
-                    <input type="text" id="msg-title" value="توجيه تربوي وملاحظة سلوكية" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
-                    <textarea id="msg-content" rows="3" placeholder="نص الرسالة..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></textarea>
-                    <button onclick="sendPrivateMessage()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl">إرسال التوجيه 🚀</button>
-                </div>
-                <div id="messages-list-container" class="space-y-2 max-h-35 overflow-y-auto pr-1"></div>
-            </div>
-        </div>
-
         <!-- تبويب: إدارة التلاميذ -->
         <div id="teacher-tab-students" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
@@ -253,60 +132,17 @@
                             <div><label class="text-[10px] text-amber-300">نصف السنة:</label><input type="number" id="g-mid" class="w-full bg-slate-800 border border-amber-500/50 rounded-lg p-2 text-white font-bold"></div>
                         </div>
                     </div>
-                    <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-3">
-                        <h4 class="text-xs font-bold text-blue-400 border-b border-slate-700 pb-1.5">📝 درجات الأشهر</h4>
-                        <div class="grid grid-cols-3 gap-2 text-xs">
-                            <div><label class="text-[10px] text-slate-400">الشهر 1:</label><input type="number" id="t-m1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
-                            <div><label class="text-[10px] text-slate-400">الشهر 2:</label><input type="number" id="t-m2" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
-                            <div><label class="text-[10px] text-slate-400">الشهر 3:</label><input type="number" id="t-m3" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
-                        </div>
-                    </div>
                     <button onclick="saveStudentGrades()" class="w-full bg-amber-500 text-slate-950 font-bold p-3 rounded-xl text-xs">حفظ الدرجات 💾</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- تبويب: شهادة تقديرية -->
-        <div id="teacher-tab-certificate" class="space-y-4 hidden">
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
-                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-award"></i> إصدار شهادة تقديرية 🌟</h3>
-                <div class="space-y-3 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
-                    <select id="cert-student-select" onchange="fillStudentCertName()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white font-bold"><option value="">اختر التلميذ...</option></select>
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="edit-cert-name" placeholder="اسم التلميذ..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
-                        <input type="text" id="edit-cert-class" placeholder="الصف..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
-                    </div>
-                    <textarea id="edit-cert-text" rows="2" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-[11px]">تقديراً للتميز السلوكي الرفيع والمواظبة المستمرة والحرص على التفوق والاجتهاد في المدرسة.</textarea>
-                    <button onclick="generateCertificatePreview()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2.5 rounded-xl">تحديث ومعاينة الشهادة الرسمية 👁️‍🗨️</button>
-                </div>
-                <div id="certificate-preview-box" class="hidden bg-gradient-to-br from-amber-50 via-white to-amber-100 text-slate-900 p-5 rounded-2xl border-4 border-amber-500 shadow-2xl space-y-3 text-center">
-                    <span class="text-[9px] font-bold text-slate-600 block">جمهورية العراق - وزارة التربية</span>
-                    <h2 class="text-sm font-black text-amber-700">مدرسة الذاريات الابتدائية المختلطة</h2>
-                    <div class="py-1"><span class="bg-amber-500 text-slate-950 text-xs font-black px-4 py-1 rounded-full inline-block">شهادة تقديرية</span></div>
-                    <p id="preview-out-name" class="text-base font-black text-blue-900">---</p>
-                    <p id="preview-out-class" class="text-xs font-bold text-slate-700">الصف: ---</p>
-                    <p class="text-[10px] bg-white p-2.5 rounded-xl border border-amber-300 font-medium leading-relaxed">"<span id="preview-out-text">---</span>"</p>
-                    <div class="grid grid-cols-2 pt-2 border-t border-amber-300 text-[10px] font-bold">
-                        <div class="text-right">المعلم: <br><strong>أ. حيدر محمد عبد الكريم</strong></div>
-                        <div class="text-left">مدير المدرسة: <br><strong>أ. عدي حليم علي</strong></div>
-                    </div>
-                </div>
-                <div id="certificate-actions" class="grid grid-cols-2 gap-2 hidden pt-1">
-                    <button onclick="downloadCertificatePDF()" class="bg-emerald-600 text-white font-bold p-2.5 rounded-xl text-xs">سحب الشهادة PDF 📄</button>
-                    <button onclick="sendCertificateToStudent()" class="bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs">إرسال إلى التلميذ 🚀</button>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        // الكود السري الخاص بك لإدارة اللوحة (1122)
         const ADMIN_SECRET_CODE = "1122";
 
         let studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || [];
         let homeworkData = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
-        let myBookData = JSON.parse(localStorage.getItem('dhariyat_mybook')) || [];
-        let scheduleData = JSON.parse(localStorage.getItem('dhariyat_schedule')) || [];
         let messagesData = JSON.parse(localStorage.getItem('dhariyat_messages')) || [];
         let behaviorData = JSON.parse(localStorage.getItem('dhariyat_behavior')) || {};
         let honorData = JSON.parse(localStorage.getItem('dhariyat_honor')) || [];
@@ -314,7 +150,6 @@
         let notificationsData = JSON.parse(localStorage.getItem('dhariyat_notifications')) || [];
         let parentInboxesData = JSON.parse(localStorage.getItem('dhariyat_parent_inboxes')) || [];
 
-        // تشغيل الساعة الحية والتأكد من جلسة الدخول
         window.onload = function() {
             const isAuthorized = sessionStorage.getItem('dhariyat_admin_logged');
             if(isAuthorized === 'true') {
@@ -343,7 +178,7 @@
                 document.getElementById('teacher-login-modal').classList.add('hidden');
                 initTeacherDashboard();
             } else {
-                alert('كود الدخول السري غير صحيح! حاول مرة أخرى.');
+                alert('كود الدخول السري غير صحيح!');
                 document.getElementById('teacher-secret-code').value = '';
             }
         }
@@ -360,9 +195,10 @@
 
         function saveData() {
             localStorage.setItem('dhariyat_students', JSON.stringify(studentsData));
+            // 🌟 تحديث السجل العام المشترك تلقائياً ليزامنه نظام ولي الأمر
+            localStorage.setItem('dhariyat_global_students', JSON.stringify(studentsData));
+            
             localStorage.setItem('dhariyat_homework', JSON.stringify(homeworkData));
-            localStorage.setItem('dhariyat_mybook', JSON.stringify(myBookData));
-            localStorage.setItem('dhariyat_schedule', JSON.stringify(scheduleData));
             localStorage.setItem('dhariyat_messages', JSON.stringify(messagesData));
             localStorage.setItem('dhariyat_behavior', JSON.stringify(behaviorData));
             localStorage.setItem('dhariyat_honor', JSON.stringify(honorData));
@@ -371,260 +207,41 @@
             localStorage.setItem('dhariyat_parent_inboxes', JSON.stringify(parentInboxesData));
 
             renderStudentsList();
-            renderHomeworkList();
-            renderMyBookList();
-            renderMessagesList();
-            renderHonorList();
-            renderQuizList();
             renderNotificationsList();
             renderParentInboxes();
         }
 
         function switchTeacherTab(tab) {
-            ['students', 'grades', 'homework', 'schedule', 'guidance', 'mybook', 'behavior', 'certificate', 'honor', 'quiz', 'notifications', 'parentinbox'].forEach(t => {
+            ['students', 'grades', 'homework', 'guidance', 'behavior', 'certificate', 'honor', 'quiz', 'notifications', 'parentinbox'].forEach(t => {
                 const el = document.getElementById(`teacher-tab-${t}`);
                 const btn = document.getElementById(`t-tab-${t}`);
                 if(el) el.classList.add('hidden');
                 if(btn) btn.className = "p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]";
             });
-            document.getElementById(`teacher-tab-${tab}`).classList.remove('hidden');
+            const targetEl = document.getElementById(`teacher-tab-${tab}`);
+            if(targetEl) targetEl.classList.remove('hidden');
             const activeBtn = document.getElementById(`t-tab-${tab}`);
             if(activeBtn) activeBtn.className = "p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition text-[9px]";
 
             if(tab === 'grades') populateGradeSelect();
-            if(tab === 'homework') renderHomeworkList();
-            if(tab === 'mybook') renderMyBookList();
-            if(tab === 'guidance') populateMessageSelect();
-            if(tab === 'behavior') populateBehaviorSelect();
-            if(tab === 'certificate') populateCertificateSelect();
-            if(tab === 'honor') populateHonorSelect();
-            if(tab === 'quiz') renderQuizList();
-            if(tab === 'notifications') renderNotificationsList();
-            if(tab === 'parentinbox') renderParentInboxes();
-        }
-
-        function renderParentInboxes() {
-            const c = document.getElementById('teacher-parentinbox-container');
-            if(!c) return;
-            c.innerHTML = '';
-            document.getElementById('inbox-count').innerText = parentInboxesData.length;
-
-            if(parentInboxesData.length === 0) {
-                c.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">لا توجد رسائل واردة من أولياء الأمور حتى الآن.</p>';
-            } else {
-                parentInboxesData.forEach((msg, idx) => {
-                    c.innerHTML += `
-                        <div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-1.5 text-xs">
-                            <div class="flex justify-between items-center border-b border-slate-800 pb-1">
-                                <span class="font-bold text-amber-400">${msg.studentName} (${msg.classInfo})</span>
-                                <span class="text-[10px] text-slate-400">${msg.date}</span>
-                            </div>
-                            <p class="font-bold text-white">${msg.title}</p>
-                            <p class="text-slate-300 bg-slate-800/80 p-2.5 rounded-lg border border-slate-700/60">${msg.content}</p>
-                            <div class="text-left pt-1">
-                                <button onclick="deleteParentInbox(${idx})" class="text-[10px] text-red-400 hover:text-red-300">حذف الرسالة 🗑️</button>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-        }
-
-        function deleteParentInbox(idx) {
-            parentInboxesData.splice(idx, 1);
-            saveData();
-        }
-
-        function clearParentInboxes() {
-            if(confirm('هل أنت متأكد من حذف جميع الرسائل الواردة؟')) {
-                parentInboxesData = [];
-                saveData();
-            }
-        }
-
-        function renderNotificationsList() {
-            const c = document.getElementById('notifications-list-container');
-            if(!c) return; c.innerHTML = '';
-            document.getElementById('notif-count').innerText = notificationsData.length;
-
-            if(notificationsData.length === 0) {
-                c.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">لا توجد إشعارات أو تفاعلات جديدة حتى الآن.</p>';
-            } else {
-                notificationsData.forEach((n) => {
-                    c.innerHTML += `
-                        <div class="p-3 bg-slate-900 border ${n.isCorrect ? 'border-emerald-500/50' : 'border-red-500/50'} rounded-xl space-y-1 text-xs">
-                            <div class="flex justify-between items-center">
-                                <span class="font-bold text-amber-400">${n.studentName} (${n.classInfo})</span>
-                                <span class="text-[10px] text-slate-400">${n.time}</span>
-                            </div>
-                            <p class="text-slate-200">أجاب على السؤال: <strong class="text-white">"${n.question}"</strong></p>
-                            <p class="font-bold ${n.isCorrect ? 'text-emerald-400' : 'text-red-400'}">
-                                الإجابة: (${n.chosenText}) - ${n.isCorrect ? 'إجابة صحيحة 🌟' : 'إجابة خاطئة ❌'}
-                            </p>
-                        </div>
-                    `;
-                });
-            }
-        }
-
-        function clearNotifications() {
-            if(confirm('هل أنت تأكد من مسح جميع الإشعارات؟')) {
-                notificationsData = [];
-                saveData();
-            }
-        }
-
-        function populateHonorSelect() {
-            const select = document.getElementById('honor-student-select');
-            if(!select) return;
-            select.innerHTML = '<option value="">اختر التلميذ...</option>';
-            studentsData.forEach(s => { select.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`; });
-            renderHonorList();
-        }
-        function addHonorStudent() {
-            const sId = document.getElementById('honor-student-select').value;
-            const student = studentsData.find(s => s.id === sId);
-            const reason = document.getElementById('honor-reason').value.trim();
-            if(!student) { alert('اختر التلميذ أولاً.'); return; }
-            honorData.push({ studentId: student.id, studentName: student.name, classInfo: `${student.class} - شعبة ${student.section}`, reason: reason || 'التميز الدراسي والسلوكي' });
-            document.getElementById('honor-reason').value = '';
-            saveData();
-            alert('تمت إضافة التلميذ إلى لوحة الشرف بنجاح 🌟');
-        }
-        function renderHonorList() {
-            const c = document.getElementById('honor-list-container');
-            if(!c) return; c.innerHTML = '';
-            honorData.forEach((h, idx) => {
-                c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs flex justify-between items-center"><div><span class="font-bold text-amber-400">⭐ ${h.studentName}</span> <span class="text-slate-300 text-[10px]">(${h.classInfo})</span><p class="text-slate-400 text-[10px]">${h.reason}</p></div><button onclick="honorData.splice(${idx},1);saveData();" class="text-red-400">🗑️</button></div>`;
-            });
-        }
-
-        function publishQuiz() {
-            const question = document.getElementById('quiz-question').value.trim();
-            const opt1 = document.getElementById('quiz-opt1').value.trim();
-            const opt2 = document.getElementById('quiz-opt2').value.trim();
-            if(!question || !opt1 || !opt2) { alert('يرجى كتابة السؤال وخياراته.'); return; }
-            quizData.push({
-                cls: document.getElementById('quiz-class').value,
-                sub: document.getElementById('quiz-sub').value,
-                question, opt1, opt2,
-                correct: document.getElementById('quiz-correct').value,
-                date: new Date().toLocaleDateString('ar-IQ')
-            });
-            document.getElementById('quiz-question').value = '';
-            document.getElementById('quiz-opt1').value = '';
-            document.getElementById('quiz-opt2').value = '';
-            saveData();
-            alert('تم نشر السؤال التفاعلي بنجاح 🚀');
-        }
-        function renderQuizList() {
-            const c = document.getElementById('quiz-list-container');
-            if(!c) return; c.innerHTML = '';
-            quizData.forEach((q, idx) => {
-                c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs flex justify-between items-center"><div><span class="text-amber-400 font-bold">${q.sub} (${q.cls})</span><p class="text-white">${q.question}</p></div><button onclick="quizData.splice(${idx},1);saveData();" class="text-red-400">🗑️</button></div>`;
-            });
-        }
-
-        function addMyNote() {
-            const title = document.getElementById('my-title').value.trim();
-            if(!title) { alert('أدخل عنوان المذكرة.'); return; }
-            myBookData.push({ day: document.getElementById('my-day').value, date: document.getElementById('my-date').value, cls: document.getElementById('my-class').value, sec: document.getElementById('my-section').value, sub: document.getElementById('my-sub').value, title, notes: document.getElementById('my-notes').value });
-            document.getElementById('my-title').value = ''; document.getElementById('my-notes').value = '';
-            saveData(); alert('تم الحفظ 📌');
-        }
-        function renderMyBookList() {
-            const c = document.getElementById('mybook-list-container');
-            if(!c) return; c.innerHTML = '';
-            myBookData.forEach((item, idx) => {
-                c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs flex justify-between"><span><b>${item.sub}:</b> ${item.title}</span><button onclick="myBookData.splice(${idx},1);saveData();" class="text-red-400">🗑️</button></div>`;
-            });
-        }
-
-        function populateCertificateSelect() {
-            const select = document.getElementById('cert-student-select');
-            if(!select) return; select.innerHTML = '<option value="">اختر التلميذ...</option>';
-            studentsData.forEach(s => { select.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`; });
-        }
-        function fillStudentCertName() {
-            const student = studentsData.find(s => s.id === document.getElementById('cert-student-select').value);
-            if(student) { document.getElementById('edit-cert-name').value = student.name; document.getElementById('edit-cert-class').value = `${student.class} - شعبة ${student.section}`; }
-        }
-        let currentCertData = null;
-        function generateCertificatePreview() {
-            const name = document.getElementById('edit-cert-name').value;
-            if(!name) return;
-            currentCertData = { studentId: document.getElementById('cert-student-select').value, studentName: name };
-            document.getElementById('preview-out-name').innerText = name;
-            document.getElementById('preview-out-class').innerText = `الصف: ${document.getElementById('edit-cert-class').value}`;
-            document.getElementById('preview-out-text').innerText = document.getElementById('edit-cert-text').value;
-            document.getElementById('certificate-preview-box').classList.remove('hidden');
-            document.getElementById('certificate-actions').classList.remove('hidden');
-        }
-        function downloadCertificatePDF() {
-            const p = document.getElementById('certificate-preview-box').outerHTML;
-            const o = document.body.innerHTML;
-            document.body.innerHTML = `<div style="direction: rtl; padding: 20px; font-family: 'Cairo';">${p}</div>`;
-            window.print(); document.body.innerHTML = o; window.location.reload();
-        }
-        function sendCertificateToStudent() {
-            if(!currentCertData) return;
-            let certList = JSON.parse(localStorage.getItem('dhariyat_certificates')) || [];
-            certList = certList.filter(c => c.studentId !== currentCertData.studentId);
-            certList.push(currentCertData);
-            localStorage.setItem('dhariyat_certificates', JSON.stringify(certList));
-            alert('تم إرسال الشهادة بنجاح 🎉');
-        }
-
-        function populateBehaviorSelect() {
-            const select = document.getElementById('beh-student-select');
-            if(!select) return; select.innerHTML = '<option value="">اختر التلميذ...</option>';
-            studentsData.forEach(s => { select.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`; });
-        }
-        function loadStudentBehavior() {
-            const b = behaviorData[document.getElementById('beh-student-select').value] || { score: 95, note: '' };
-            document.getElementById('beh-score-range').value = b.score;
-            document.getElementById('beh-score-val').innerText = b.score;
-            document.getElementById('beh-note').value = b.note;
-        }
-        function saveStudentBehavior() {
-            const sId = document.getElementById('beh-student-select').value;
-            if(!sId) return;
-            behaviorData[sId] = { score: parseInt(document.getElementById('beh-score-range').value), note: document.getElementById('beh-note').value.trim() };
-            saveData(); alert('تم الحفظ ⭐');
-        }
-
-        function populateMessageSelect() {
-            const select = document.getElementById('msg-student-select');
-            if(!select) return; select.innerHTML = '<option value="">اختر التلميذ...</option>';
-            studentsData.forEach(s => { select.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`; });
-            renderMessagesList();
-        }
-        function sendPrivateMessage() {
-            const sId = document.getElementById('msg-student-select').value;
-            const student = studentsData.find(s => s.id === sId);
-            const content = document.getElementById('msg-content').value.trim();
-            if(!student || !content) return;
-            messagesData = messagesData.filter(m => m.studentId !== sId);
-            messagesData.push({ studentId: sId, studentName: student.name, title: document.getElementById('msg-title').value, content, date: new Date().toLocaleDateString('ar-IQ') });
-            document.getElementById('msg-content').value = ''; saveData(); alert('تم الإرسال 🚀');
-        }
-        function renderMessagesList() {
-            const c = document.getElementById('messages-list-container');
-            if(!c) return; c.innerHTML = '';
-            messagesData.forEach((m, idx) => { c.innerHTML += `<div class="p-2 bg-slate-900 border border-slate-700 rounded-xl text-xs flex justify-between"><span>${m.studentName}: ${m.title}</span><button onclick="messagesData.splice(${idx},1);saveData();" class="text-red-400">🗑️</button></div>`; });
         }
 
         function addNewStudent() {
             const name = document.getElementById('new-student-name').value.trim();
-            if(!name) return;
+            if(!name) { alert('أدخل اسم التلميذ.'); return; }
             const id = 'STU-' + Math.floor(1000 + Math.random() * 9000);
             studentsData.push({ id, name, class: document.getElementById('new-student-class').value, section: document.getElementById('new-student-section').value });
-            document.getElementById('new-student-name').value = ''; saveData(); alert(`الكود: ${id}`);
+            document.getElementById('new-student-name').value = ''; 
+            saveData(); 
+            alert(`تم الحفظ بنجاح! كود التلميذ هو: ${id}`);
         }
+
         function renderStudentsList() {
             const c = document.getElementById('teacher-students-list');
             if(!c) return; c.innerHTML = '';
-            studentsData.forEach((s, idx) => { c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl flex justify-between text-xs"><span>${s.name} (${s.id})</span><button onclick="studentsData.splice(${idx},1);saveData();" class="text-red-400">🗑️</button></div>`; });
+            studentsData.forEach((s, idx) => { 
+                c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl flex justify-between text-xs items-center"><span><b>${s.name}</b> (${s.id})</span><button onclick="studentsData.splice(${idx},1);saveData();" class="text-red-400 hover:text-red-300">🗑️ حذف</button></div>`; 
+            });
         }
 
         function populateGradeSelect() {
@@ -632,6 +249,7 @@
             if(!select) return; select.innerHTML = '<option value="">اختر التلميذ...</option>';
             studentsData.forEach(s => { select.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`; });
         }
+
         document.getElementById('grade-student-select')?.addEventListener('change', function() {
             const s = studentsData.find(x => x.id === this.value);
             const container = document.getElementById('grade-inputs-container');
@@ -643,33 +261,42 @@
             document.getElementById('g-jan').value = s.jan || '';
             document.getElementById('g-mid-avg').value = s.midAvg || '';
             document.getElementById('g-mid').value = s.mid || '';
-            document.getElementById('t-m1').value = s.m1 || '';
-            document.getElementById('t-m2').value = s.m2 || '';
-            document.getElementById('t-m3').value = s.m3 || '';
         });
+
         function saveStudentGrades() {
             const s = studentsData.find(x => x.id === document.getElementById('grade-student-select').value);
             if(s) {
-                s.oct = document.getElementById('g-oct').value; s.nov = document.getElementById('g-nov').value;
-                s.dec = document.getElementById('g-dec').value; s.jan = document.getElementById('g-jan').value;
-                s.midAvg = document.getElementById('g-mid-avg').value; s.mid = document.getElementById('g-mid').value;
-                s.m1 = document.getElementById('t-m1').value; s.m2 = document.getElementById('t-m2').value; s.m3 = document.getElementById('t-m3').value;
-                saveData(); alert('تم الحفظ 💾');
+                s.oct = document.getElementById('g-oct').value; 
+                s.nov = document.getElementById('g-nov').value;
+                s.dec = document.getElementById('g-dec').value; 
+                s.jan = document.getElementById('g-jan').value;
+                s.midAvg = document.getElementById('g-mid-avg').value; 
+                s.mid = document.getElementById('g-mid').value;
+                saveData(); 
+                alert('تم حفظ الدرجات وتحديث المزامنة بنجاح 💾');
             }
         }
 
-        function publishHomework() {
-            const title = document.getElementById('hw-title').value.trim();
-            if(!title) return;
-            homeworkData.push({ title, notes: document.getElementById('hw-notes').value, cls: document.getElementById('hw-class').value, sec: document.getElementById('hw-section').value, sub: document.getElementById('hw-sub').value, date: new Date().toLocaleDateString('ar-IQ') });
-            document.getElementById('hw-title').value = ''; document.getElementById('hw-notes').value = '';
-            saveData(); alert('تم النشر 🚀');
-        }
-        function renderHomeworkList() {
-            const c = document.getElementById('homework-list-container');
+        function renderNotificationsList() {
+            const c = document.getElementById('notifications-list-container');
             if(!c) return; c.innerHTML = '';
-            homeworkData.forEach((hw, i) => { c.innerHTML += `<div class="p-2 bg-slate-900 border border-slate-700 rounded-xl text-xs flex justify-between"><span>${hw.sub}: ${hw.title}</span><button onclick="homeworkData.splice(${i},1);saveData();" class="text-red-400">🗑️</button></div>`; });
+            document.getElementById('notif-count').innerText = notificationsData.length;
+            if(notificationsData.length === 0) {
+                c.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">لا توجد إشعارات حتى الآن.</p>';
+            } else {
+                notificationsData.forEach((n) => {
+                    c.innerHTML += `<div class="p-3 bg-slate-900 border rounded-xl text-xs"><b>${n.studentName}:</b> أجاب على السؤال (${n.chosenText}) - ${n.isCorrect ? 'صح 🌟' : 'خطأ ❌'}</div>`;
+                });
+            }
         }
+
+        function clearNotifications() { notificationsData = []; saveData(); }
+        function renderParentInboxes() {
+            const c = document.getElementById('teacher-parentinbox-container');
+            if(!c) return; document.getElementById('inbox-count').innerText = parentInboxesData.length;
+            c.innerHTML = parentInboxesData.length === 0 ? '<p class="text-xs text-slate-400 text-center py-6">لا توجد رسائل واردة.</p>' : parentInboxesData.map((m, i) => `<div class="p-3 bg-slate-900 border rounded-xl text-xs"><b>${m.studentName}:</b> ${m.title} <button onclick="parentInboxesData.splice(${i},1);saveData();" class="text-red-400 float-left">حذف</button></div>`).join('');
+        }
+        function clearParentInboxes() { parentInboxesData = []; saveData(); }
     </script>
 </body>
 </html>
