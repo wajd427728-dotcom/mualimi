@@ -97,19 +97,45 @@
             </div>
         </div>
 
-        <!-- تبويب: إدارة التلاميذ -->
+        <!-- 🌟 تبويب: إدارة التلاميذ المحدث (فردي + مجموعة + عدّاد + مسح الكل) -->
         <div id="teacher-tab-students" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
-                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-user-plus"></i> إدخال التلاميذ</h3>
-                <div class="bg-slate-900/70 p-3 rounded-xl border border-slate-700 space-y-2">
-                    <div class="grid grid-cols-2 gap-2">
-                        <select id="new-student-class" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">الخامس</option></select>
-                        <select id="new-student-section" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"><option value="أ">شعبة أ</option><option value="ب">شعبة ب</option></select>
-                    </div>
-                    <input type="text" id="new-student-name" placeholder="اسم التلميذ الثلاثي..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
-                    <button onclick="addNewStudent()" class="w-full bg-amber-500 text-slate-950 font-bold p-2 rounded-lg text-xs">حفظ وتوليد كود الدخول ➕</button>
+                <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-user-plus"></i> إدارة وإدخال التلاميذ</h3>
+                    <span class="text-xs bg-amber-500/20 text-amber-400 px-2.5 py-1 rounded-full font-black border border-amber-500/30">العدد: <span id="students-count-badge">0</span></span>
                 </div>
-                <div id="teacher-students-list" class="space-y-2 max-h-45 overflow-y-auto pr-1"></div>
+
+                <!-- إدخال فردي -->
+                <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2.5">
+                    <span class="text-[11px] font-bold text-amber-400 block"><i class="fa-solid fa-user"></i> إضافة تلميذ مفرد:</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <select id="new-student-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white"><option value="السادس الابتدائي">السادس الابتدائي</option><option value="الخامس الابتدائي">الخامس الابتدائي</option></select>
+                        <select id="new-student-section" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white"><option value="أ">شعبة أ</option><option value="ب">شعبة ب</option></select>
+                    </div>
+                    <input type="text" id="new-student-name" placeholder="اسم التلميذ الثلاثي..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                    <button onclick="addNewStudent()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold p-2.5 rounded-xl text-xs shadow transition">حفظ وتوليد كود الدخول المفرد ➕</button>
+                </div>
+
+                <!-- إدخال جماعي (مجموعة أسماء) -->
+                <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2.5">
+                    <span class="text-[11px] font-bold text-blue-400 block"><i class="fa-solid fa-users"></i> إدخال مجموعة أسماء دفعة واحدة:</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <select id="group-student-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white"><option value="السادس الابتدائي">السادس الابتدائي</option><option value="الخامس الابتدائي">الخامس الابتدائي</option></select>
+                        <select id="group-student-section" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white"><option value="أ">شعبة أ</option><option value="ب">شعبة ب</option></select>
+                    </div>
+                    <textarea id="group-students-names" rows="3" placeholder="اكتب أو الصق أسماء التلاميذ هنا (كل اسم في سطر مستقل)..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white leading-relaxed"></textarea>
+                    <button onclick="addGroupStudents()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2.5 rounded-xl text-xs shadow transition">توليد وإضافة دفعة التلاميذ الجماعية 🚀</button>
+                </div>
+
+                <!-- أزرار التحكم بالقائمة (مسح الكل) -->
+                <div class="flex justify-between items-center pt-2">
+                    <h4 class="text-xs font-bold text-slate-300">قائمة التلاميذ المسجلين:</h4>
+                    <button onclick="clearAllStudents()" class="text-[10px] bg-red-900/40 hover:bg-red-900/60 text-red-400 px-3 py-1.5 rounded-lg border border-red-500/30 transition flex items-center gap-1 font-bold">
+                        <i class="fa-solid fa-trash-can"></i> مسح جميع التلاميذ 🗑️
+                    </button>
+                </div>
+
+                <div id="teacher-students-list" class="space-y-2 max-h-50 overflow-y-auto pr-1"></div>
             </div>
         </div>
 
@@ -195,7 +221,6 @@
 
         function saveData() {
             localStorage.setItem('dhariyat_students', JSON.stringify(studentsData));
-            // 🌟 تحديث السجل العام المشترك تلقائياً ليزامنه نظام ولي الأمر
             localStorage.setItem('dhariyat_global_students', JSON.stringify(studentsData));
             
             localStorage.setItem('dhariyat_homework', JSON.stringify(homeworkData));
@@ -226,21 +251,80 @@
             if(tab === 'grades') populateGradeSelect();
         }
 
+        // 🌟 إضافة تلميذ مفرد
         function addNewStudent() {
             const name = document.getElementById('new-student-name').value.trim();
-            if(!name) { alert('أدخل اسم التلميذ.'); return; }
+            if(!name) { alert('الرجاء إدخال اسم التلميذ الثلاثي.'); return; }
             const id = 'STU-' + Math.floor(1000 + Math.random() * 9000);
             studentsData.push({ id, name, class: document.getElementById('new-student-class').value, section: document.getElementById('new-student-section').value });
             document.getElementById('new-student-name').value = ''; 
             saveData(); 
-            alert(`تم الحفظ بنجاح! كود التلميذ هو: ${id}`);
+            alert(`تم حفظ التلميذ بنجاح! كود الدخول: ${id}`);
+        }
+
+        // 🌟 إضافة مجموعة أسماء دفعة واحدة
+        function addGroupStudents() {
+            const rawText = document.getElementById('group-students-names').value.trim();
+            if(!rawText) { alert('الرجاء كتابة أو لصق قائمة الأسماء.'); return; }
+            
+            const cls = document.getElementById('group-student-class').value;
+            const sec = document.getElementById('group-student-section').value;
+            
+            // تقسيم الأسماء حسب الأسطر
+            const lines = rawText.split('\n');
+            let addedCount = 0;
+
+            lines.forEach(line => {
+                const name = line.trim();
+                if(name.length > 2) {
+                    const id = 'STU-' + Math.floor(1000 + Math.random() * 9000);
+                    studentsData.push({ id, name, class: cls, section: sec });
+                    addedCount++;
+                }
+            });
+
+            if(addedCount > 0) {
+                document.getElementById('group-students-names').value = '';
+                saveData();
+                alert(`تمت إضافة دفعة نجاح مكونة من ${addedCount} تلميذ وتوليد أكوادهم بنجاح! 🚀`);
+            } else {
+                alert('لم يتم العثور على أسماء صحيحة. تأكد من كتابة كل اسم في سطر.');
+            }
+        }
+
+        // 🌟 مسح جميع التلاميذ
+        function clearAllStudents() {
+            if(confirm('هل أنت متأكد تماماً من حذف جميع التلاميذ المسجلين في القائمة؟')) {
+                studentsData = [];
+                saveData();
+                alert('تم تفريغ قائمة التلاميذ بالكامل.');
+            }
         }
 
         function renderStudentsList() {
             const c = document.getElementById('teacher-students-list');
-            if(!c) return; c.innerHTML = '';
+            if(!c) return; 
+            c.innerHTML = '';
+            
+            // تحديث العدّاد
+            const badge = document.getElementById('students-count-badge');
+            if(badge) badge.innerText = studentsData.length;
+
+            if(studentsData.length === 0) {
+                c.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">لا يوجد تلاميذ مسجلين حالياً.</p>';
+                return;
+            }
+
             studentsData.forEach((s, idx) => { 
-                c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl flex justify-between text-xs items-center"><span><b>${s.name}</b> (${s.id})</span><button onclick="studentsData.splice(${idx},1);saveData();" class="text-red-400 hover:text-red-300">🗑️ حذف</button></div>`; 
+                c.innerHTML += `
+                    <div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl flex justify-between text-xs items-center shadow-inner">
+                        <div>
+                            <span class="font-bold text-white block">${s.name}</span>
+                            <span class="text-[10px] text-amber-400 font-mono">(${s.id}) - ${s.class} (${s.section})</span>
+                        </div>
+                        <button onclick="studentsData.splice(${idx},1);saveData();" class="text-red-400 hover:text-red-300 p-1 rounded transition" title="حذف">🗑️ حذف</button>
+                    </div>
+                `; 
             });
         }
 
