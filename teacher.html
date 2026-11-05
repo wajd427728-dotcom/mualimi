@@ -40,7 +40,6 @@
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-user-plus"></i> القسم الأول: إدخال وتوزيع التلاميذ</h3>
                 
-                <!-- الإضافة الفردية -->
                 <div class="bg-slate-900/70 p-3 rounded-xl border border-slate-700/80 space-y-2">
                     <span class="text-[11px] text-amber-400 font-bold block"><i class="fa-solid fa-user"></i> الإضافة الفردية:</span>
                     <div class="grid grid-cols-2 gap-2">
@@ -66,7 +65,6 @@
                     <button onclick="addNewStudent()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-lg text-xs mt-1">حفظ التلميذ وتوليد كود الدخول ➕</button>
                 </div>
 
-                <!-- الإضافة الجماعية -->
                 <div class="bg-slate-900/70 p-3 rounded-xl border border-slate-700/80 space-y-2">
                     <span class="text-[11px] text-amber-400 font-bold block"><i class="fa-solid fa-file-lines"></i> الإضافة الجماعية (من نوت باد أو ورد):</span>
                     <div class="grid grid-cols-2 gap-2">
@@ -288,11 +286,11 @@
                             <input type="time" id="sch-start" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center text-white font-mono">
                         </div>
                         <div>
-                            <label class="text-[10px] text-slate-400 block mb-1">وقت الانتهاء:</label>
+                            <label class="text-[10px] text-slate-400 block mb-1">وقت الانتهاء (يطلق تنبيه النهاية):</label>
                             <input type="time" id="sch-end" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center text-white font-mono">
                         </div>
                     </div>
-                    <button onclick="addScheduleItem()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl mt-2">حفظ الحصة وتفعيل المنبه ⏰</button>
+                    <button onclick="addScheduleItem()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl mt-2">حفظ الحصة وتفعيل منبه البدء والنهاية ⏰</button>
                 </div>
                 <div id="schedule-list-container" class="space-y-2 max-h-55 overflow-y-auto pr-1"></div>
             </div>
@@ -346,7 +344,6 @@
                         </select>
                     </div>
 
-                    <!-- حقول التعديل -->
                     <div class="space-y-2 pt-2 border-t border-slate-800">
                         <div>
                             <label class="text-[10px] text-amber-400 block mb-1 font-bold">عنوان الشهادة:</label>
@@ -371,7 +368,7 @@
                     <button onclick="generateCertificatePreview()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2.5 rounded-xl mt-1">تحديث ومعاينة الشهادة الرسمية 👁️‍🗨️</button>
                 </div>
 
-                <!-- معاينة الشهادة الرسمية -->
+                <!-- معاينة الشهادة الرسمية (بدون خط تحت الاسم) -->
                 <div id="certificate-preview-box" class="hidden bg-gradient-to-br from-amber-50 via-white to-amber-100 text-slate-900 p-6 rounded-2xl border-4 border-amber-500 shadow-2xl space-y-4 relative overflow-hidden text-center">
                     <div class="absolute top-2 right-2 text-amber-400/30 text-3xl"><i class="fa-solid fa-star"></i></div>
                     <div class="absolute top-2 left-2 text-amber-400/30 text-3xl"><i class="fa-solid fa-graduation-cap"></i></div>
@@ -388,14 +385,13 @@
 
                     <div class="space-y-2 text-xs leading-relaxed text-slate-800 px-2 text-right">
                         <p id="preview-star-label" class="font-bold text-center">إلى / التلميذة النجمة:</p>
-                        <h3 id="preview-out-name" class="text-base font-black text-blue-900 text-center underline decoration-amber-500 decoration-2 underline-offset-4">---</h3>
+                        <h3 id="preview-out-name" class="text-base font-black text-blue-900 text-center">---</h3>
                         <p id="preview-out-class" class="text-xs font-bold text-slate-700 text-center">الصف: ---</p>
                         <p class="text-[11px] bg-white/90 p-3 rounded-xl border border-amber-300 shadow-inner text-slate-800 font-medium text-center leading-loose">
                             "<span id="preview-out-text">---</span>"
                         </p>
                     </div>
 
-                    <!-- التواقيع الرسمية -->
                     <div class="grid grid-cols-2 pt-6 border-t border-amber-300/60 text-[11px] font-bold">
                         <div class="text-right space-y-1">
                             <span class="text-slate-500 block text-[9px]">معلم المادة والمرشد:</span>
@@ -408,7 +404,6 @@
                     </div>
                 </div>
 
-                <!-- أزرار السحب والإرسال -->
                 <div id="certificate-actions" class="grid grid-cols-2 gap-2 hidden pt-2">
                     <button onclick="downloadCertificatePDF()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold p-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5">
                         <i class="fa-solid fa-file-pdf"></i> سحب الشهادة PDF 📄
@@ -425,9 +420,9 @@
     <div id="alarm-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-800 border-2 border-amber-500 w-full max-w-sm rounded-2xl p-6 text-center space-y-4 shadow-2xl animate-bounce">
             <i class="fa-solid fa-bell text-amber-400 text-4xl"></i>
-            <h3 class="text-lg font-black text-amber-400">تنبيه بدء الدرس الآن! ⏰</h3>
+            <h3 id="alarm-title" class="text-lg font-black text-amber-400">تنبيه حصة مدرسية! ⏰</h3>
             <p id="alarm-details" class="text-sm text-white font-bold"></p>
-            <button onclick="stopAlarm()" class="w-full bg-amber-500 text-slate-950 font-bold p-3 rounded-xl text-sm">إيقاف التنبيه ومتابعة الدرس 👍</button>
+            <button onclick="stopAlarm()" class="w-full bg-amber-500 text-slate-950 font-bold p-3 rounded-xl text-sm">إيقاف التنبيه ومتابعة العمل 👍</button>
         </div>
     </div>
 
@@ -750,7 +745,7 @@
             }
             scheduleData.push({ day, num, cls, sec, sub, startTime, endTime });
             saveData();
-            alert('تمت إضافة الحصة وتفعيل المنبه بنجاح! ⏰');
+            alert('تمت إضافة الحصة وتفعيل تنبيه البدء والنهاية بنجاح! ⏰');
         }
 
         function renderScheduleList() {
@@ -763,7 +758,7 @@
                 c.innerHTML += `<div class="p-3 bg-slate-900 border ${isVacant ? 'border-amber-500/40 bg-amber-500/5' : 'border-slate-700'} rounded-xl flex justify-between items-center text-xs">
                     <div>
                         <span class="font-bold text-amber-400 block">${item.day} - ${item.num} (${item.sub})</span>
-                        <span class="text-slate-300">${details} | من <strong class="text-white">${item.startTime}</strong> إلى <strong class="text-white">${item.endTime}</strong></span>
+                        <span class="text-slate-300">${details} | بدء: <strong class="text-white">${item.startTime}</strong> | انتهاء: <strong class="text-white">${item.endTime}</strong></span>
                     </div>
                     <button onclick="deleteSchedule(${idx})" class="px-2 py-1 bg-red-900/40 text-red-400 rounded">🗑️</button>
                 </div>`;
@@ -781,22 +776,32 @@
             const currentDay = daysNames[now.getDay()];
 
             scheduleData.forEach(item => {
-                if(item.day === currentDay && item.startTime === currentTime && lastTriggeredMinute !== currentTime) {
-                    lastTriggeredMinute = currentTime;
-                    triggerAlarm(item);
+                if(item.day === currentDay && item.startTime === currentTime && lastTriggeredMinute !== 'START_' + currentTime) {
+                    lastTriggeredMinute = 'START_' + currentTime;
+                    triggerAlarm(item, 'start');
+                }
+                if(item.day === currentDay && item.endTime === currentTime && lastTriggeredMinute !== 'END_' + currentTime) {
+                    lastTriggeredMinute = 'END_' + currentTime;
+                    triggerAlarm(item, 'end');
                 }
             });
         }, 1000);
 
-        function triggerAlarm(item) {
+        function triggerAlarm(item, type) {
             let detailText = item.sub.includes('شاغر') ? `وقت شاغر (استراحة)` : `للصف (${item.cls} - ${item.sec})`;
-            document.getElementById('alarm-details').innerText = `حان موعد (${item.num}: ${item.sub}) ${detailText} ليوم (${item.day}) من ${item.startTime} إلى ${item.endTime}`;
+            let titleMsg = type === 'start' ? '⏰ تنبيه بدء الدرس الآن!' : '🔔 تنبيه انتهاء الدرس الآن!';
+            let descMsg = type === 'start' 
+                ? `حان موعد بدء (${item.num}: ${item.sub}) ${detailText} ليوم (${item.day}) من ${item.startTime}` 
+                : `انتهت حصة (${item.num}: ${item.sub}) ${detailText} ليوم (${item.day}) في تمام الساعة ${item.endTime}`;
+
+            document.getElementById('alarm-title').innerText = titleMsg;
+            document.getElementById('alarm-details').innerText = descMsg;
             document.getElementById('alarm-modal').classList.remove('hidden');
             
-            alarmAudio.play().catch(e => console.log('Requires interaction'));
+            alarmAudio.play().catch(e => console.log('Requires user interaction'));
             
             if ("vibrate" in navigator) {
-                navigator.vibrate([500, 250, 500, 250, 500]);
+                navigator.vibrate([1000, 500, 1000, 500, 1000, 500, 1000]);
             }
         }
 
