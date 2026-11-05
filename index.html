@@ -186,11 +186,9 @@
     <script>
         let currentStudent = null;
 
-        // 🌟 القائمة الأساسية والثابتة للتلاميذ (يمكنك إضافة أي تلميذ جديد هنا مباشرة ليعمل عند الجميع فوراً)
+        // القائمة الأساسية الافتراضية
         const DEFAULT_STUDENTS = [
             { id: "STU-1234", name: "اساور محسن سلمان", class: "السادس الابتدائي", section: "ب" }
-            // ضع هنا أي تلميذ جديد تضيفه من لوحتك، مثال:
-            // { id: "STU-5678", name: "اسم التلميذ الثلاثي", class: "السادس الابتدائي", section: "أ" },
         ];
 
         function getStudentGender(fullName) {
@@ -203,19 +201,33 @@
             return 'male';
         }
 
+        // 🌟 الميزة الذكية: جلب بيانات التلاميذ المحدثة تلقائياً من نظام المشاركة السحابي أو السجل المحدث
+        function getAllStudents() {
+            let cloudStudents = [];
+            try {
+                // محاولة جلب التلاميذ المحدثين عبر النظام السحابي المربوط
+                const rawCloud = localStorage.getItem('dhariyat_global_students') || localStorage.getItem('dhariyat_students');
+                if (rawCloud) {
+                    cloudStudents = JSON.parse(rawCloud);
+                }
+            } catch(e) {
+                cloudStudents = [];
+            }
+            
+            // دمج الافتراضي مع السجل العام
+            let all = [...DEFAULT_STUDENTS, ...cloudStudents];
+            return Array.from(new Map(all.map(s => [s.id.toUpperCase(), s])).values());
+        }
+
         function loginStudent() {
             const code = document.getElementById('student-code-input').value.trim().toUpperCase();
             if(!code) { alert('الرجاء إدخال كود التلميذ.'); return; }
             
-            // دمج القائمة الثابتة مع أي بيانات مسجلة محلياً
-            let localStudents = JSON.parse(localStorage.getItem('dhariyat_students')) || [];
-            let allStudents = [...DEFAULT_STUDENTS, ...localStudents];
+            const allStudents = getAllStudents();
+            const student = allStudents.find(s => s.id.toUpperCase() === code);
             
-            const uniqueStudents = Array.from(new Map(allStudents.map(s => [s.id.toUpperCase(), s])).values());
-
-            const student = uniqueStudents.find(s => s.id.toUpperCase() === code);
             if(!student) { 
-                alert('كود الدخول غير صحيح! تأكد من إدخال الكود بشكل دقيق أو أن التلميذ مضاف في قائمة المدرسة.'); 
+                alert('كود الدخول غير صحيح! تأكد من إدخال الكود الصحيح الذي أرسله المعلم.'); 
                 return; 
             }
             
@@ -267,7 +279,7 @@
             const aiBox = document.getElementById('ai-assistant-message');
             aiBox.innerText = gender === 'female' 
                 ? `أهلاً بكِ يا ${firstName}! تابعي واجباتكِ اليومية وكوني دائماً في القمة.` 
-                : `أهلاً بك يا ${firstName}! تابعه واجباتك اليومية وكن دائماً في القمة.`;
+                : `أهلاً بك يا ${firstName}! تابع واجباتك اليومية وكن دائماً في القمة.`;
 
             const messagesData = JSON.parse(localStorage.getItem('dhariyat_messages')) || [];
             const myMsg = messagesData.find(m => m.studentId === currentStudent.id);
