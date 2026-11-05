@@ -186,46 +186,62 @@
     <script>
         let currentStudent = null;
 
-        // القائمة الافتراضية
+        // 🌟 قائمة التلاميذ الرسمية والمزودة بأكواد فريدة لكل تلميذة
         const DEFAULT_STUDENTS = [
-            { id: "STU-1234", name: "اساور محسن سلمان", class: "السادس الابتدائي", section: "ب" }
+            { id: "STU-8959", name: "اساور محسن سلمان", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-1042", name: "اسماء قيصر مخلص", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-3521", name: "اية علي سالم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-4890", name: "بنين نجم عبد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-7046", name: "تقى مرتضى مظهر", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-5124", name: "جميلة علي محمد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6382", name: "جنه مرتضى حسين", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-2915", name: "جنى علي عبد الخالق", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-8431", name: "حوراء حسين كريم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-1759", name: "حوراء رائف حسن", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-9204", name: "حوراء نجاح فلاح", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-3467", name: "دنيا محمد شيال", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-5813", name: "دنيا مزهر محمد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-7492", name: "رتاج حسين حيدر", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-2180", name: "رفيف طه سلمان", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6834", name: "ريحانه بهاء حامد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-4159", name: "زهراء فلاح حسن", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-9372", name: "زينب سيف عيدان", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-1583", name: "سجى رائد عبد الامير", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-5201", name: "شهد حسين علي", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-8640", name: "شهد وليد عبد السادة", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-3719", name: "طيبة علاء طعمه", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6025", name: "غدير سيف الدين نوري", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-1948", name: "فاطمه حيدر فرج", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-7832", name: "فاطمه عبد الزهره علي", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-2465", name: "فاطمه علي محمود", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-5910", name: "فاطمه فيصل علي", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-8174", name: "فاطمه محمد حاتم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-4309", name: "فرح سعد ساجد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6523", name: "قمر حيدر قاسم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-9182", name: "ليليان رسول عبد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-1347", name: "ماريا حسين هاشم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-5089", name: "مريم ليث سلمان", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-7261", name: "مريم مصعب راسم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-2834", name: "ملك محمد فخري", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6410", name: "منسه فرحان هاشم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-3952", name: "منه سيف الدين نوري", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-8703", name: "موده فؤاد جواد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-4618", name: "يقين كرار عبد علي", class: "السادس الابتدائي", section: "أ" }
         ];
 
         function getStudentGender(fullName) {
-            if(!fullName) return 'male';
-            const firstName = fullName.trim().split(' ')[0];
-            const femaleNames = ['فاطمة', 'زينب', 'مريم', 'زهراء', 'رقية', 'عائشة', 'نور', 'سارة', 'آية', 'بنين', 'تقى', 'هدى', 'يمامة', 'درة', 'شمس', 'مروة', 'أسماء', 'يقين', 'غفران', 'تبارك', 'آلاء', 'دعاء', 'سجى', 'رواء', 'بشرى', 'حوراء', 'بتول', 'كوثر', 'سلسبيل', 'مروج', 'غيداء', 'يسرى', 'إسراء'];
-            if(femaleNames.includes(firstName) || firstName.endsWith('ة') || firstName.endsWith('ه')) {
-                return 'female';
-            }
-            return 'male';
-        }
-
-        // 🌟 الطريقة الأفضل: دمج القائمة الافتراضية مع أي بيانات يتم جلبها أو مزامنتها
-        function getAllStudents() {
-            let cloudStudents = [];
-            try {
-                // محاولة قراءة التلاميذ من التخزين المشترك أو السجل العام
-                const rawCloud = localStorage.getItem('dhariyat_global_students') || localStorage.getItem('dhariyat_students');
-                if (rawCloud) {
-                    cloudStudents = JSON.parse(rawCloud);
-                }
-            } catch(e) {
-                cloudStudents = [];
-            }
-            let all = [...DEFAULT_STUDENTS, ...cloudStudents];
-            return Array.from(new Map(all.map(s => [s.id.toUpperCase(), s])).values());
+            if(!fullName) return 'female';
+            return 'female'; // جميع الأسماء في القائمة نسائية (طالبات)
         }
 
         function loginStudent() {
             const code = document.getElementById('student-code-input').value.trim().toUpperCase();
-            if(!code) { alert('الرجاء إدخال كود التلميذ.'); return; }
+            if(!code) { alert('الرجاء إدخال كود التلميذة.'); return; }
             
-            const allStudents = getAllStudents();
-            const student = allStudents.find(s => s.id.toUpperCase() === code);
+            const student = DEFAULT_STUDENTS.find(s => s.id.toUpperCase() === code);
             
             if(!student) { 
-                alert('كود الدخول غير صحيح! تأكد من إدخال الكود الصحيح بدقة.'); 
+                alert('كود الدخول غير صحيح! تأكد من إدخال الكود بدقة.'); 
                 return; 
             }
             
@@ -260,15 +276,26 @@
         function loadStudentData() {
             if(!currentStudent) return;
 
-            const gender = getStudentGender(currentStudent.name);
             const firstName = currentStudent.name.split(' ')[0];
-
             const behaviorData = JSON.parse(localStorage.getItem('dhariyat_behavior')) || {};
-            const myBehavior = behaviorData[currentStudent.id] || { score: 95, note: gender === 'female' ? 'أنتِ تلميذة ذكية ومجتهدة، استمري هكذا لتصلي إلى القمة!' : 'أنت تلميذ ذكي ومجتهد، استمر هكذا لتصل إلى القمة!' };
+            const myBehavior = behaviorData[currentStudent.id] || { score: 95, note: `أنتِ تلميذة ذكية ومجتهدة يا ${firstName}، استمري هكذا لتصلي إلى القمة وتتحقي العلامة الكاملة 100!` };
             
             document.getElementById('student-beh-score-text').innerText = `${myBehavior.score} / 100`;
             document.getElementById('student-beh-progress').style.width = `${myBehavior.score}%`;
             document.getElementById('student-beh-note').innerText = myBehavior.note;
+            document.getElementById('student-beh-motto').innerText = myBehavior.score == 100 ? '"ما شاء الله! أنتِ بطلة متفوقة تستحقين العلامة الكاملة 100 🌟"' : '"أنتِ على الطريق الصحيح نحو الـ 100 يا بطلة!"';
+
+            document.getElementById('ai-assistant-message').innerText = `أهلاً بكِ يا ${firstName}! تابعي واجباتِكِ اليومية وكوني دائماً في القمة.`;
+
+            const messagesData = JSON.parse(localStorage.getItem('dhariyat_messages')) || [];
+            const myMsg = messagesData.find(m => m.studentId === currentStudent.id);
+            const msgBox = document.getElementById('private-message-box');
+            if(myMsg) {
+                document.getElementById('msg-box-title').innerText = myMsg.title;
+                document.getElementById('msg-box-content').innerText = myMsg.content;
+                document.getElementById('msg-box-date').innerText = `التاريخ: ${myMsg.date}`;
+                msgBox.classList.remove('hidden');
+            } else { msgBox.classList.add('hidden'); }
 
             const homeworkData = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
             const hwContainer = document.getElementById('student-homework-list');
@@ -295,6 +322,7 @@
                     </div>
                 </div>
             `;
+            loadParentMessages();
         }
 
         function sendParentMessageToTeacher() {
@@ -319,7 +347,32 @@
             localStorage.setItem('dhariyat_parent_inboxes', JSON.stringify(parentInboxes));
             document.getElementById('parent-msg-title').value = '';
             document.getElementById('parent-msg-content').value = '';
+            loadParentMessages();
             alert('تم إرسال رسالتك إلى المعلم بنجاح 🚀');
+        }
+
+        function loadParentMessages() {
+            if(!currentStudent) return;
+            const parentInboxes = JSON.parse(localStorage.getItem('dhariyat_parent_inboxes')) || [];
+            const myInboxes = parentInboxes.filter(m => m.studentId === currentStudent.id);
+            const container = document.getElementById('parent-sent-messages-list');
+            container.innerHTML = '';
+
+            if(myInboxes.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">لا توجد رسائل مرسلة بعد.</p>';
+            } else {
+                myInboxes.forEach(m => {
+                    container.innerHTML += `
+                        <div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-1 text-xs">
+                            <div class="flex justify-between text-[10px] text-amber-400 font-bold">
+                                <span>${m.title}</span>
+                                <span>${m.date}</span>
+                            </div>
+                            <p class="text-slate-200">${m.content}</p>
+                        </div>
+                    `;
+                });
+            }
         }
 
         window.onload = function() {
