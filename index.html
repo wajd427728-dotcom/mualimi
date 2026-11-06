@@ -28,7 +28,7 @@
             </div>
             <div class="space-y-1.5">
                 <h2 class="text-base font-black text-white">تسجيل دخول التلميذ / ولي الأمر</h2>
-                <p class="text-[11px] text-slate-400">أدخل كود الدخول الخاص بك (مثال: STU-1001 أو STU-8959) لتسجيل الدخول.</p>
+                <p class="text-[11px] text-slate-400">أدخل كود الدخول الخاص بك (مثال: STU-1001 أو STU-3001 أو STU-8959) لتسجيل الدخول.</p>
             </div>
             <div class="space-y-3">
                 <input type="text" id="student-code-input" placeholder="أدخل الكود هنا..." class="w-full bg-slate-900 border-2 border-slate-700 rounded-2xl p-3.5 text-center text-white font-mono font-black tracking-widest text-sm focus:border-amber-400 outline-none transition uppercase shadow-inner">
@@ -93,6 +93,7 @@
     <script>
         let currentStudent = null;
 
+        // القائمة الثابتة الكاملة لمدرسة الذاريات الابتدائي (203 تلميذ/ة)
         const BASE_STUDENTS = [
             // --- الصف السادس الابتدائي / الشعبة ( أ ) ---
             { id: "STU-1001", name: "أبو تراب حسين سلام", class: "السادس الابتدائي", section: "أ" },
@@ -356,13 +357,13 @@
         function loadStudentData() {
             if(!currentStudent) return;
             
-            // قراءة السلوكي
+            // قراءة وسام السلوك
             const behaviorData = JSON.parse(localStorage.getItem('dhariyat_behavior')) || {};
             const myBehavior = behaviorData[currentStudent.id] || { score: 95, note: 'تلميذ متميز ومجتهد وخلوق!' };
             document.getElementById('student-beh-score-text').innerText = `${myBehavior.score} / 100`;
             document.getElementById('student-beh-note').innerText = myBehavior.note || 'تلميذ متميز ومجتهد وخلوق!';
 
-            // قراءة الدرجات
+            // قراءة سجل الدرجات
             const gradesData = JSON.parse(localStorage.getItem('dhariyat_grades')) || {};
             const myGrades = gradesData[currentStudent.id] || {};
             const gContainer = document.getElementById('student-grades-container');
