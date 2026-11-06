@@ -174,11 +174,41 @@
             </div>
         </div>
 
-        <!-- تبويب: إدارة التلاميذ -->
+        <!-- 🌟 تبويب: إدارة التلاميذ (إدخال جماعي + سحب شعبة + عدد كلي + حذف فردي وجماعي) -->
         <div id="teacher-tab-students" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
-                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-user-plus"></i> قائمة التلاميذ والأكواد المعتمدة</h3>
-                <div id="teacher-students-list" class="space-y-2 max-h-70 overflow-y-auto pr-1"></div>
+                <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-users-gear"></i> إدارة التلاميذ</h3>
+                    <span class="text-xs bg-amber-500/20 text-amber-400 px-2.5 py-1 rounded-full font-black border border-amber-500/30">العدد الكلي: <span id="students-count-badge">0</span></span>
+                </div>
+
+                <!-- صندوق الإدخال الجماعي -->
+                <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2.5">
+                    <span class="text-[11px] font-bold text-amber-400 block"><i class="fa-solid fa-file-lines"></i> إدخال أو لصق أسماء مجموعة دفعة واحدة:</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <select id="group-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white"><option value="السادس الابتدائي">السادس الابتدائي</option><option value="الخامس الابتدائي">الخامس الابتدائي</option></select>
+                        <select id="group-section" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white"><option value="أ">شعبة أ</option><option value="ب">شعبة ب</option></select>
+                    </div>
+                    <textarea id="group-names-input" rows="3" placeholder="اكتب أو الصق الأسماء هنا (كل اسم في سطر مستقل)..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white leading-relaxed"></textarea>
+                    <button onclick="addGroupStudents()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold p-2.5 rounded-xl text-xs shadow transition">توليد الأكواد وحفظ الدفعة جماعياً 🚀</button>
+                </div>
+
+                <!-- صندوق فلترة وعرض شعبة محددة -->
+                <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2.5">
+                    <span class="text-[11px] font-bold text-blue-400 block"><i class="fa-solid fa-filter"></i> عرض وسحب شعبة محددة:</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <select id="filter-class" onchange="renderStudentsList()" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white"><option value="الجميع">كافة الصفوف</option><option value="السادس الابتدائي">السادس الابتدائي</option><option value="الخامس الابتدائي">الخامس الابتدائي</option></select>
+                        <select id="filter-section" onchange="renderStudentsList()" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white"><option value="الجميع">كافة الشعب</option><option value="أ">شعبة أ</option><option value="ب">شعبة ب</option></select>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center pt-1">
+                    <h4 class="text-xs font-bold text-slate-300">قائمة التلاميذ (الاسم، الصف، الشعبة، الكود):</h4>
+                    <button onclick="clearAllStudents()" class="text-[10px] bg-red-900/40 hover:bg-red-900/60 text-red-300 px-2 py-1 rounded transition">حذف الكل 🗑️</button>
+                </div>
+
+                <!-- قائمة العرض -->
+                <div id="teacher-students-list" class="space-y-2 max-h-55 overflow-y-auto pr-1"></div>
             </div>
         </div>
 
@@ -282,7 +312,6 @@
     </div>
 
     <script>
-        // القائمة الأساسية الثابتة والموحدة مع بوابة ولي الأمر
         const BASE_STUDENTS = [
             { id: "STU-8959", name: "اساور محسن سلمان", class: "السادس الابتدائي", section: "أ" },
             { id: "STU-1042", name: "اسماء قيصر مخلص", class: "السادس الابتدائي", section: "أ" },
@@ -379,11 +408,81 @@
             if(tab === 'students') renderStudentsList();
         }
 
+        // 🌟 إضافة مجموعة أسماء دفعة واحدة
+        function addGroupStudents() {
+            const text = document.getElementById('group-names-input').value.trim();
+            if(!text) { alert('الرجاء كتابة أو لصق الأسماء.'); return; }
+            const cls = document.getElementById('group-class').value;
+            const sec = document.getElementById('group-section').value;
+            const lines = text.split('\n');
+            let count = 0;
+
+            lines.forEach(line => {
+                const name = line.trim();
+                if(name.length > 2) {
+                    const id = 'STU-' + Math.floor(1000 + Math.random() * 9000);
+                    studentsData.push({ id, name, class: cls, section: sec });
+                    count++;
+                }
+            });
+
+            if(count > 0) {
+                document.getElementById('group-names-input').value = '';
+                saveData();
+                alert(`تمت إضافة ${count} تلميذ/ة بنجاح وتوليد أكواهن! 🚀`);
+            } else {
+                alert('لم يتم العثور على أسماء صحيحة.');
+            }
+        }
+
+        // 🌟 حذف تلميذ مفرد
+        function deleteSingleStudent(id) {
+            if(confirm('هل أنت متأكد من حذف هذه التلميذة؟')) {
+                studentsData = studentsData.filter(s => s.id !== id);
+                saveData();
+            }
+        }
+
+        // 🌟 حذف جميع التلاميذ
+        function clearAllStudents() {
+            if(confirm('تحذير: هل أنت متأكد من حذف كافة التلاميذ من النظام؟')) {
+                studentsData = [];
+                saveData();
+            }
+        }
+
+        // 🌟 عرض القائمة مع الفلترة، العدد الكلي، وحذف فردي أو جماعي
         function renderStudentsList() {
             const c = document.getElementById('teacher-students-list');
             if(!c) return; c.innerHTML = '';
-            studentsData.forEach((s) => { 
-                c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl flex justify-between text-xs items-center"><span>${s.name}</span><span class="text-amber-400 font-mono font-bold">${s.id}</span></div>`; 
+            
+            const filterCls = document.getElementById('filter-class')?.value || 'الجميع';
+            const filterSec = document.getElementById('filter-section')?.value || 'الجميع';
+
+            const badge = document.getElementById('students-count-badge');
+            if(badge) badge.innerText = studentsData.length;
+
+            const filtered = studentsData.filter(s => {
+                const matchCls = (filterCls === 'الجميع' || s.class === filterCls);
+                const matchSec = (filterSec === 'الجميع' || s.section === filterSec);
+                return matchCls && matchSec;
+            });
+
+            if(filtered.length === 0) {
+                c.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">لا توجد نتائج مطابقة لهذه الشعبة.</p>';
+                return;
+            }
+
+            filtered.forEach((s) => {
+                c.innerHTML += `
+                    <div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl flex justify-between items-center text-xs">
+                        <div>
+                            <span class="font-bold text-white block">${s.name}</span>
+                            <span class="text-[10px] text-amber-400 font-mono">الصف: ${s.class} (${s.section}) | الكود: ${s.id}</span>
+                        </div>
+                        <button onclick="deleteSingleStudent('${s.id}')" class="text-red-400 hover:text-red-300 p-1" title="حذف التلميذة">🗑️ حذف</button>
+                    </div>
+                `;
             });
         }
 
