@@ -160,4 +160,411 @@
         <!-- تبويب: توجيه -->
         <div id="teacher-tab-guidance" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-envelope-
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-envelope-open-text"></i> توجيه خاص لولي الأمر 💌</h3>
+                <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
+                    <select id="msg-student-select" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white font-bold"><option value="">اختر التلميذ...</option></select>
+                    <input type="text" id="msg-title" value="توجيه تربوي وملاحظة سلوكية" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
+                    <textarea id="msg-content" rows="3" placeholder="نص الرسالة..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></textarea>
+                    <button onclick="sendPrivateMessage()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl">إرسال التوجيه 🚀</button>
+                </div>
+                <div id="messages-list-container" class="space-y-2 max-h-35 overflow-y-auto pr-1"></div>
+            </div>
+        </div>
+
+        <!-- 🌟 تبويب: إدارة التلاميذ -->
+        <div id="teacher-tab-students" class="space-y-4 hidden">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-users-gear"></i> إدارة التلاميذ</h3>
+                    <span class="text-xs bg-amber-500/20 text-amber-400 px-2.5 py-1 rounded-full font-black border border-amber-500/30">العدد الكلي: <span id="students-count-badge">0</span></span>
+                </div>
+
+                <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2.5">
+                    <span class="text-[11px] font-bold text-amber-400 block"><i class="fa-solid fa-file-lines"></i> إدخال أو لصق أسماء مجموعة دفعة واحدة:</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <select id="group-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white"><option value="السادس الابتدائي">السادس الابتدائي</option><option value="الخامس الابتدائي">الخامس الابتدائي</option></select>
+                        <select id="group-section" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white"><option value="أ">شعبة أ</option><option value="ب">شعبة ب</option></select>
+                    </div>
+                    <textarea id="group-names-input" rows="3" placeholder="اكتب أو الصق الأسماء هنا..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-white leading-relaxed"></textarea>
+                    <button onclick="addGroupStudents()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold p-2.5 rounded-xl text-xs shadow transition">توليد الأكواد وحفظ الدفعة جماعياً 🚀</button>
+                </div>
+
+                <div class="flex justify-between items-center pt-1">
+                    <h4 class="text-xs font-bold text-slate-300">قائمة التلاميذ:</h4>
+                    <button onclick="resetToDefaultStudents()" class="text-[10px] bg-amber-600 hover:bg-amber-500 text-white px-2 py-1 rounded transition">استرجاع القائمة الأصلية 🔄</button>
+                </div>
+                <div id="teacher-students-list" class="space-y-2 max-h-55 overflow-y-auto pr-1"></div>
+            </div>
+        </div>
+
+        <!-- تبويب: سجل الدرجات -->
+        <div id="teacher-tab-grades" class="space-y-4 hidden">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-graduation-cap"></i> سجل درجات التلاميذ</h3>
+                <select id="grade-student-select" onchange="loadStudentGradesInputs()" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white"><option value="">اختر التلميذ...</option></select>
+                <div id="grade-inputs-container" class="space-y-4">
+                    <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-3">
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div><label class="text-[10px] text-slate-400">تشرين الأول:</label><input type="number" id="g-oct" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+                            <div><label class="text-[10px] text-slate-400">تشرين الثاني:</label><input type="number" id="g-nov" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+                            <div><label class="text-[10px] text-slate-400">كانون الأول:</label><input type="number" id="g-dec" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+                            <div><label class="text-[10px] text-slate-400">كانون الثاني:</label><input type="number" id="g-jan" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+                            <div><label class="text-[10px] text-amber-300">معدل الأول:</label><input type="number" id="g-mid-avg" class="w-full bg-slate-800 border border-amber-500/50 rounded-lg p-2 text-white font-bold"></div>
+                            <div><label class="text-[10px] text-amber-300">نصف السنة:</label><input type="number" id="g-mid" class="w-full bg-slate-800 border border-amber-500/50 rounded-lg p-2 text-white font-bold"></div>
+                        </div>
+                    </div>
+                    <button onclick="saveStudentGrades()" class="w-full bg-amber-500 text-slate-950 font-bold p-3 rounded-xl text-xs">حفظ الدرجات 💾</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- تبويب: دروسي -->
+        <div id="teacher-tab-schedule" class="space-y-4 hidden">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-calendar-days"></i> جدول دروسي الأسبوعي ⏰</h3>
+                <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
+                    <div class="grid grid-cols-2 gap-2">
+                        <select id="sch-day" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
+                            <option value="السبت">السبت</option><option value="الأحد">الأحد</option><option value="الإثنين">الإثنين</option><option value="الثلاثاء">الثلاثاء</option><option value="الأربعاء">الأربعاء</option><option value="الخميس">الخميس</option>
+                        </select>
+                        <select id="sch-number" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold text-amber-400">
+                            <option value="الحصة الأولى">الحصة الأولى</option><option value="الحصة الثانية">الحصة الثانية</option><option value="الحصة الثالثة">الحصة الثالثة</option><option value="الحصة الرابعة">الحصة الرابعة</option>
+                        </select>
+                    </div>
+                    <select id="sch-sub" onchange="toggleScheduleFields()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
+                        <option value="اللغة العربية">اللغة العربية</option><option value="التربية الإسلامية">التربية الإسلامية</option><option value="شاغر (استراحة)">شاغر (استراحة) ☕</option>
+                    </select>
+                    <div id="sch-class-section-box" class="grid grid-cols-2 gap-2">
+                        <select id="sch-class" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="الخامس الابتدائي">الخامس الابتدائي</option><option value="السادس الابتدائي">السادس الابتدائي</option></select>
+                        <select id="sch-section" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="أ">شعبة أ</option><option value="ب">شعبة ب</option></select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="time" id="sch-start" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-center font-mono">
+                        <input type="time" id="sch-end" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-center font-mono">
+                    </div>
+                    <button onclick="addScheduleItem()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl mt-2">حفظ الحصة في الجدول ⏰</button>
+                </div>
+                <div id="schedule-list-container" class="space-y-2 max-h-45 overflow-y-auto pr-1"></div>
+            </div>
+        </div>
+
+        <!-- 🏆 تبويب: شهادة تقديرية رسمية -->
+        <div id="teacher-tab-certificate" class="space-y-4 hidden">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-award"></i> إصدار وتصدير الشهادة التقديرية الرسمية 🌟</h3>
+                <div class="space-y-3 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
+                    <select id="cert-student-select" onchange="fillStudentCertName()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white font-bold"><option value="">اختر التلميذ / التلميذة...</option></select>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="edit-cert-name" placeholder="اسم التلميذ أو التلميذة..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
+                        <input type="text" id="edit-cert-class" placeholder="الصف (مثال: السادس الابتدائي)..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                    </div>
+                    <input type="text" id="edit-cert-section" placeholder="الشعبة (مثال: أ أو ب)..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                    <textarea id="edit-cert-text" rows="3" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-[11px]">تقديراً لحسن السلوك الرفيع، والانضباط التام، والمواظبة المستمرة على الدوام، والحرص البالغ على التفوق والاجتهاد في المدرسة، نمنح هذه الشهادة بكل اعتزاز.</textarea>
+                    
+                    <button onclick="generateCertificatePreview()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2.5 rounded-xl transition shadow">معاينة الشهادة الرسمية 👁️‍🗨️</button>
+                </div>
+
+                <!-- معاينة الشهادة الرسمية -->
+                <div id="certificate-preview-box" class="hidden bg-gradient-to-br from-amber-50 via-white to-amber-100 text-slate-900 p-5 rounded-3xl border-4 border-amber-600 shadow-2xl space-y-4 text-center relative overflow-hidden">
+                    <div class="border-2 border-dashed border-amber-500/60 p-4 rounded-2xl space-y-3 bg-white/90">
+                        <div class="text-xs font-black text-slate-800 space-y-0.5">
+                            <p>جمهورية العراق</p>
+                            <p>وزارة التربية العراقية</p>
+                            <p class="text-amber-700 font-bold">مدرسة الذاريات الابتدائية المختلطة</p>
+                        </div>
+
+                        <h2 class="text-lg font-black text-amber-800 tracking-wider bg-amber-200/70 py-1 px-4 rounded-full w-fit mx-auto shadow-sm border border-amber-400">شهادة تقديرية 🏆</h2>
+
+                        <div class="space-y-1.5">
+                            <span class="text-[11px] text-slate-600 font-bold block">إلى التلميذ / التلميذة المحترم(ة):</span>
+                            <p id="preview-out-name" class="text-base font-black text-blue-950">---</p>
+                            <div class="grid grid-cols-2 gap-2 pt-1">
+                                <div class="bg-amber-100/80 p-2 rounded-xl border border-amber-300 text-center">
+                                    <span class="text-[10px] text-slate-600 block font-bold">الصف:</span>
+                                    <span id="preview-out-class" class="text-xs font-black text-slate-900">---</span>
+                                </div>
+                                <div class="bg-amber-100/80 p-2 rounded-xl border border-amber-300 text-center">
+                                    <span class="text-[10px] text-slate-600 block font-bold">الشعبة:</span>
+                                    <span id="preview-out-section" class="text-xs font-black text-slate-900">---</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p id="preview-out-text" class="text-xs bg-amber-50 p-3 rounded-xl border border-amber-300 font-bold text-slate-900 leading-relaxed shadow-inner">---</p>
+
+                        <!-- التوقيعات في الأسفل -->
+                        <div class="flex justify-between items-center pt-3 text-[11px] font-black text-slate-900 px-2 border-t border-amber-300/80">
+                            <div class="text-right">
+                                <span class="text-[9px] text-slate-600 block">المعلم:</span>
+                                <span class="text-amber-950 font-bold">حيدر محمد عبد الكريم</span>
+                            </div>
+                            <div class="text-left">
+                                <span class="text-[9px] text-slate-600 block">مدير المدرسة:</span>
+                                <span class="text-amber-950 font-bold">عدي حليم علي</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- أزرار الإجراءات للشهادة -->
+                <div id="cert-actions-box" class="grid grid-cols-2 gap-2 hidden">
+                    <button onclick="sendCertificateToStudent()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-2.5 rounded-xl text-xs transition shadow flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-paper-plane"></i> إرسال لملف التلميذ 🚀
+                    </button>
+                    <button onclick="downloadCertificatePDF()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black p-2.5 rounded-xl text-xs transition shadow flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-file-pdf"></i> سحب الشهادة PDF 📄
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const BASE_STUDENTS = [
+            { id: "STU-1001", name: "أبو تراب حسين سلام", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-8959", name: "أساور محسن سلمان", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-3001", name: "أحمد شجاع عباس", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-4001", name: "أبراهيم يوسف راسم", class: "الخامس الابتدائي", section: "ب" }
+        ];
+
+        let savedStored = localStorage.getItem('dhariyat_students');
+        let studentsData = (savedStored && JSON.parse(savedStored).length > 0) ? JSON.parse(savedStored) : BASE_STUDENTS;
+        let scheduleData = JSON.parse(localStorage.getItem('dhariyat_schedule')) || [];
+        let behaviorData = JSON.parse(localStorage.getItem('dhariyat_behavior')) || {};
+        let gradesData = JSON.parse(localStorage.getItem('dhariyat_grades')) || {};
+        let certificatesData = JSON.parse(localStorage.getItem('dhariyat_certificates')) || {};
+        let notificationsData = JSON.parse(localStorage.getItem('dhariyat_notifications')) || [];
+        let honorData = JSON.parse(localStorage.getItem('dhariyat_honor')) || [];
+        let quizData = JSON.parse(localStorage.getItem('dhariyat_quiz')) || [];
+        let homeworkData = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
+        let mybookData = JSON.parse(localStorage.getItem('dhariyat_mybook')) || [];
+        let messagesData = JSON.parse(localStorage.getItem('dhariyat_messages')) || [];
+
+        function saveData() {
+            localStorage.setItem('dhariyat_students', JSON.stringify(studentsData));
+            localStorage.setItem('dhariyat_grades', JSON.stringify(gradesData));
+            localStorage.setItem('dhariyat_schedule', JSON.stringify(scheduleData));
+            localStorage.setItem('dhariyat_certificates', JSON.stringify(certificatesData));
+            localStorage.setItem('dhariyat_notifications', JSON.stringify(notificationsData));
+            localStorage.setItem('dhariyat_honor', JSON.stringify(honorData));
+            localStorage.setItem('dhariyat_quiz', JSON.stringify(quizData));
+            localStorage.setItem('dhariyat_homework', JSON.stringify(homeworkData));
+            localStorage.setItem('dhariyat_mybook', JSON.stringify(mybookData));
+            localStorage.setItem('dhariyat_messages', JSON.stringify(messagesData));
+        }
+
+        function populateAllSelects() {
+            const selects = ['honor-student-select', 'cert-student-select', 'beh-student-select', 'msg-student-select', 'grade-student-select'];
+            selects.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) {
+                    el.innerHTML = '<option value="">اختر التلميذ / التلميذة...</option>';
+                    studentsData.forEach(s => {
+                        el.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`;
+                    });
+                }
+            });
+        }
+
+        function switchTeacherTab(tab) {
+            ['students', 'grades', 'homework', 'schedule', 'guidance', 'mybook', 'behavior', 'certificate', 'honor', 'quiz', 'notifications'].forEach(t => {
+                const el = document.getElementById(`teacher-tab-${t}`);
+                const btn = document.getElementById(`t-tab-${t}`);
+                if(el) el.classList.add('hidden');
+                if(btn) btn.className = "p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]";
+            });
+            document.getElementById(`teacher-tab-${tab}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`t-tab-${tab}`);
+            if(activeBtn) activeBtn.className = "p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition text-[9px]";
+            if(tab === 'students') renderStudentsList();
+            else populateAllSelects();
+        }
+
+        // --- دوال الأزرار المفقودة سابقاً ---
+        function clearNotifications() {
+            notificationsData = [];
+            saveData();
+            renderNotifications();
+            alert('تم مسح سجل الإشعارات بنجاح.');
+        }
+
+        function renderNotifications() {
+            const c = document.getElementById('notifications-list-container');
+            const badge = document.getElementById('notif-count');
+            if(badge) badge.innerText = notificationsData.length;
+            if(!c) return; c.innerHTML = '';
+            if(notificationsData.length === 0) {
+                c.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">لا توجد إشعارات أو تفاعلات جديدة.</p>';
+                return;
+            }
+            notificationsData.forEach(n => {
+                c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs"><span class="font-bold text-amber-400 block">${n.title}</span><p class="text-white">${n.text}</p></div>`;
+            });
+        }
+
+        function addHonorStudent() {
+            const sId = document.getElementById('honor-student-select').value;
+            const reason = document.getElementById('honor-reason').value.trim();
+            if(!sId || !reason) { alert('الرجاء اختيار التلميذ وإدخال السبب.'); return; }
+            const student = studentsData.find(s => s.id === sId);
+            if(student) {
+                honorData.push({ name: student.name, class: student.class, section: student.section, reason });
+                saveData();
+                alert('تمت الإضافة إلى لوحة الشرف بنجاح 🌟');
+                document.getElementById('honor-reason').value = '';
+            }
+        }
+
+        function publishQuiz() {
+            const q = document.getElementById('quiz-question').value.trim();
+            if(!q) { alert('الرجاء كتابة نص السؤال.'); return; }
+            quizData.push({ question: q, cls: document.getElementById('quiz-class').value, sub: document.getElementById('quiz-sub').value });
+            saveData();
+            alert('تم نشر الاختبار بنجاح 🚀');
+            document.getElementById('quiz-question').value = '';
+        }
+
+        function addMyNote() {
+            const title = document.getElementById('my-title').value.trim();
+            if(!title) { alert('الرجاء كتابة عنوان المذكرة.'); return; }
+            mybookData.push({ title, notes: document.getElementById('my-notes').value, day: document.getElementById('my-day').value });
+            saveData();
+            alert('تم الحفظ في مفكرتي 📌');
+            document.getElementById('my-title').value = '';
+            document.getElementById('my-notes').value = '';
+        }
+
+        function publishHomework() {
+            const title = document.getElementById('hw-title').value.trim();
+            if(!title) { alert('الرجاء كتابة عنوان الواجب.'); return; }
+            homeworkData.push({ title, notes: document.getElementById('hw-notes').value, cls: document.getElementById('hw-class').value, sec: document.getElementById('hw-section').value });
+            saveData();
+            alert('تم نشر الواجب بنجاح 📖');
+            document.getElementById('hw-title').value = '';
+            document.getElementById('hw-notes').value = '';
+        }
+
+        function sendPrivateMessage() {
+            const sId = document.getElementById('msg-student-select').value;
+            const content = document.getElementById('msg-content').value.trim();
+            if(!sId || !content) { alert('الرجاء اختيار التلميذ وكتابة نص التوجيه.'); return; }
+            messagesData.push({ studentId: sId, title: document.getElementById('msg-title').value, content });
+            saveData();
+            alert('تم إرسال التوجيه بنجاح 💌');
+            document.getElementById('msg-content').value = '';
+        }
+
+        function addGroupStudents() {
+            const raw = document.getElementById('group-names-input').value.trim();
+            if(!raw) { alert('الرجاء إدخال الأسماء.'); return; }
+            const names = raw.split('\n');
+            const cls = document.getElementById('group-class').value;
+            const sec = document.getElementById('group-section').value;
+            names.forEach((n, idx) => {
+                if(n.trim()) {
+                    studentsData.push({ id: `STU-${Math.floor(1000 + Math.random() * 9000)}`, name: n.trim(), class: cls, section: sec });
+                }
+            });
+            saveData();
+            renderStudentsList();
+            alert('تمت إضافة الدفعة بنجاح 🚀');
+            document.getElementById('group-names-input').value = '';
+        }
+
+        function loadStudentGradesInputs() {
+            const sId = document.getElementById('grade-student-select').value;
+            if(!sId) return;
+            const g = gradesData[sId] || {};
+            document.getElementById('g-oct').value = g.oct || '';
+            document.getElementById('g-nov').value = g.nov || '';
+            document.getElementById('g-dec').value = g.dec || '';
+            document.getElementById('g-jan').value = g.jan || '';
+            document.getElementById('g-mid-avg').value = g.midAvg || '';
+            document.getElementById('g-mid').value = g.mid || '';
+        }
+
+        function saveStudentGrades() {
+            const sId = document.getElementById('grade-student-select').value;
+            if(!sId) { alert('اختر التلميذ أولاً.'); return; }
+            gradesData[sId] = {
+                oct: document.getElementById('g-oct').value,
+                nov: document.getElementById('g-nov').value,
+                dec: document.getElementById('g-dec').value,
+                jan: document.getElementById('g-jan').value,
+                midAvg: document.getElementById('g-mid-avg').value,
+                mid: document.getElementById('g-mid').value
+            };
+            saveData();
+            alert('تم حفظ الدرجات بنجاح 💾');
+        }
+
+        function addScheduleItem() {
+            const start = document.getElementById('sch-start').value;
+            const end = document.getElementById('sch-end').value;
+            if(!start || !end) { alert('حدد وقت البدء والانتهاء.'); return; }
+            scheduleData.push({
+                id: Date.now(),
+                day: document.getElementById('sch-day').value,
+                number: document.getElementById('sch-number').value,
+                sub: document.getElementById('sch-sub').value,
+                cls: document.getElementById('sch-class').value,
+                sec: document.getElementById('sch-section').value,
+                start, end
+            });
+            saveData();
+            alert('تم حفظ الحصة ⏰');
+        }
+
+        function fillStudentCertName() {
+            const studentId = document.getElementById('cert-student-select').value;
+            const student = studentsData.find(s => s.id === studentId);
+            if(student) {
+                document.getElementById('edit-cert-name').value = student.name;
+                document.getElementById('edit-cert-class').value = student.class;
+                document.getElementById('edit-cert-section').value = student.section;
+            }
+        }
+
+        function generateCertificatePreview() {
+            const name = document.getElementById('edit-cert-name').value.trim();
+            if(!name) { alert('اختر التلميذ أو أدخل الاسم.'); return; }
+            document.getElementById('preview-out-name').innerText = name;
+            document.getElementById('preview-out-class').innerText = document.getElementById('edit-cert-class').value;
+            document.getElementById('preview-out-section').innerText = document.getElementById('edit-cert-section').value;
+            document.getElementById('preview-out-text').innerText = document.getElementById('edit-cert-text').value;
+            document.getElementById('certificate-preview-box').classList.remove('hidden');
+            document.getElementById('cert-actions-box').classList.remove('hidden');
+        }
+
+        function sendCertificateToStudent() {
+            const studentId = document.getElementById('cert-student-select').value;
+            if(!studentId) { alert('اختر التلميذ أولاً.'); return; }
+            certificatesData[studentId] = {
+                name: document.getElementById('edit-cert-name').value,
+                cls: document.getElementById('edit-cert-class').value,
+                sec: document.getElementById('edit-cert-section').value,
+                text: document.getElementById('edit-cert-text').value
+            };
+            saveData();
+            alert('تم إرسال الشهادة إلى ملف التلميذ بنجاح 🚀🌟');
+        }
+
+        function downloadCertificatePDF() { window.print(); }
+
+        function renderStudentsList() {
+            const c = document.getElementById('teacher-students-list');
+            if(!c) return; c.innerHTML = '';
+            document.getElementById('students-count-badge').innerText = studentsData.length;
+            studentsData.forEach((s) => {
+                c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl flex justify-between items-center text-xs"><div><span class="font-bold text-white block">${s.name}</span><span class="text-[10px] text-amber-400 font-mono">الصف: ${s.class} (${s.section}) | الكود: ${s.id}</span></div></div>`;
+            });
+        }
+
+        switchTeacherTab('notifications');
+        renderNotifications();
+        saveData();
+    </script>
+</body>
+</html>
