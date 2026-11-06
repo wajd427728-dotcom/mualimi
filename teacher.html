@@ -115,7 +115,7 @@
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <select id="my-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">الخامس</option></select>
-                        <select id="my-section" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="شعبة أ">شعبة أ</option><option value="شعبة ب">شعبة ب</option></select>
+                        <select id="my-section" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="شعبة أ">شعبة أ</option><option value="ب">شعبة ب</option></select>
                     </div>
                     <select id="my-sub" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold"><option value="التربية الإسلامية">التربية الإسلامية</option><option value="اللغة العربية">اللغة العربية</option></select>
                     <input type="text" id="my-title" placeholder="عنوان الدرس أو المذكرة..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
@@ -177,16 +177,8 @@
         <!-- تبويب: إدارة التلاميذ -->
         <div id="teacher-tab-students" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
-                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-user-plus"></i> إدخال التلاميذ</h3>
-                <div class="bg-slate-900/70 p-3 rounded-xl border border-slate-700 space-y-2">
-                    <div class="grid grid-cols-2 gap-2">
-                        <select id="new-student-class" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">الخامس</option></select>
-                        <select id="new-student-section" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white"><option value="أ">شعبة أ</option><option value="ب">شعبة ب</option></select>
-                    </div>
-                    <input type="text" id="new-student-name" placeholder="اسم التلميذ الثلاثي..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
-                    <button onclick="addNewStudent()" class="w-full bg-amber-500 text-slate-950 font-bold p-2 rounded-lg text-xs">حفظ وتوليد كود الدخول ➕</button>
-                </div>
-                <div id="teacher-students-list" class="space-y-2 max-h-45 overflow-y-auto pr-1"></div>
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-user-plus"></i> قائمة التلاميذ والأكواد المعتمدة</h3>
+                <div id="teacher-students-list" class="space-y-2 max-h-70 overflow-y-auto pr-1"></div>
             </div>
         </div>
 
@@ -222,7 +214,7 @@
             </div>
         </div>
 
-        <!-- تبويب: دروسي (جدول الحصص والمنبه) -->
+        <!-- تبويب: دروسي -->
         <div id="teacher-tab-schedule" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-calendar-days"></i> جدول دروسي الأسبوعي ⏰</h3>
@@ -290,7 +282,50 @@
     </div>
 
     <script>
-        let studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || [];
+        // القائمة الأساسية الثابتة والموحدة مع بوابة ولي الأمر
+        const BASE_STUDENTS = [
+            { id: "STU-8959", name: "اساور محسن سلمان", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-1042", name: "اسماء قيصر مخلص", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-3521", name: "اية علي سالم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-4890", name: "بنين نجم عبد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-7046", name: "تقى مرتضى مظهر", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-5124", name: "جميلة علي محمد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6382", name: "جنه مرتضى حسين", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-2915", name: "جنى علي عبد الخالق", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-8431", name: "حوراء حسين كريم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-1759", name: "حوراء رائف حسن", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-9204", name: "حوراء نجاح فلاح", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-3467", name: "دنيا محمد شيال", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-5813", name: "دنيا مزهر محمد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-7492", name: "رتاج حسين حيدر", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-2180", name: "رفيف طه سلمان", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6834", name: "ريحانه بهاء حامد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-4159", name: "زهراء فلاح حسن", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-9372", name: "زينب سيف عيدان", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-1583", name: "سجى رائد عبد الامير", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-5201", name: "شهد حسين علي", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-8640", name: "شهد وليد عبد السادة", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-3719", name: "طيبة علاء طعمه", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6025", name: "غدير سيف الدين نوري", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-1948", name: "فاطمه حيدر فرج", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-7832", name: "فاطمه عبد الزهره علي", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-2465", name: "فاطمه علي محمود", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-5910", name: "فاطمه فيصل علي", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-8174", name: "فاطمه محمد حاتم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-4309", name: "فرح سعد ساجد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6523", name: "قمر حيدر قاسم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-9182", name: "ليليان رسول عبد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-1347", name: "ماريا حسين هاشم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-5089", name: "مريم ليث سلمان", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-7261", name: "مريم مصعب راسم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-2834", name: "ملك محمد فخري", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6410", name: "منسه فرحان هاشم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-3952", name: "منه سيف الدين نوري", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-8703", name: "موده فؤاد جواد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-4618", name: "يقين كرار عبد علي", class: "السادس الابتدائي", section: "أ" }
+        ];
+
+        let studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || BASE_STUDENTS;
         let homeworkData = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
         let myBookData = JSON.parse(localStorage.getItem('dhariyat_mybook')) || [];
         let scheduleData = JSON.parse(localStorage.getItem('dhariyat_schedule')) || [];
@@ -341,6 +376,15 @@
             if(tab === 'honor') populateHonorSelect();
             if(tab === 'quiz') renderQuizList();
             if(tab === 'notifications') renderNotificationsList();
+            if(tab === 'students') renderStudentsList();
+        }
+
+        function renderStudentsList() {
+            const c = document.getElementById('teacher-students-list');
+            if(!c) return; c.innerHTML = '';
+            studentsData.forEach((s) => { 
+                c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl flex justify-between text-xs items-center"><span>${s.name}</span><span class="text-amber-400 font-mono font-bold">${s.id}</span></div>`; 
+            });
         }
 
         function renderNotificationsList() {
@@ -537,19 +581,6 @@
             const c = document.getElementById('messages-list-container');
             if(!c) return; c.innerHTML = '';
             messagesData.forEach((m, idx) => { c.innerHTML += `<div class="p-2 bg-slate-900 border border-slate-700 rounded-xl text-xs flex justify-between"><span>${m.studentName}: ${m.title}</span><button onclick="messagesData.splice(${idx},1);saveData();" class="text-red-400">🗑️</button></div>`; });
-        }
-
-        function addNewStudent() {
-            const name = document.getElementById('new-student-name').value.trim();
-            if(!name) return;
-            const id = 'STU-' + Math.floor(1000 + Math.random() * 9000);
-            studentsData.push({ id, name, class: document.getElementById('new-student-class').value, section: document.getElementById('new-student-section').value });
-            document.getElementById('new-student-name').value = ''; saveData(); alert(`الكود: ${id}`);
-        }
-        function renderStudentsList() {
-            const c = document.getElementById('teacher-students-list');
-            if(!c) return; c.innerHTML = '';
-            studentsData.forEach((s, idx) => { c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl flex justify-between text-xs"><span>${s.name} (${s.id})</span><button onclick="studentsData.splice(${idx},1);saveData();" class="text-red-400">🗑️</button></div>`; });
         }
 
         function populateGradeSelect() {
