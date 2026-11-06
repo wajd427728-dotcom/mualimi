@@ -159,6 +159,21 @@
             document.getElementById('student-beh-score-text').innerText = `${myBehavior.score} / 100`;
             document.getElementById('student-beh-note').innerText = myBehavior.note || 'تلميذ متميز ومجتهد وخلوق!';
 
+            // سجل الدرجات
+            const gradesData = JSON.parse(localStorage.getItem('dhariyat_grades')) || {};
+            const myGrades = gradesData[currentStudent.id] || {};
+            const gContainer = document.getElementById('student-grades-container');
+            gContainer.innerHTML = `
+                <div class="bg-slate-900 p-3 rounded-xl border border-slate-700 space-y-2">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-1.5"><span class="text-slate-400">تشرين الأول:</span><span class="font-bold text-amber-400">${myGrades.oct || '---'}</span></div>
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-1.5"><span class="text-slate-400">تشرين الثاني:</span><span class="font-bold text-amber-400">${myGrades.nov || '---'}</span></div>
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-1.5"><span class="text-slate-400">كانون الأول:</span><span class="font-bold text-amber-400">${myGrades.dec || '---'}</span></div>
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-1.5"><span class="text-slate-400">كانون الثاني:</span><span class="font-bold text-amber-400">${myGrades.jan || '---'}</span></div>
+                    <div class="flex justify-between items-center pt-1"><span class="text-amber-300 font-bold">معدل الفصل الأول:</span><span class="font-black text-amber-400 text-sm">${myGrades.midAvg || '---'}</span></div>
+                    <div class="flex justify-between items-center"><span class="text-amber-300 font-bold">امتحان نصف السنة:</span><span class="font-black text-emerald-400 text-sm">${myGrades.mid || '---'}</span></div>
+                </div>
+            `;
+
             // الشهادات المرسلة
             const certsData = JSON.parse(localStorage.getItem('dhariyat_certificates')) || {};
             const myCert = certsData[currentStudent.id];
@@ -167,19 +182,23 @@
                 certContainer.innerHTML = `
                     <div class="bg-gradient-to-br from-amber-50 via-white to-amber-100 text-slate-900 p-4 rounded-2xl border-2 border-amber-600 shadow-xl space-y-3 text-center">
                         <div class="text-[10px] font-black text-slate-800 space-y-0.5">
-                            <p>جمهورية العراق - وزارة التربية العراقية</p>
-                            <p class="text-amber-700">مدرسة الذاريات الابتدائية المختلطة</p>
+                            <p>جمهورية العراق</p>
+                            <p>وزارة التربية العراقية</p>
+                            <p class="text-amber-700 font-bold">مدرسة الذاريات الابتدائية المختلطة</p>
                         </div>
-                        <h4 class="text-sm font-black text-amber-800 bg-amber-200/80 py-1 px-3 rounded-full w-fit mx-auto">شهادة تقديرية 🏆</h4>
+                        <h4 class="text-xs font-black text-amber-800 bg-amber-200/80 py-1 px-3 rounded-full w-fit mx-auto">شهادة تقديرية 🏆</h4>
                         <div>
-                            <span class="text-[10px] text-slate-600 block">إلى التلميذ(ة):</span>
-                            <p class="text-sm font-black text-blue-900">${myCert.name}</p>
-                            <p class="text-[10px] font-bold text-slate-700">${myCert.cls}</p>
+                            <span class="text-[10px] text-slate-600 font-bold block">إلى التلميذ / التلميذة المحترم(ة):</span>
+                            <p class="text-sm font-black text-blue-950">${myCert.name}</p>
+                            <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
+                                <div class="bg-amber-100/80 p-1.5 rounded-lg border border-amber-300"><b>الصف:</b> ${myCert.cls}</div>
+                                <div class="bg-amber-100/80 p-1.5 rounded-lg border border-amber-300"><b>الشعبة:</b> ${myCert.sec}</div>
+                            </div>
                         </div>
-                        <p class="text-[11px] bg-white p-2.5 rounded-xl border border-amber-300 font-medium text-slate-800 leading-relaxed">${myCert.text}</p>
+                        <p class="text-[11px] bg-white p-2.5 rounded-xl border border-amber-300 font-bold text-slate-900 leading-relaxed shadow-inner">${myCert.text}</p>
                         <div class="flex justify-between items-center pt-2 text-[10px] font-black text-slate-900 border-t border-amber-300">
-                            <span>المعلم: حيدر محمد عبد الكريم</span>
-                            <span>مدير المدرسة: عدي حليم علي</span>
+                            <div class="text-right"><span class="text-[9px] text-slate-600 block">المعلم:</span>حيدر محمد عبد الكريم</div>
+                            <div class="text-left"><span class="text-[9px] text-slate-600 block">مدير المدرسة:</span>عدي حليم علي</div>
                         </div>
                     </div>
                 `;
