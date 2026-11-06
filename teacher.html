@@ -66,7 +66,7 @@
                     </div>
                     <div>
                         <label class="text-[10px] text-slate-400 block mb-1">سبب التكريم / الإنجاز:</label>
-                        <input type="text" id="honor-reason" placeholder="مثال: الحصول على الدرجة الكاملة في التربية الإسلامية..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                        <input type="text" id="honor-reason" placeholder="مثال: الحصول على الدرجة الكاملة..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
                     </div>
                     <button onclick="addHonorStudent()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl">إضافة إلى لوحة الشرف العامة 🏅</button>
                 </div>
@@ -111,7 +111,7 @@
                 <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
                     <div class="grid grid-cols-2 gap-2">
                         <select id="my-day" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="الأحد">الأحد</option><option value="الإثنين">الإثنين</option><option value="الثلاثاء">الثلاثاء</option><option value="الأربعاء">الأربعاء</option><option value="الخميس">الخميس</option></select>
-                        <input type="text" id="my-date" placeholder="التاريخ (مثال: 2026/11/8)..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-center font-mono">
+                        <input type="text" id="my-date" placeholder="التاريخ..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-center font-mono">
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <select id="my-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">الخامس</option></select>
@@ -222,7 +222,7 @@
             </div>
         </div>
 
-        <!-- تبويب: دروسي -->
+        <!-- تبويب: دروسي (جدول الحصص والمنبه) -->
         <div id="teacher-tab-schedule" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-calendar-days"></i> جدول دروسي الأسبوعي ⏰</h3>
