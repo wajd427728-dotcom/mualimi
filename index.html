@@ -136,7 +136,7 @@
     <script>
         let currentStudent = null;
 
-        // القائمة الأساسية الثابتة لضمان عمل الأكواد لدى جميع أولياء الأمور فورا
+        // القائمة الأساسية الثابتة والشاملة لضمان فتح الأكواد لدى جميع اولياء الأمور فوراً
         const BASE_STUDENTS = [
             { id: "STU-8959", name: "اساور محسن سلمان", class: "السادس الابتدائي", section: "أ" },
             { id: "STU-1042", name: "اسماء قيصر مخلص", class: "السادس الابتدائي", section: "أ" },
@@ -186,7 +186,6 @@
                 if(raw) localStudents = JSON.parse(raw);
             } catch(e) { localStudents = []; }
             
-            // دمج القائمة الأساسية مع أي تلاميذ جدد تم إضافتهم محلياً لضمان عدم ضياع أي كود
             let combined = [...BASE_STUDENTS, ...localStudents];
             return Array.from(new Map(combined.map(s => [s.id.toUpperCase(), s])).values());
         }
