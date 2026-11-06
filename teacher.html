@@ -237,12 +237,11 @@
             </div>
         </div>
 
-        <!-- تبويب: دروسي (محدث ومحسن للأداء السريع) -->
+        <!-- تبويب: دروسي -->
         <div id="teacher-tab-schedule" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-calendar-days"></i> جدول دروسي الأسبوعي ⏰</h3>
                 <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
-                    <!-- اليوم والحصة (4 حصص فقط) -->
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="text-[10px] text-slate-400 block mb-1">اليوم:</label>
@@ -261,7 +260,6 @@
                         </div>
                     </div>
 
-                    <!-- المادة وتتضمن شاغر (استراحة) -->
                     <div>
                         <label class="text-[10px] text-amber-400 block mb-1">المادة / الحالة:</label>
                         <select id="sch-sub" onchange="toggleScheduleFields()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
@@ -271,7 +269,6 @@
                         </select>
                     </div>
 
-                    <!-- الصف والشعبة (تختفي فوراً عند اختيار شاغر) -->
                     <div id="sch-class-section-box" class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="text-[10px] text-slate-400 block mb-1">الصف:</label>
@@ -289,7 +286,6 @@
                         </div>
                     </div>
 
-                    <!-- وقت البدء ووقت الانتهاء -->
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="text-[10px] text-slate-400 block mb-1">وقت البدء:</label>
@@ -307,33 +303,70 @@
             </div>
         </div>
 
-        <!-- تبويب: شهادة تقديرية -->
+        <!-- تبويب: شهادة تقديرية رسمية -->
         <div id="teacher-tab-certificate" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
-                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-award"></i> إصدار شهادة تقديرية 🌟</h3>
+                <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-award"></i> إصدار وتصدير الشهادة التقديرية الرسمية 🌟</h3>
                 <div class="space-y-3 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
-                    <select id="cert-student-select" onchange="fillStudentCertName()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white font-bold"><option value="">اختر التلميذ...</option></select>
+                    <select id="cert-student-select" onchange="fillStudentCertName()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white font-bold"><option value="">اختر التلميذ / التلميذة...</option></select>
                     <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="edit-cert-name" placeholder="اسم التلميذ..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
+                        <input type="text" id="edit-cert-name" placeholder="اسم التلميذ أو التلميذة..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
                         <input type="text" id="edit-cert-class" placeholder="الصف والشعبة..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
                     </div>
-                    <textarea id="edit-cert-text" rows="2" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-[11px]">تقديراً للتميز السلوكي الرفيع والمواظبة المستمرة والحرص على التفوق والاجتهاد في المدرسة.</textarea>
-                    <button onclick="generateCertificatePreview()" class="w-full bg-blue-600 text-white font-bold p-2.5 rounded-xl">معاينة الشهادة الرسمية 👁️‍🗨️</button>
+                    <textarea id="edit-cert-text" rows="3" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-[11px]">تقديراً لحسن السلوك الرفيع، والانضباط التام، والمواظبة المستمرة على الدوام، والحرص البالغ على التفوق والاجتهاد في المدرسة، نمنح هذه الشهادة بكل اعتزاز.</textarea>
+                    
+                    <button onclick="generateCertificatePreview()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2.5 rounded-xl transition shadow">معاينة الشهادة الرسمية 👁️‍🗨️</button>
                 </div>
-                <div id="certificate-preview-box" class="hidden bg-gradient-to-br from-amber-50 via-white to-amber-100 text-slate-900 p-5 rounded-2xl border-4 border-amber-500 shadow-2xl space-y-3 text-center">
-                    <h2 class="text-sm font-black text-amber-700">مدرسة الذاريات الابتدائية المختلطة</h2>
-                    <p id="preview-out-name" class="text-base font-black text-blue-900">---</p>
-                    <p id="preview-out-class" class="text-xs font-bold text-slate-700">الصف: ---</p>
-                    <p id="preview-out-text" class="text-[10px] bg-white p-2.5 rounded-xl border border-amber-300 font-medium">---</p>
+
+                <!-- معاينة الشهادة الرسمية الاحترافية -->
+                <div id="certificate-preview-box" class="hidden bg-gradient-to-br from-amber-50 via-white to-amber-100 text-slate-900 p-6 rounded-3xl border-4 border-amber-600 shadow-2xl space-y-4 text-center relative overflow-hidden">
+                    <div class="border-2 border-dashed border-amber-500/50 p-4 rounded-2xl space-y-3">
+                        <div class="text-xs font-black text-slate-800 space-y-0.5">
+                            <p>جمهورية العراق</p>
+                            <p>وزارة التربية العراقية</p>
+                            <p class="text-amber-700 font-bold">مدرسة الذاريات الابتدائية المختلطة</p>
+                        </div>
+
+                        <h2 class="text-xl font-black text-amber-800 tracking-wider bg-amber-200/60 py-1.5 px-4 rounded-full w-fit mx-auto shadow-sm border border-amber-400">شهادة تقديرية 🏆</h2>
+
+                        <div class="space-y-1">
+                            <span class="text-xs text-slate-600 font-bold block">إلى التلميذ / التلميذة:</span>
+                            <p id="preview-out-name" class="text-lg font-black text-blue-900">---</p>
+                            <p id="preview-out-class" class="text-xs font-bold text-slate-700">الصف والشعبة: ---</p>
+                        </div>
+
+                        <p id="preview-out-text" class="text-xs bg-white/90 p-3.5 rounded-xl border border-amber-300 font-medium text-slate-800 leading-relaxed shadow-inner">---</p>
+
+                        <!-- التوقيعات في الأسفل -->
+                        <div class="flex justify-between items-center pt-4 text-xs font-black text-slate-900 px-2 border-t border-amber-300/60">
+                            <div class="text-right">
+                                <span class="text-[10px] text-slate-600 block">المعلم:</span>
+                                <span class="text-amber-900">حيدر محمد عبد الكريم</span>
+                            </div>
+                            <div class="text-left">
+                                <span class="text-[10px] text-slate-600 block">مدير المدرسة:</span>
+                                <span class="text-amber-900">عدي حليم علي</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button onclick="downloadCertificatePDF()" id="cert-download-btn" class="w-full bg-emerald-600 text-white font-bold p-2.5 rounded-xl text-xs hidden">سحب الشهادة PDF 📄</button>
+
+                <!-- أزرار الإجراءات للشهادة -->
+                <div id="cert-actions-box" class="grid grid-cols-2 gap-2 hidden">
+                    <button onclick="sendCertificateToStudent()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-2.5 rounded-xl text-xs transition shadow flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-paper-plane"></i> إرسال لملف التلميذ 🚀
+                    </button>
+                    <button onclick="downloadCertificatePDF()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black p-2.5 rounded-xl text-xs transition shadow flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-file-pdf"></i> سحب الشهادة PDF 📄
+                    </button>
+                </div>
             </div>
         </div>
     </main>
 
     <script>
         const BASE_STUDENTS = [
-            // --- الصف السادس الابتدائي / الشعبة ( أ ) ---[span_0](start_span)[span_0](end_span)
+            // --- الصف السادس الابتدائي / الشعبة ( أ ) ---
             { id: "STU-1001", name: "أبو تراب حسين سلام", class: "السادس الابتدائي", section: "أ" },
             { id: "STU-1002", name: "احمد عقيل صبري", class: "السادس الابتدائي", section: "أ" },
             { id: "STU-1003", name: "احمد مهند نجم", class: "السادس الابتدائي", section: "أ" },
@@ -389,7 +422,7 @@
             { id: "STU-1053", name: "يوسف علي كامل", class: "السادس الابتدائي", section: "أ" },
             { id: "STU-1054", name: "يونس محمود صالح", class: "السادس الابتدائي", section: "أ" },
 
-            // --- الصف السادس الابتدائي / الشعبة ( ب ) ---[span_1](start_span)[span_1](end_span)
+            // --- الصف السادس الابتدائي / الشعبة ( ب ) ---
             { id: "STU-8959", name: "أساور محسن سلمان", class: "السادس الابتدائي", section: "ب" },
             { id: "STU-2001", name: "أسماء قيصر مخلص", class: "السادس الابتدائي", section: "ب" },
             { id: "STU-2002", name: "اية علي سالم", class: "السادس الابتدائي", section: "ب" },
@@ -433,7 +466,7 @@
             { id: "STU-2040", name: "نوران سيف عيدان", class: "السادس الابتدائي", section: "ب" },
             { id: "STU-2041", name: "يقين كرار عبد علي", class: "السادس الابتدائي", section: "ب" },
 
-            // --- الصف الخامس الابتدائي / الشعبة ( أ ) ---[span_2](start_span)[span_2](end_span)
+            // --- الصف الخامس الابتدائي / الشعبة ( أ ) ---
             { id: "STU-3001", name: "أحمد شجاع عباس", class: "الخامس الابتدائي", section: "أ" },
             { id: "STU-3002", name: "احمد قاسم محمد", class: "الخامس الابتدائي", section: "أ" },
             { id: "STU-3003", name: "أحمد كاظم مكطوف", class: "الخامس الابتدائي", section: "أ" },
@@ -490,7 +523,7 @@
             { id: "STU-3054", name: "هيثم يوسف خلف", class: "الخامس الابتدائي", section: "أ" },
             { id: "STU-3055", name: "يوسف علي كامل", class: "الخامس الابتدائي", section: "أ" },
 
-            // --- الصف الخامس الابتدائي / الشعبة ( ب ) ---[span_3](start_span)[span_3](end_span)
+            // --- الصف الخامس الابتدائي / الشعبة ( ب ) ---
             { id: "STU-4001", name: "أبراهيم يوسف راسم", class: "الخامس الابتدائي", section: "ب" },
             { id: "STU-4002", name: "أحمد محمد خضير", class: "الخامس الابتدائي", section: "ب" },
             { id: "STU-4003", name: "جعفر صباح محمود", class: "الخامس الابتدائي", section: "ب" },
@@ -556,11 +589,13 @@
         let honorData = JSON.parse(localStorage.getItem('dhariyat_honor')) || [];
         let quizData = JSON.parse(localStorage.getItem('dhariyat_quiz')) || [];
         let gradesData = JSON.parse(localStorage.getItem('dhariyat_grades')) || {};
+        let certificatesData = JSON.parse(localStorage.getItem('dhariyat_certificates')) || {};
 
         function saveData() {
             localStorage.setItem('dhariyat_students', JSON.stringify(studentsData));
             localStorage.setItem('dhariyat_grades', JSON.stringify(gradesData));
             localStorage.setItem('dhariyat_schedule', JSON.stringify(scheduleData));
+            localStorage.setItem('dhariyat_certificates', JSON.stringify(certificatesData));
         }
 
         function resetToDefaultStudents() {
@@ -586,8 +621,8 @@
             const selects = ['honor-student-select', 'cert-student-select', 'beh-student-select', 'msg-student-select', 'grade-student-select'];
             selects.forEach(id => {
                 const el = document.getElementById(id);
-                if(el && el.options.length <= 1) {
-                    el.innerHTML = '<option value="">اختر التلميذ...</option>';
+                if(el) {
+                    el.innerHTML = '<option value="">اختر التلميذ / التلميذة...</option>';
                     studentsData.forEach(s => {
                         el.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`;
                     });
@@ -671,148 +706,9 @@
             });
         }
 
-        function addGroupStudents() {
-            const text = document.getElementById('group-names-input').value.trim();
-            if(!text) { alert('الرجاء كتابة أو لصق الأسماء.'); return; }
-            const cls = document.getElementById('group-class').value;
-            const sec = document.getElementById('group-section').value;
-            const lines = text.split('\n');
-            let count = 0;
-
-            lines.forEach(line => {
-                const name = line.trim();
-                if(name.length > 2) {
-                    const id = 'STU-' + Math.floor(1000 + Math.random() * 9000);
-                    studentsData.push({ id, name, class: cls, section: sec });
-                    count++;
-                }
-            });
-
-            if(count > 0) {
-                document.getElementById('group-names-input').value = '';
-                saveData();
-                renderStudentsList();
-                alert(`تمت إضافة ${count} تلميذ/ة بنجاح! 🚀`);
-            } else {
-                alert('لم يتم العثور على أسماء صحيحة.');
-            }
-        }
-
-        function deleteSingleStudent(id) {
-            if(confirm('هل أنت متأكد من حذف هذا التلميذ؟')) {
-                studentsData = studentsData.filter(s => s.id !== id);
-                saveData();
-                renderStudentsList();
-            }
-        }
-
-        function clearAllStudents() {
-            if(confirm('تحذير: هل أنت متأكد من حذف كافة التلاميذ؟')) {
-                studentsData = [];
-                saveData();
-                renderStudentsList();
-            }
-        }
-
-        function getFilteredStudents() {
-            const filterCls = document.getElementById('filter-class')?.value || 'الجميع';
-            const filterSec = document.getElementById('filter-section')?.value || 'الجميع';
-            return studentsData.filter(s => {
-                const matchCls = (filterCls === 'الجميع' || s.class === filterCls);
-                const matchSec = (filterSec === 'الجميع' || s.section === filterSec);
-                return matchCls && matchSec;
-            });
-        }
-
-        function exportToPDF() {
-            const filtered = getFilteredStudents();
-            if(filtered.length === 0) { alert('لا توجد بيانات للتصدير.'); return; }
-            
-            let html = `
-                <div style="direction: rtl; font-family: 'Cairo', sans-serif; padding: 20px;">
-                    <h2 style="text-align: center; color: #b45309;">مدرسة الذاريات الابتدائية المختلطة</h2>
-                    <h3 style="text-align: center; color: #1e293b;">قائمة التلاميذ والشعب</h3>
-                    <table border="1" style="width: 100%; border-collapse: collapse; margin-top: 20px; text-align: right; font-size: 14px;">
-                        <thead>
-                            <tr style="background-color: #f1f5f9;">
-                                <th style="padding: 8px;">ت</th>
-                                <th style="padding: 8px;">اسم التلميذ ثلاثي</th>
-                                <th style="padding: 8px;">الصف</th>
-                                <th style="padding: 8px;">الشعبة</th>
-                                <th style="padding: 8px;">كود الدخول</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-            `;
-            filtered.forEach((s, index) => {
-                html += `<tr>
-                    <td style="padding: 6px;">${index + 1}</td>
-                    <td style="padding: 6px;">${s.name}</td>
-                    <td style="padding: 6px;">${s.class}</td>
-                    <td style="padding: 6px;">${s.section}</td>
-                    <td style="padding: 6px; font-family: monospace;">${s.id}</td>
-                </tr>`;
-            });
-            html += `</tbody></table></div>`;
-
-            const originalBody = document.body.innerHTML;
-            document.body.innerHTML = html;
-            window.print();
-            document.body.innerHTML = originalBody;
-            window.location.reload();
-        }
-
-        function exportToExcel() {
-            const filtered = getFilteredStudents();
-            if(filtered.length === 0) { alert('لا توجد بيانات للتصدير.'); return; }
-
-            let csvContent = "\uFEFFالاسم الثلاثي,الصف,الشعبة,كود الدخول\n";
-            filtered.forEach(s => {
-                csvContent += `"${s.name}","${s.class}","${s.section}","${s.id}"\n`;
-            });
-
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Dhariyat_Students_${Date.now()}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-
-        document.getElementById('grade-student-select')?.addEventListener('change', function() {
-            const sId = this.value;
-            const container = document.getElementById('grade-inputs-container');
-            if(!sId) { container.classList.add('hidden'); return; }
-            container.classList.remove('hidden');
-
-            const g = gradesData[sId] || {};
-            document.getElementById('g-oct').value = g.oct || '';
-            document.getElementById('g-nov').value = g.nov || '';
-            document.getElementById('g-dec').value = g.dec || '';
-            document.getElementById('g-jan').value = g.jan || '';
-            document.getElementById('g-mid-avg').value = g.midAvg || '';
-            document.getElementById('g-mid').value = g.mid || '';
-        });
-
-        function saveStudentGrades() {
-            const sId = document.getElementById('grade-student-select').value;
-            if(!sId) { alert('اختر التلميذ أولاً.'); return; }
-            gradesData[sId] = {
-                oct: document.getElementById('g-oct').value,
-                nov: document.getElementById('g-nov').value,
-                dec: document.getElementById('g-dec').value,
-                jan: document.getElementById('g-jan').value,
-                midAvg: document.getElementById('g-mid-avg').value,
-                mid: document.getElementById('g-mid').value
-            };
-            saveData();
-            alert('تم حفظ الدرجات بنجاح 💾');
-        }
-
         function fillStudentCertName() {
-            const student = studentsData.find(s => s.id === document.getElementById('cert-student-select').value);
+            const studentId = document.getElementById('cert-student-select').value;
+            const student = studentsData.find(s => s.id === studentId);
             if(student) {
                 document.getElementById('edit-cert-name').value = student.name;
                 document.getElementById('edit-cert-class').value = `${student.class} - شعبة ${student.section}`;
@@ -820,19 +716,35 @@
         }
 
         function generateCertificatePreview() {
-            const name = document.getElementById('edit-cert-name').value;
-            if(!name) { alert('اختر التلميذ أولاً.'); return; }
+            const name = document.getElementById('edit-cert-name').value.trim();
+            if(!name) { alert('الرجاء اختيار التلميذ أو إدخال الاسم.'); return; }
             document.getElementById('preview-out-name').innerText = name;
-            document.getElementById('preview-out-class').innerText = `الصف: ${document.getElementById('edit-cert-class').value}`;
+            document.getElementById('preview-out-class').innerText = `الصف والشعبة: ${document.getElementById('edit-cert-class').value}`;
             document.getElementById('preview-out-text').innerText = document.getElementById('edit-cert-text').value;
             document.getElementById('certificate-preview-box').classList.remove('hidden');
-            document.getElementById('cert-download-btn').classList.remove('hidden');
+            document.getElementById('cert-actions-box').classList.remove('hidden');
+        }
+
+        function sendCertificateToStudent() {
+            const studentId = document.getElementById('cert-student-select').value;
+            if(!studentId) { alert('الرجاء اختيار التلميذ من القائمة أولاً لإرسال الشهادة لملفه.'); return; }
+            
+            const certData = {
+                name: document.getElementById('edit-cert-name').value,
+                cls: document.getElementById('edit-cert-class').value,
+                text: document.getElementById('edit-cert-text').value,
+                date: new Date().toLocaleDateString('ar-IQ')
+            };
+
+            certificatesData[studentId] = certData;
+            saveData();
+            alert('تم إرسال الشهادة التقديرية بنجاح إلى ملف التلميذ في بوابة ولي الأمر 🚀🌟');
         }
 
         function downloadCertificatePDF() {
             const p = document.getElementById('certificate-preview-box').outerHTML;
             const o = document.body.innerHTML;
-            document.body.innerHTML = `<div style="direction: rtl; padding: 20px; font-family: 'Cairo';">${p}</div>`;
+            document.body.innerHTML = `<div style="direction: rtl; padding: 30px; font-family: 'Cairo', sans-serif;">${p}</div>`;
             window.print();
             document.body.innerHTML = o;
             window.location.reload();
@@ -857,23 +769,16 @@
             const c = document.getElementById('teacher-students-list');
             if(!c) return; c.innerHTML = '';
             
-            const filtered = getFilteredStudents();
             const badge = document.getElementById('students-count-badge');
             if(badge) badge.innerText = studentsData.length;
 
-            if(filtered.length === 0) {
-                c.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">لا توجد نتائج مطابقة.</p>';
-                return;
-            }
-
-            filtered.forEach((s) => {
+            studentsData.forEach((s) => {
                 c.innerHTML += `
                     <div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl flex justify-between items-center text-xs">
                         <div>
                             <span class="font-bold text-white block">${s.name}</span>
                             <span class="text-[10px] text-amber-400 font-mono">الصف: ${s.class} (${s.section}) | الكود: ${s.id}</span>
                         </div>
-                        <button onclick="deleteSingleStudent('${s.id}')" class="text-red-400 hover:text-red-300 p-1" title="حذف">🗑️ حذف</button>
                     </div>
                 `;
             });
