@@ -28,7 +28,7 @@
             </div>
             <div class="space-y-1.5">
                 <h2 class="text-base font-black text-white">تسجيل دخول التلميذ / ولي الأمر</h2>
-                <p class="text-[11px] text-slate-400">أدخل كود الدخول الخاص بك (مثال: STU-1001 أو STU-3001 أو STU-8959) لتسجيل الدخول.</p>
+                <p class="text-[11px] text-slate-400">أدخل كود الدخول الخاص بك (مثال: STU-1001 أو STU-2001 أو STU-3001) لتسجيل الدخول.</p>
             </div>
             <div class="space-y-3">
                 <input type="text" id="student-code-input" placeholder="أدخل الكود هنا..." class="w-full bg-slate-900 border-2 border-slate-700 rounded-2xl p-3.5 text-center text-white font-mono font-black tracking-widest text-sm focus:border-amber-400 outline-none transition uppercase shadow-inner">
@@ -93,7 +93,7 @@
     <script>
         let currentStudent = null;
 
-        // القائمة الثابتة الكاملة لمدرسة الذاريات الابتدائي (203 تلميذ/ة)
+        // القائمة الثابتة الكاملة والمباشرة (203 تلميذ/ة)
         const BASE_STUDENTS = [
             // --- الصف السادس الابتدائي / الشعبة ( أ ) ---
             { id: "STU-1001", name: "أبو تراب حسين سلام", class: "السادس الابتدائي", section: "أ" },
@@ -309,29 +309,41 @@
             { id: "STU-4054", name: "ولاية حيدر علي", class: "الخامس الابتدائي", section: "ب" }
         ];
 
-        function getAllStudents() {
+        function loginStudent() {
+            // تنظيف الكود المدخل من المسافات وتحويله لحروف كبيرة
+            let inputCode = document.getElementById('student-code-input').value.trim().toUpperCase();
+            
+            if(!inputCode) { 
+                alert('الرجاء إدخال كود التلميذ.'); 
+                return; 
+            }
+
+            // قراءة أي طلاب مضافين من الذاكرة المحلية
             let localStudents = [];
             try {
                 const raw = localStorage.getItem('dhariyat_students');
                 if(raw) localStudents = JSON.parse(raw);
             } catch(e) { localStudents = []; }
-            let combined = [...BASE_STUDENTS, ...localStudents];
-            return Array.from(new Map(combined.map(s => [s.id.toUpperCase(), s])).values());
-        }
 
-        function loginStudent() {
-            const code = document.getElementById('student-code-input').value.trim().toUpperCase();
-            if(!code) { alert('الرجاء إدخال كود التلميذ.'); return; }
-            const students = getAllStudents();
-            const student = students.find(s => s.id.toUpperCase() === code);
-            if(!student) { alert('كود الدخول غير صحيح! تأكد من إدخال الكود بدقة.'); return; }
+            // دمج الطلاب الثابتين مع أي طلاب جدد
+            const allStudents = [...BASE_STUDENTS, ...localStudents];
+            
+            // البحث بدقة عن الكود
+            const student = allStudents.find(s => s.id.trim().toUpperCase() === inputCode);
+
+            if(!student) { 
+                alert('كود الدخول غير صحيح! تأكد من إدخال الكود بدقة (مثال: STU-1001).'); 
+                return; 
+            }
             
             currentStudent = student;
             localStorage.setItem('dhariyat_current_student', JSON.stringify(student));
+            
             document.getElementById('login-section').classList.add('hidden');
             document.getElementById('student-dashboard').classList.remove('hidden');
             document.getElementById('display-student-name').innerText = student.name;
             document.getElementById('display-student-class').innerText = `${student.class} - شعبة ${student.section}`;
+            
             loadStudentData();
         }
 
