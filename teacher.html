@@ -105,7 +105,9 @@
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-book-bookmark"></i> مفكرتي الشخصية 📌</h3>
                 <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
                     <div class="grid grid-cols-2 gap-2">
-                        <select id="my-day" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="السبت">السبت</option><option value="الأحد">الأحد</option><option value="الإثنين">الإثنين</option><option value="الثلاثاء">الثلاثاء</option><option value="الأربعاء">الأربعاء</option><option value="الخميس">الخميس</option></select>
+                        <select id="my-day" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                            <option value="السبت">السبت</option><option value="الأحد">الأحد</option><option value="الإثنين">الإثنين</option><option value="الثلاثاء">الثلاثاء</option><option value="الأربعاء">الأربعاء</option><option value="الخميس">الخميس</option>
+                        </select>
                         <input type="text" id="my-date" placeholder="التاريخ..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-center font-mono">
                     </div>
                     <div class="grid grid-cols-2 gap-2">
@@ -235,22 +237,17 @@
             </div>
         </div>
 
-        <!-- تبويب: دروسي (حسب المواصفات الدقيقة المطلوبة) -->
+        <!-- تبويب: دروسي (حسب طلبك الدقيق بدون نوع محاضرة، 4 حصص، شاغر بالقائمة، وإخفاء الصف والشعبة) -->
         <div id="teacher-tab-schedule" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-calendar-days"></i> جدول دروسي الأسبوعي ⏰</h3>
                 <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
-                    <!-- اليوم والحصة (4 حصص باليوم) -->
+                    <!-- اليوم والحصة (4 حصص فقط) -->
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="text-[10px] text-slate-400 block mb-1">اليوم:</label>
                             <select id="sch-day" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
-                                <option value="السبت">السبت</option>
-                                <option value="الأحد">الأحد</option>
-                                <option value="الإثنين">الإثنين</option>
-                                <option value="الثلاثاء">الثلاثاء</option>
-                                <option value="الأربعاء">الأربعاء</option>
-                                <option value="الخميس">الخميس</option>
+                                <option value="السبت">السبت</option><option value="الأحد">الأحد</option><option value="الإثنين">الإثنين</option><option value="الثلاثاء">الثلاثاء</option><option value="الأربعاء">الأربعاء</option><option value="الخميس">الخميس</option>
                             </select>
                         </div>
                         <div>
@@ -264,7 +261,7 @@
                         </div>
                     </div>
 
-                    <!-- المادة (لغة عربية، تربية إسلامية، أو شاغر) -->
+                    <!-- المادة وتتضمن شاغر (استراحة) -->
                     <div>
                         <label class="text-[10px] text-amber-400 block mb-1">المادة / الحالة:</label>
                         <select id="sch-sub" onchange="toggleScheduleFields()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
