@@ -237,7 +237,7 @@
             </div>
         </div>
 
-        <!-- تبويب: دروسي (حسب طلبك الدقيق بدون نوع محاضرة، 4 حصص، شاغر بالقائمة، وإخفاء الصف والشعبة) -->
+        <!-- تبويب: دروسي (محدث ومحسن للأداء السريع) -->
         <div id="teacher-tab-schedule" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-calendar-days"></i> جدول دروسي الأسبوعي ⏰</h3>
@@ -271,7 +271,7 @@
                         </select>
                     </div>
 
-                    <!-- الصف والشعبة (تختفي تلقائياً عند اختيار شاغر) -->
+                    <!-- الصف والشعبة (تختفي فوراً عند اختيار شاغر) -->
                     <div id="sch-class-section-box" class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="text-[10px] text-slate-400 block mb-1">الصف:</label>
@@ -561,15 +561,13 @@
             localStorage.setItem('dhariyat_students', JSON.stringify(studentsData));
             localStorage.setItem('dhariyat_grades', JSON.stringify(gradesData));
             localStorage.setItem('dhariyat_schedule', JSON.stringify(scheduleData));
-            populateAllSelects();
-            renderStudentsList();
-            renderScheduleList();
         }
 
         function resetToDefaultStudents() {
             if(confirm('هل تريد استرجاع القائمة الأصلية الكاملة لكافة التلاميذ؟')) {
                 studentsData = [...BASE_STUDENTS];
                 saveData();
+                renderStudentsList();
                 alert('تم استرجاع جميع الأسماء بنجاح! 🚀');
             }
         }
@@ -588,13 +586,11 @@
             const selects = ['honor-student-select', 'cert-student-select', 'beh-student-select', 'msg-student-select', 'grade-student-select'];
             selects.forEach(id => {
                 const el = document.getElementById(id);
-                if(el) {
-                    const currentVal = el.value;
+                if(el && el.options.length <= 1) {
                     el.innerHTML = '<option value="">اختر التلميذ...</option>';
                     studentsData.forEach(s => {
                         el.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`;
                     });
-                    el.value = currentVal;
                 }
             });
         }
@@ -610,9 +606,9 @@
             const activeBtn = document.getElementById(`t-tab-${tab}`);
             if(activeBtn) activeBtn.className = "p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition text-[9px]";
 
-            populateAllSelects();
             if(tab === 'students') renderStudentsList();
             if(tab === 'schedule') renderScheduleList();
+            else populateAllSelects();
         }
 
         function addScheduleItem() {
@@ -633,12 +629,14 @@
             }
 
             saveData();
+            renderScheduleList();
             alert('تم حفظ الحصة في جدول الدروس بنجاح ⏰');
         }
 
         function deleteScheduleItem(id) {
             scheduleData = scheduleData.filter(s => s.id !== id);
             saveData();
+            renderScheduleList();
         }
 
         function renderScheduleList() {
@@ -693,6 +691,7 @@
             if(count > 0) {
                 document.getElementById('group-names-input').value = '';
                 saveData();
+                renderStudentsList();
                 alert(`تمت إضافة ${count} تلميذ/ة بنجاح! 🚀`);
             } else {
                 alert('لم يتم العثور على أسماء صحيحة.');
@@ -703,6 +702,7 @@
             if(confirm('هل أنت متأكد من حذف هذا التلميذ؟')) {
                 studentsData = studentsData.filter(s => s.id !== id);
                 saveData();
+                renderStudentsList();
             }
         }
 
@@ -710,6 +710,7 @@
             if(confirm('تحذير: هل أنت متأكد من حذف كافة التلاميذ؟')) {
                 studentsData = [];
                 saveData();
+                renderStudentsList();
             }
         }
 
