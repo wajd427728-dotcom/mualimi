@@ -7,14 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Cairo', sans-serif; background-color: #0f172a; color: #f8fafc; }
-        @media print {
-            body { background: white !important; color: black !important; }
-            header, main > div:not(#teacher-tab-certificate) { display: none !important; }
-            #certificate-preview-box { display: block !important; width: 100% !important; border: none !important; box-shadow: none !important; margin: 0 !important; }
-        }
-    </style>
+    <style>body { font-family: 'Cairo', sans-serif; background-color: #0f172a; color: #f8fafc; }</style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start p-3 sm:p-4">
 
@@ -257,7 +250,7 @@
             </div>
         </div>
 
-        <!-- 🏆 تبويب: شهادة تقديرية رسمية بحجم A4 -->
+        <!-- 🏆 تبويب: شهادة تقديرية رسمية (الحجم المتناسق والمناسب للهواتف مع إلغاء الخط تحت الاسم) -->
         <div id="teacher-tab-certificate" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-award"></i> إصدار وتصدير الشهادة التقديرية الرسمية 🌟</h3>
@@ -273,37 +266,43 @@
                     <button onclick="generateCertificatePreview()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2.5 rounded-xl transition shadow">معاينة الشهادة الرسمية 👁️‍🗨️</button>
                 </div>
 
-                <!-- معاينة الشهادة الرسمية بمظهر A4 الجذاب -->
-                <div id="certificate-preview-box" class="hidden bg-gradient-to-br from-amber-50 via-white to-amber-100 text-slate-900 p-8 rounded-3xl border-8 border-amber-600 shadow-2xl space-y-6 text-center relative overflow-hidden max-w-2xl mx-auto">
-                    <div class="border-4 border-dashed border-amber-500/60 p-6 rounded-2xl space-y-5 bg-white/80 backdrop-blur">
-                        <div class="text-sm font-black text-slate-900 space-y-1">
-                            <p class="tracking-wide">جمهورية العراق</p>
-                            <p class="tracking-wide">وزارة التربية العراقية</p>
-                            <p class="text-amber-700 font-extrabold text-base">مدرسة الذاريات الابتدائية المختلطة</p>
+                <!-- معاينة الشهادة الرسمية (حجم ملائم ومناسب للهاتف تماماً بدون خط تحت الاسم) -->
+                <div id="certificate-preview-box" class="hidden bg-gradient-to-br from-amber-50 via-white to-amber-100 text-slate-900 p-5 rounded-3xl border-4 border-amber-600 shadow-2xl space-y-4 text-center relative overflow-hidden">
+                    <div class="border-2 border-dashed border-amber-500/60 p-4 rounded-2xl space-y-3 bg-white/90">
+                        <div class="text-xs font-black text-slate-800 space-y-0.5">
+                            <p>جمهورية العراق</p>
+                            <p>وزارة التربية العراقية</p>
+                            <p class="text-amber-700 font-bold">مدرسة الذاريات الابتدائية المختلطة</p>
                         </div>
 
-                        <h2 class="text-2xl font-black text-amber-800 tracking-widest bg-amber-200/70 py-2 px-6 rounded-full w-fit mx-auto shadow-md border-2 border-amber-400">شهادة تقديرية 🏆</h2>
+                        <h2 class="text-lg font-black text-amber-800 tracking-wider bg-amber-200/70 py-1 px-4 rounded-full w-fit mx-auto shadow-sm border border-amber-400">شهادة تقديرية 🏆</h2>
 
-                        <div class="space-y-2">
-                            <span class="text-xs text-slate-600 font-bold block">إلى التلميذ / التلميذة المحترم(ة):</span>
-                            <p id="preview-out-name" class="text-xl font-black text-blue-950 underline decoration-amber-500 underline-offset-8">---</p>
-                            <div class="flex justify-center gap-6 text-xs font-black text-slate-800 pt-1">
-                                <span id="preview-out-class" class="bg-amber-100 px-3 py-1 rounded-lg border border-amber-300">الصف: ---</span>
-                                <span id="preview-out-section" class="bg-amber-100 px-3 py-1 rounded-lg border border-amber-300">الشعبة: ---</span>
+                        <div class="space-y-1.5">
+                            <span class="text-[11px] text-slate-600 font-bold block">إلى التلميذ / التلميذة المحترم(ة):</span>
+                            <p id="preview-out-name" class="text-base font-black text-blue-950">---</p>
+                            <div class="grid grid-cols-2 gap-2 pt-1">
+                                <div class="bg-amber-100/80 p-2 rounded-xl border border-amber-300 text-center">
+                                    <span class="text-[10px] text-slate-600 block font-bold">الصف:</span>
+                                    <span id="preview-out-class" class="text-xs font-black text-slate-900">---</span>
+                                </div>
+                                <div class="bg-amber-100/80 p-2 rounded-xl border border-amber-300 text-center">
+                                    <span class="text-[10px] text-slate-600 block font-bold">الشعبة:</span>
+                                    <span id="preview-out-section" class="text-xs font-black text-slate-900">---</span>
+                                </div>
                             </div>
                         </div>
 
-                        <p id="preview-out-text" class="text-sm bg-amber-50/90 p-4 rounded-2xl border-2 border-amber-300 font-bold text-slate-900 leading-relaxed shadow-inner">---</p>
+                        <p id="preview-out-text" class="text-xs bg-amber-50 p-3 rounded-xl border border-amber-300 font-bold text-slate-900 leading-relaxed shadow-inner">---</p>
 
                         <!-- التوقيعات في الأسفل -->
-                        <div class="flex justify-between items-center pt-8 text-xs font-black text-slate-900 px-4 border-t-2 border-amber-300/80">
-                            <div class="text-right space-y-1">
-                                <span class="text-[11px] text-slate-600 block">المعلم:</span>
-                                <span class="text-amber-950 text-sm">حيدر محمد عبد الكريم</span>
+                        <div class="flex justify-between items-center pt-3 text-[11px] font-black text-slate-900 px-2 border-t border-amber-300/80">
+                            <div class="text-right">
+                                <span class="text-[9px] text-slate-600 block">المعلم:</span>
+                                <span class="text-amber-950 font-bold">حيدر محمد عبد الكريم</span>
                             </div>
-                            <div class="text-left space-y-1">
-                                <span class="text-[11px] text-slate-600 block">مدير المدرسة:</span>
-                                <span class="text-amber-950 text-sm">عدي حليم علي</span>
+                            <div class="text-left">
+                                <span class="text-[9px] text-slate-600 block">مدير المدرسة:</span>
+                                <span class="text-amber-950 font-bold">عدي حليم علي</span>
                             </div>
                         </div>
                     </div>
@@ -385,8 +384,8 @@
             const name = document.getElementById('edit-cert-name').value.trim();
             if(!name) { alert('الرجاء اختيار التلميذ أو إدخال الاسم.'); return; }
             document.getElementById('preview-out-name').innerText = name;
-            document.getElementById('preview-out-class').innerText = `الصف: ${document.getElementById('edit-cert-class').value}`;
-            document.getElementById('preview-out-section').innerText = `الشعبة: ${document.getElementById('edit-cert-section').value}`;
+            document.getElementById('preview-out-class').innerText = document.getElementById('edit-cert-class').value;
+            document.getElementById('preview-out-section').innerText = document.getElementById('edit-cert-section').value;
             document.getElementById('preview-out-text').innerText = document.getElementById('edit-cert-text').value;
             document.getElementById('certificate-preview-box').classList.remove('hidden');
             document.getElementById('cert-actions-box').classList.remove('hidden');
