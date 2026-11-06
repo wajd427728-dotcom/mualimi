@@ -203,6 +203,7 @@
 
                 <div class="flex justify-between items-center pt-1">
                     <h4 class="text-xs font-bold text-slate-300">قائمة التلاميذ (الاسم، الصف، الشعبة، الكود):</h4>
+                    <button onclick="resetToDefaultStudents()" class="text-[10px] bg-amber-600 hover:bg-amber-500 text-white px-2 py-1 rounded transition">استرجاع القائمة الأصلية 🔄</button>
                     <button onclick="clearAllStudents()" class="text-[10px] bg-red-900/40 hover:bg-red-900/60 text-red-300 px-2 py-1 rounded transition">حذف الكل 🗑️</button>
                 </div>
 
@@ -210,7 +211,7 @@
             </div>
         </div>
 
-        <!-- تبويب: سجل الدرجات (تم إجهاد وتصحيح المشكلة وظهور السجل بسلاسة) -->
+        <!-- تبويب: سجل الدرجات -->
         <div id="teacher-tab-grades" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-graduation-cap"></i> سجل درجات التلاميذ</h3>
@@ -273,9 +274,8 @@
     </main>
 
     <script>
-        // قاعدة البيانات الأساسية الشاملة والمحدثة بناءً على الملفات الرسمية المرفقة (السادس أ/ب، الخامس أ/ب)
         const BASE_STUDENTS = [
-            // --- الصف السادس الابتدائي / الشعبة ( أ ) ---
+            // --- الصف السادس الابتدائي / الشعبة ( أ ) ---[span_0](start_span)[span_0](end_span)
             { id: "STU-1001", name: "أبو تراب حسين سلام", class: "السادس الابتدائي", section: "أ" },
             { id: "STU-1002", name: "احمد عقيل صبري", class: "السادس الابتدائي", section: "أ" },
             { id: "STU-1003", name: "احمد مهند نجم", class: "السادس الابتدائي", section: "أ" },
@@ -331,7 +331,7 @@
             { id: "STU-1053", name: "يوسف علي كامل", class: "السادس الابتدائي", section: "أ" },
             { id: "STU-1054", name: "يونس محمود صالح", class: "السادس الابتدائي", section: "أ" },
 
-            // --- الصف السادس الابتدائي / الشعبة ( ب ) ---
+            // --- الصف السادس الابتدائي / الشعبة ( ب ) ---[span_1](start_span)[span_1](end_span)
             { id: "STU-8959", name: "أساور محسن سلمان", class: "السادس الابتدائي", section: "ب" },
             { id: "STU-2001", name: "أسماء قيصر مخلص", class: "السادس الابتدائي", section: "ب" },
             { id: "STU-2002", name: "اية علي سالم", class: "السادس الابتدائي", section: "ب" },
@@ -375,7 +375,7 @@
             { id: "STU-2040", name: "نوران سيف عيدان", class: "السادس الابتدائي", section: "ب" },
             { id: "STU-2041", name: "يقين كرار عبد علي", class: "السادس الابتدائي", section: "ب" },
 
-            // --- الصف الخامس الابتدائي / الشعبة ( أ ) ---
+            // --- الصف الخامس الابتدائي / الشعبة ( أ ) ---[span_2](start_span)[span_2](end_span)
             { id: "STU-3001", name: "أحمد شجاع عباس", class: "الخامس الابتدائي", section: "أ" },
             { id: "STU-3002", name: "احمد قاسم محمد", class: "الخامس الابتدائي", section: "أ" },
             { id: "STU-3003", name: "أحمد كاظم مكطوف", class: "الخامس الابتدائي", section: "أ" },
@@ -432,7 +432,7 @@
             { id: "STU-3054", name: "هيثم يوسف خلف", class: "الخامس الابتدائي", section: "أ" },
             { id: "STU-3055", name: "يوسف علي كامل", class: "الخامس الابتدائي", section: "أ" },
 
-            // --- الصف الخامس الابتدائي / الشعبة ( ب ) ---
+            // --- الصف الخامس الابتدائي / الشعبة ( ب ) ---[span_3](start_span)[span_3](end_span)
             { id: "STU-4001", name: "أبراهيم يوسف راسم", class: "الخامس الابتدائي", section: "ب" },
             { id: "STU-4002", name: "أحمد محمد خضير", class: "الخامس الابتدائي", section: "ب" },
             { id: "STU-4003", name: "جعفر صباح محمود", class: "الخامس الابتدائي", section: "ب" },
@@ -489,7 +489,8 @@
             { id: "STU-4054", name: "ولاية حيدر علي", class: "الخامس الابتدائي", section: "ب" }
         ];
 
-        let studentsData = JSON.parse(localStorage.getItem('dhariyat_students')) || BASE_STUDENTS;
+        let savedStored = localStorage.getItem('dhariyat_students');
+        let studentsData = (savedStored && JSON.parse(savedStored).length > 0) ? JSON.parse(savedStored) : BASE_STUDENTS;
         let homeworkData = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
         let scheduleData = JSON.parse(localStorage.getItem('dhariyat_schedule')) || [];
         let messagesData = JSON.parse(localStorage.getItem('dhariyat_messages')) || [];
@@ -503,6 +504,14 @@
             localStorage.setItem('dhariyat_grades', JSON.stringify(gradesData));
             populateAllSelects();
             renderStudentsList();
+        }
+
+        function resetToDefaultStudents() {
+            if(confirm('هل تريد استرجاع القائمة الأصلية الكاملة لكافة التلاميذ؟')) {
+                studentsData = [...BASE_STUDENTS];
+                saveData();
+                alert('تم استرجاع جميع الأسماء بنجاح! 🚀');
+            }
         }
 
         function populateAllSelects() {
@@ -642,7 +651,6 @@
             document.body.removeChild(a);
         }
 
-        // 🌟 إدارة سجل الدرجات وظهوره بسلاسة عند اختيار التلميذ
         document.getElementById('grade-student-select')?.addEventListener('change', function() {
             const sId = this.value;
             const container = document.getElementById('grade-inputs-container');
