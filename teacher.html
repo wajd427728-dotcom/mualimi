@@ -235,17 +235,24 @@
             </div>
         </div>
 
-        <!-- تبويب: دروسي -->
+        <!-- تبويب: دروسي (المفصل بكافة الخيارات الأصلية) -->
         <div id="teacher-tab-schedule" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-calendar-days"></i> جدول دروسي الأسبوعي ⏰</h3>
                 <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
                     <div class="grid grid-cols-2 gap-2">
                         <select id="sch-day" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="الأحد">الأحد</option><option value="الإثنين">الإثنين</option><option value="الثلاثاء">الثلاثاء</option><option value="الأربعاء">الأربعاء</option><option value="الخميس">الخميس</option></select>
-                        <select id="sch-number" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold text-amber-400"><option value="الحصة الأولى">الحصة الأولى</option><option value="الحصة الثانية">الحصة الثانية</option><option value="الحصة الثالثة">الحصة الثالثة</option><option value="الحصة الرابعة">الحصة الرابعة</option></select>
+                        <select id="sch-number" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold text-amber-400"><option value="الحصة الأولى">الحصة الأولى</option><option value="الحصة الثانية">الحصة الثانية</option><option value="الحصة الثالثة">الحصة الثالثة</option><option value="الحصة الرابعة">الحصة الرابعة</option><option value="الحصة الخامسة">الحصة الخامسة</option></select>
                     </div>
-                    <button onclick="addScheduleItem()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl">حفظ الحصة وتفعيل المنبه ⏰</button>
+                    <div class="grid grid-cols-2 gap-2">
+                        <select id="sch-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="السادس الابتدائي">السادس الابتدائي</option><option value="الخامس الابتدائي">الخامس الابتدائي</option></select>
+                        <select id="sch-section" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="شعبة أ">شعبة أ</option><option value="شعبة ب">شعبة ب</option></select>
+                    </div>
+                    <select id="sch-sub" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold"><option value="التربية الإسلامية">التربية الإسلامية</option><option value="اللغة العربية">اللغة العربية</option></select>
+                    <input type="text" id="sch-title" placeholder="موضوع الدرس أو عنوان المحاضرة..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                    <button onclick="addScheduleItem()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl">حفظ الحصة في الجدول ⏰</button>
                 </div>
+                <div id="schedule-list-container" class="space-y-2 max-h-45 overflow-y-auto pr-1"></div>
             </div>
         </div>
 
@@ -275,7 +282,7 @@
 
     <script>
         const BASE_STUDENTS = [
-            // --- الصف السادس الابتدائي / الشعبة ( أ ) ---[span_0](start_span)[span_0](end_span)
+            // --- الصف السادس الابتدائي / الشعبة ( أ ) ---
             { id: "STU-1001", name: "أبو تراب حسين سلام", class: "السادس الابتدائي", section: "أ" },
             { id: "STU-1002", name: "احمد عقيل صبري", class: "السادس الابتدائي", section: "أ" },
             { id: "STU-1003", name: "احمد مهند نجم", class: "السادس الابتدائي", section: "أ" },
@@ -331,7 +338,7 @@
             { id: "STU-1053", name: "يوسف علي كامل", class: "السادس الابتدائي", section: "أ" },
             { id: "STU-1054", name: "يونس محمود صالح", class: "السادس الابتدائي", section: "أ" },
 
-            // --- الصف السادس الابتدائي / الشعبة ( ب ) ---[span_1](start_span)[span_1](end_span)
+            // --- الصف السادس الابتدائي / الشعبة ( ب ) ---
             { id: "STU-8959", name: "أساور محسن سلمان", class: "السادس الابتدائي", section: "ب" },
             { id: "STU-2001", name: "أسماء قيصر مخلص", class: "السادس الابتدائي", section: "ب" },
             { id: "STU-2002", name: "اية علي سالم", class: "السادس الابتدائي", section: "ب" },
@@ -375,7 +382,7 @@
             { id: "STU-2040", name: "نوران سيف عيدان", class: "السادس الابتدائي", section: "ب" },
             { id: "STU-2041", name: "يقين كرار عبد علي", class: "السادس الابتدائي", section: "ب" },
 
-            // --- الصف الخامس الابتدائي / الشعبة ( أ ) ---[span_2](start_span)[span_2](end_span)
+            // --- الصف الخامس الابتدائي / الشعبة ( أ ) ---
             { id: "STU-3001", name: "أحمد شجاع عباس", class: "الخامس الابتدائي", section: "أ" },
             { id: "STU-3002", name: "احمد قاسم محمد", class: "الخامس الابتدائي", section: "أ" },
             { id: "STU-3003", name: "أحمد كاظم مكطوف", class: "الخامس الابتدائي", section: "أ" },
@@ -432,7 +439,7 @@
             { id: "STU-3054", name: "هيثم يوسف خلف", class: "الخامس الابتدائي", section: "أ" },
             { id: "STU-3055", name: "يوسف علي كامل", class: "الخامس الابتدائي", section: "أ" },
 
-            // --- الصف الخامس الابتدائي / الشعبة ( ب ) ---[span_3](start_span)[span_3](end_span)
+            // --- الصف الخامس الابتدائي / الشعبة ( ب ) ---
             { id: "STU-4001", name: "أبراهيم يوسف راسم", class: "الخامس الابتدائي", section: "ب" },
             { id: "STU-4002", name: "أحمد محمد خضير", class: "الخامس الابتدائي", section: "ب" },
             { id: "STU-4003", name: "جعفر صباح محمود", class: "الخامس الابتدائي", section: "ب" },
@@ -502,8 +509,10 @@
         function saveData() {
             localStorage.setItem('dhariyat_students', JSON.stringify(studentsData));
             localStorage.setItem('dhariyat_grades', JSON.stringify(gradesData));
+            localStorage.setItem('dhariyat_schedule', JSON.stringify(scheduleData));
             populateAllSelects();
             renderStudentsList();
+            renderScheduleList();
         }
 
         function resetToDefaultStudents() {
@@ -542,6 +551,48 @@
 
             populateAllSelects();
             if(tab === 'students') renderStudentsList();
+            if(tab === 'schedule') renderScheduleList();
+        }
+
+        function addScheduleItem() {
+            const day = document.getElementById('sch-day').value;
+            const number = document.getElementById('sch-number').value;
+            const cls = document.getElementById('sch-class').value;
+            const sec = document.getElementById('sch-section').value;
+            const sub = document.getElementById('sch-sub').value;
+            const title = document.getElementById('sch-title').value.trim();
+
+            if(!title) { alert('الرجاء كتابة موضوع الدرس.'); return; }
+
+            scheduleData.push({ id: Date.now(), day, number, cls, sec, sub, title });
+            saveData();
+            document.getElementById('sch-title').value = '';
+            alert('تم حفظ الحصة بنجاح ⏰');
+        }
+
+        function deleteScheduleItem(id) {
+            scheduleData = scheduleData.filter(s => s.id !== id);
+            saveData();
+        }
+
+        function renderScheduleList() {
+            const c = document.getElementById('schedule-list-container');
+            if(!c) return; c.innerHTML = '';
+            if(scheduleData.length === 0) {
+                c.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">لا توجد حصص محفوظة في الجدول.</p>';
+                return;
+            }
+            scheduleData.forEach(s => {
+                c.innerHTML += `
+                    <div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl flex justify-between items-center text-xs">
+                        <div>
+                            <span class="font-bold text-amber-400 block">${s.day} - ${s.number} (${s.cls} / ${s.sec})</span>
+                            <span class="text-white font-medium">${s.sub}: ${s.title}</span>
+                        </div>
+                        <button onclick="deleteScheduleItem(${s.id})" class="text-red-400 hover:text-red-300 p-1">🗑️</button>
+                    </div>
+                `;
+            });
         }
 
         function addGroupStudents() {
