@@ -53,16 +53,14 @@
             </div>
         </div>
 
-        <!-- تبويب: لوحة الشرف الشهرية -->
+        <!-- تبويب: لوحة الشرف -->
         <div id="teacher-tab-honor" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-medal"></i> إضافة تلميذ إلى لوحة الشرف 🌟</h3>
                 <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
                     <div>
                         <label class="text-[10px] text-slate-400 block mb-1">اختر التلميذ المتفوق:</label>
-                        <select id="honor-student-select" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white font-bold">
-                            <option value="">اختر التلميذ...</option>
-                        </select>
+                        <select id="honor-student-select" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white font-bold"><option value="">اختر التلميذ...</option></select>
                     </div>
                     <div>
                         <label class="text-[10px] text-slate-400 block mb-1">سبب التكريم / الإنجاز:</label>
@@ -74,7 +72,7 @@
             </div>
         </div>
 
-        <!-- تبويب: بنك الأسئلة والاختبارات القصيرة -->
+        <!-- تبويب: الاختبارات -->
         <div id="teacher-tab-quiz" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-circle-question"></i> نشر سؤال تفاعلي أو اختبار قصير ❓</h3>
@@ -93,10 +91,7 @@
                     </div>
                     <div>
                         <label class="text-[10px] text-amber-400 block mb-1">الخيار الصحيح:</label>
-                        <select id="quiz-correct" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
-                            <option value="1">الخيار (أ)</option>
-                            <option value="2">الخيار (ب)</option>
-                        </select>
+                        <select id="quiz-correct" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold"><option value="1">الخيار (أ)</option><option value="2">الخيار (ب)</option></select>
                     </div>
                     <button onclick="publishQuiz()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl">نشر السؤال للبوابة التفاعلية 🚀</button>
                 </div>
@@ -104,7 +99,7 @@
             </div>
         </div>
 
-        <!-- تبويب: مفكرتي الشخصية -->
+        <!-- تبويب: مفكرتي -->
         <div id="teacher-tab-mybook" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-book-bookmark"></i> مفكرتي الشخصية 📌</h3>
@@ -126,13 +121,13 @@
             </div>
         </div>
 
-        <!-- تبويب: نشر الواجبات -->
+        <!-- تبويب: الواجبات -->
         <div id="teacher-tab-homework" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-book-open-reader"></i> نشر الواجبات المدرسية 📖</h3>
                 <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
                     <div class="grid grid-cols-2 gap-2">
-                        <select id="hw-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">الخامس</option><option value="الجميع">كافة الصفوف</option></select>
+                        <select id="hw-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">السادس</option><option value="الجميع">كافة الصفوف</option></select>
                         <select id="hw-section" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="أ">شعبة أ</option><option value="ب">شعبة ب</option><option value="الجميع">كافة الشعب</option></select>
                     </div>
                     <select id="hw-sub" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold"><option value="التربية الإسلامية">التربية الإسلامية</option><option value="اللغة العربية">اللغة العربية</option></select>
@@ -144,7 +139,7 @@
             </div>
         </div>
 
-        <!-- تبويب: التقييم السلوكي -->
+        <!-- تبويب: سلوكي -->
         <div id="teacher-tab-behavior" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-star"></i> التقييم السلوكي نحو الـ 100 ⭐</h3>
@@ -160,7 +155,7 @@
             </div>
         </div>
 
-        <!-- تبويب: توجيه خاص -->
+        <!-- تبويب: توجيه -->
         <div id="teacher-tab-guidance" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-envelope-open-text"></i> توجيه خاص لولي الأمر 💌</h3>
@@ -174,7 +169,7 @@
             </div>
         </div>
 
-        <!-- 🌟 تبويب: إدارة التلاميذ (إدخال جماعي + سحب شعبة + عدد كلي + حذف فردي وجماعي) -->
+        <!-- تبويب: إدارة التلاميذ (إدخال جماعي، سحب شعبة، عدد كلي، وحذف) -->
         <div id="teacher-tab-students" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
                 <div class="flex justify-between items-center border-b border-slate-700 pb-2">
@@ -182,7 +177,7 @@
                     <span class="text-xs bg-amber-500/20 text-amber-400 px-2.5 py-1 rounded-full font-black border border-amber-500/30">العدد الكلي: <span id="students-count-badge">0</span></span>
                 </div>
 
-                <!-- صندوق الإدخال الجماعي -->
+                <!-- إدخال جماعي -->
                 <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2.5">
                     <span class="text-[11px] font-bold text-amber-400 block"><i class="fa-solid fa-file-lines"></i> إدخال أو لصق أسماء مجموعة دفعة واحدة:</span>
                     <div class="grid grid-cols-2 gap-2">
@@ -193,7 +188,7 @@
                     <button onclick="addGroupStudents()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold p-2.5 rounded-xl text-xs shadow transition">توليد الأكواد وحفظ الدفعة جماعياً 🚀</button>
                 </div>
 
-                <!-- صندوق فلترة وعرض شعبة محددة -->
+                <!-- سحب وفلترة شعبة محددة -->
                 <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2.5">
                     <span class="text-[11px] font-bold text-blue-400 block"><i class="fa-solid fa-filter"></i> عرض وسحب شعبة محددة:</span>
                     <div class="grid grid-cols-2 gap-2">
@@ -207,12 +202,11 @@
                     <button onclick="clearAllStudents()" class="text-[10px] bg-red-900/40 hover:bg-red-900/60 text-red-300 px-2 py-1 rounded transition">حذف الكل 🗑️</button>
                 </div>
 
-                <!-- قائمة العرض -->
                 <div id="teacher-students-list" class="space-y-2 max-h-55 overflow-y-auto pr-1"></div>
             </div>
         </div>
 
-        <!-- تبويب: سجل الدرجات -->
+        <!-- تبويب: الدرجات -->
         <div id="teacher-tab-grades" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-4">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-graduation-cap"></i> سجل درجات التلاميذ</h3>
@@ -229,14 +223,6 @@
                         <div class="grid grid-cols-2 gap-2 text-xs pt-1">
                             <div><label class="text-[10px] text-amber-300">معدل الأول:</label><input type="number" id="g-mid-avg" class="w-full bg-slate-800 border border-amber-500/50 rounded-lg p-2 text-white font-bold"></div>
                             <div><label class="text-[10px] text-amber-300">نصف السنة:</label><input type="number" id="g-mid" class="w-full bg-slate-800 border border-amber-500/50 rounded-lg p-2 text-white font-bold"></div>
-                        </div>
-                    </div>
-                    <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-3">
-                        <h4 class="text-xs font-bold text-blue-400 border-b border-slate-700 pb-1.5">📝 درجات الأشهر</h4>
-                        <div class="grid grid-cols-3 gap-2 text-xs">
-                            <div><label class="text-[10px] text-slate-400">الشهر 1:</label><input type="number" id="t-m1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
-                            <div><label class="text-[10px] text-slate-400">الشهر 2:</label><input type="number" id="t-m2" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
-                            <div><label class="text-[10px] text-slate-400">الشهر 3:</label><input type="number" id="t-m3" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white"></div>
                         </div>
                     </div>
                     <button onclick="saveStudentGrades()" class="w-full bg-amber-500 text-slate-950 font-bold p-3 rounded-xl text-xs">حفظ الدرجات 💾</button>
@@ -281,35 +267,9 @@
                     <textarea id="edit-cert-text" rows="2" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-[11px]">تقديراً للتميز السلوكي الرفيع والمواظبة المستمرة والحرص على التفوق والاجتهاد في المدرسة.</textarea>
                     <button onclick="generateCertificatePreview()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2.5 rounded-xl">تحديث ومعاينة الشهادة الرسمية 👁️‍🗨️</button>
                 </div>
-                <div id="certificate-preview-box" class="hidden bg-gradient-to-br from-amber-50 via-white to-amber-100 text-slate-900 p-5 rounded-2xl border-4 border-amber-500 shadow-2xl space-y-3 text-center">
-                    <span class="text-[9px] font-bold text-slate-600 block">جمهورية العراق - وزارة التربية</span>
-                    <h2 class="text-sm font-black text-amber-700">مدرسة الذاريات الابتدائية المختلطة</h2>
-                    <div class="py-1"><span class="bg-amber-500 text-slate-950 text-xs font-black px-4 py-1 rounded-full inline-block">شهادة تقديرية</span></div>
-                    <p id="preview-out-name" class="text-base font-black text-blue-900">---</p>
-                    <p id="preview-out-class" class="text-xs font-bold text-slate-700">الصف: ---</p>
-                    <p class="text-[10px] bg-white p-2.5 rounded-xl border border-amber-300 font-medium leading-relaxed">"<span id="preview-out-text">---</span>"</p>
-                    <div class="grid grid-cols-2 pt-2 border-t border-amber-300 text-[10px] font-bold">
-                        <div class="text-right">المعلم: <br><strong>أ. حيدر محمد عبد الكريم</strong></div>
-                        <div class="text-left">مدير المدرسة: <br><strong>أ. عدي حليم علي</strong></div>
-                    </div>
-                </div>
-                <div id="certificate-actions" class="grid grid-cols-2 gap-2 hidden pt-1">
-                    <button onclick="downloadCertificatePDF()" class="bg-emerald-600 text-white font-bold p-2.5 rounded-xl text-xs">سحب الشهادة PDF 📄</button>
-                    <button onclick="sendCertificateToStudent()" class="bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl text-xs">إرسال إلى التلميذ 🚀</button>
-                </div>
             </div>
         </div>
     </main>
-
-    <!-- نافذة المنبه -->
-    <div id="alarm-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-800 border-2 border-amber-500 w-full max-w-sm rounded-2xl p-6 text-center space-y-4 shadow-2xl animate-bounce">
-            <i class="fa-solid fa-bell text-amber-400 text-4xl"></i>
-            <h3 id="alarm-title" class="text-lg font-black text-amber-400">تنبيه حصة مدرسية! ⏰</h3>
-            <p id="alarm-details" class="text-sm text-white font-bold"></p>
-            <button onclick="stopAlarm()" class="w-full bg-amber-500 text-slate-950 font-bold p-3 rounded-xl text-sm">إيقاف التنبيه ومتابعة العمل 👍</button>
-        </div>
-    </div>
 
     <script>
         const BASE_STUDENTS = [
@@ -375,13 +335,6 @@
             localStorage.setItem('dhariyat_quiz', JSON.stringify(quizData));
             localStorage.setItem('dhariyat_notifications', JSON.stringify(notificationsData));
             renderStudentsList();
-            renderHomeworkList();
-            renderMyBookList();
-            renderMessagesList();
-            renderScheduleList();
-            renderHonorList();
-            renderQuizList();
-            renderNotificationsList();
         }
 
         function switchTeacherTab(tab) {
@@ -395,20 +348,9 @@
             const activeBtn = document.getElementById(`t-tab-${tab}`);
             if(activeBtn) activeBtn.className = "p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition text-[9px]";
 
-            if(tab === 'grades') populateGradeSelect();
-            if(tab === 'homework') renderHomeworkList();
-            if(tab === 'mybook') renderMyBookList();
-            if(tab === 'guidance') populateMessageSelect();
-            if(tab === 'schedule') renderScheduleList();
-            if(tab === 'behavior') populateBehaviorSelect();
-            if(tab === 'certificate') populateCertificateSelect();
-            if(tab === 'honor') populateHonorSelect();
-            if(tab === 'quiz') renderQuizList();
-            if(tab === 'notifications') renderNotificationsList();
             if(tab === 'students') renderStudentsList();
         }
 
-        // 🌟 إضافة مجموعة أسماء دفعة واحدة
         function addGroupStudents() {
             const text = document.getElementById('group-names-input').value.trim();
             if(!text) { alert('الرجاء كتابة أو لصق الأسماء.'); return; }
@@ -429,13 +371,12 @@
             if(count > 0) {
                 document.getElementById('group-names-input').value = '';
                 saveData();
-                alert(`تمت إضافة ${count} تلميذ/ة بنجاح وتوليد أكواهن! 🚀`);
+                alert(`تمت إضافة ${count} تلميذ/ة بنجاح! 🚀`);
             } else {
                 alert('لم يتم العثور على أسماء صحيحة.');
             }
         }
 
-        // 🌟 حذف تلميذ مفرد
         function deleteSingleStudent(id) {
             if(confirm('هل أنت متأكد من حذف هذه التلميذة؟')) {
                 studentsData = studentsData.filter(s => s.id !== id);
@@ -443,7 +384,6 @@
             }
         }
 
-        // 🌟 حذف جميع التلاميذ
         function clearAllStudents() {
             if(confirm('تحذير: هل أنت متأكد من حذف كافة التلاميذ من النظام؟')) {
                 studentsData = [];
@@ -451,7 +391,6 @@
             }
         }
 
-        // 🌟 عرض القائمة مع الفلترة، العدد الكلي، وحذف فردي أو جماعي
         function renderStudentsList() {
             const c = document.getElementById('teacher-students-list');
             if(!c) return; c.innerHTML = '';
@@ -469,7 +408,7 @@
             });
 
             if(filtered.length === 0) {
-                c.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">لا توجد نتائج مطابقة لهذه الشعبة.</p>';
+                c.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">لا توجد نتائج مطابقة.</p>';
                 return;
             }
 
@@ -480,275 +419,11 @@
                             <span class="font-bold text-white block">${s.name}</span>
                             <span class="text-[10px] text-amber-400 font-mono">الصف: ${s.class} (${s.section}) | الكود: ${s.id}</span>
                         </div>
-                        <button onclick="deleteSingleStudent('${s.id}')" class="text-red-400 hover:text-red-300 p-1" title="حذف التلميذة">🗑️ حذف</button>
+                        <button onclick="deleteSingleStudent('${s.id}')" class="text-red-400 hover:text-red-300 p-1" title="حذف">🗑️ حذف</button>
                     </div>
                 `;
             });
         }
-
-        function renderNotificationsList() {
-            const c = document.getElementById('notifications-list-container');
-            if(!c) return; c.innerHTML = '';
-            document.getElementById('notif-count').innerText = notificationsData.length;
-
-            if(notificationsData.length === 0) {
-                c.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">لا توجد إشعارات أو تفاعلات جديدة حتى الآن.</p>';
-            } else {
-                notificationsData.forEach((n, idx) => {
-                    let isCorrect = n.isCorrect;
-                    c.innerHTML += `
-                        <div class="p-3 bg-slate-900 border ${isCorrect ? 'border-emerald-500/50' : 'border-red-500/50'} rounded-xl space-y-1 text-xs">
-                            <div class="flex justify-between items-center">
-                                <span class="font-bold text-amber-400">${n.studentName} (${n.classInfo})</span>
-                                <span class="text-[10px] text-slate-400">${n.time}</span>
-                            </div>
-                            <p class="text-slate-200">أجاب على السؤال: <strong class="text-white">"${n.question}"</strong></p>
-                            <p class="font-bold ${isCorrect ? 'text-emerald-400' : 'text-red-400'}">
-                                الإجابة المختارة: (${n.chosenText}) - ${isCorrect ? 'إجابة صحيحة 🌟' : 'إجابة خاطئة ❌'}
-                            </p>
-                        </div>
-                    `;
-                });
-            }
-        }
-
-        function clearNotifications() {
-            if(confirm('هل أنت تأكد من مسح جميع الإشعارات؟')) {
-                notificationsData = [];
-                saveData();
-            }
-        }
-
-        function populateHonorSelect() {
-            const select = document.getElementById('honor-student-select');
-            if(!select) return;
-            select.innerHTML = '<option value="">اختر التلميذ...</option>';
-            studentsData.forEach(s => { select.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`; });
-            renderHonorList();
-        }
-        function addHonorStudent() {
-            const sId = document.getElementById('honor-student-select').value;
-            const student = studentsData.find(s => s.id === sId);
-            const reason = document.getElementById('honor-reason').value.trim();
-            if(!student) { alert('اختر التلميذ أولاً.'); return; }
-            honorData.push({ studentId: student.id, studentName: student.name, classInfo: `${student.class} - شعبة ${student.section}`, reason: reason || 'التميز الدراسي والسلوكي' });
-            document.getElementById('honor-reason').value = '';
-            saveData();
-            alert('تمت إضافة التلميذ إلى لوحة الشرف بنجاح 🌟');
-        }
-        function renderHonorList() {
-            const c = document.getElementById('honor-list-container');
-            if(!c) return; c.innerHTML = '';
-            honorData.forEach((h, idx) => {
-                c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs flex justify-between items-center"><div><span class="font-bold text-amber-400">⭐ ${h.studentName}</span> <span class="text-slate-300 text-[10px]">(${h.classInfo})</span><p class="text-slate-400 text-[10px]">${h.reason}</p></div><button onclick="honorData.splice(${idx},1);saveData();" class="text-red-400">🗑️</button></div>`;
-            });
-        }
-
-        function publishQuiz() {
-            const question = document.getElementById('quiz-question').value.trim();
-            const opt1 = document.getElementById('quiz-opt1').value.trim();
-            const opt2 = document.getElementById('quiz-opt2').value.trim();
-            if(!question || !opt1 || !opt2) { alert('يرجى كتابة السؤال وخياراته.'); return; }
-            quizData.push({
-                cls: document.getElementById('quiz-class').value,
-                sub: document.getElementById('quiz-sub').value,
-                question, opt1, opt2,
-                correct: document.getElementById('quiz-correct').value,
-                date: new Date().toLocaleDateString('ar-IQ')
-            });
-            document.getElementById('quiz-question').value = '';
-            document.getElementById('quiz-opt1').value = '';
-            document.getElementById('quiz-opt2').value = '';
-            saveData();
-            alert('تم نشر السؤال التفاعلي بنجاح 🚀');
-        }
-        function renderQuizList() {
-            const c = document.getElementById('quiz-list-container');
-            if(!c) return; c.innerHTML = '';
-            quizData.forEach((q, idx) => {
-                c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs flex justify-between items-center"><div><span class="text-amber-400 font-bold">${q.sub} (${q.cls})</span><p class="text-white">${q.question}</p></div><button onclick="quizData.splice(${idx},1);saveData();" class="text-red-400">🗑️</button></div>`;
-            });
-        }
-
-        function addMyNote() {
-            const title = document.getElementById('my-title').value.trim();
-            if(!title) { alert('أدخل عنوان المذكرة.'); return; }
-            myBookData.push({ day: document.getElementById('my-day').value, date: document.getElementById('my-date').value, cls: document.getElementById('my-class').value, sec: document.getElementById('my-section').value, sub: document.getElementById('my-sub').value, title, notes: document.getElementById('my-notes').value });
-            document.getElementById('my-title').value = ''; document.getElementById('my-notes').value = '';
-            saveData(); alert('تم الحفظ 📌');
-        }
-        function renderMyBookList() {
-            const c = document.getElementById('mybook-list-container');
-            if(!c) return; c.innerHTML = '';
-            myBookData.forEach((item, idx) => {
-                c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs flex justify-between"><span><b>${item.sub}:</b> ${item.title}</span><button onclick="myBookData.splice(${idx},1);saveData();" class="text-red-400">🗑️</button></div>`;
-            });
-        }
-
-        function toggleScheduleFields() {
-            const sub = document.getElementById('sch-subject').value;
-            const box = document.getElementById('sch-class-section-box');
-            if(sub.includes('شاغر')) box.classList.add('hidden'); else box.classList.remove('hidden');
-        }
-        function addScheduleItem() {
-            const startTime = document.getElementById('sch-start').value;
-            const endTime = document.getElementById('sch-end').value;
-            if(!startTime || !endTime) { alert('أدخل الوقت.'); return; }
-            let cls = '', sec = '';
-            const sub = document.getElementById('sch-subject').value;
-            if(!sub.includes('شاغر')) { cls = document.getElementById('sch-class').value; sec = document.getElementById('sch-section').value; }
-            scheduleData.push({ day: document.getElementById('sch-day').value, num: document.getElementById('sch-number').value, sub, cls, sec, startTime, endTime });
-            saveData(); alert('تم الحفظ ⏰');
-        }
-        function renderScheduleList() {
-            const c = document.getElementById('schedule-list-container');
-            if(!c) return; c.innerHTML = '';
-            scheduleData.forEach((s, idx) => {
-                c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs flex justify-between"><span>${s.day} - ${s.num} (${s.sub})</span><button onclick="scheduleData.splice(${idx},1);saveData();" class="text-red-400">🗑️</button></div>`;
-            });
-        }
-
-        function populateCertificateSelect() {
-            const select = document.getElementById('cert-student-select');
-            if(!select) return; select.innerHTML = '<option value="">اختر التلميذ...</option>';
-            studentsData.forEach(s => { select.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`; });
-        }
-        function fillStudentCertName() {
-            const student = studentsData.find(s => s.id === document.getElementById('cert-student-select').value);
-            if(student) { document.getElementById('edit-cert-name').value = student.name; document.getElementById('edit-cert-class').value = `${student.class} - شعبة ${student.section}`; }
-        }
-        let currentCertData = null;
-        function generateCertificatePreview() {
-            const name = document.getElementById('edit-cert-name').value;
-            if(!name) return;
-            currentCertData = { studentId: document.getElementById('cert-student-select').value, studentName: name };
-            document.getElementById('preview-out-name').innerText = name;
-            document.getElementById('preview-out-class').innerText = `الصف: ${document.getElementById('edit-cert-class').value}`;
-            document.getElementById('preview-out-text').innerText = document.getElementById('edit-cert-text').value;
-            document.getElementById('certificate-preview-box').classList.remove('hidden');
-            document.getElementById('certificate-actions').classList.remove('hidden');
-        }
-        function downloadCertificatePDF() {
-            const p = document.getElementById('certificate-preview-box').outerHTML;
-            const o = document.body.innerHTML;
-            document.body.innerHTML = `<div style="direction: rtl; padding: 20px; font-family: 'Cairo';">${p}</div>`;
-            window.print(); document.body.innerHTML = o; window.location.reload();
-        }
-        function sendCertificateToStudent() {
-            if(!currentCertData) return;
-            let certList = JSON.parse(localStorage.getItem('dhariyat_certificates')) || [];
-            certList = certList.filter(c => c.studentId !== currentCertData.studentId);
-            certList.push(currentCertData);
-            localStorage.setItem('dhariyat_certificates', JSON.stringify(certList));
-            alert('تم إرسال الشهادة بنجاح 🎉');
-        }
-
-        function populateBehaviorSelect() {
-            const select = document.getElementById('beh-student-select');
-            if(!select) return; select.innerHTML = '<option value="">اختر التلميذ...</option>';
-            studentsData.forEach(s => { select.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`; });
-        }
-        function loadStudentBehavior() {
-            const b = behaviorData[document.getElementById('beh-student-select').value] || { score: 95, note: '' };
-            document.getElementById('beh-score-range').value = b.score;
-            document.getElementById('beh-score-val').innerText = b.score;
-            document.getElementById('beh-note').value = b.note;
-        }
-        function saveStudentBehavior() {
-            const sId = document.getElementById('beh-student-select').value;
-            if(!sId) return;
-            behaviorData[sId] = { score: parseInt(document.getElementById('beh-score-range').value), note: document.getElementById('beh-note').value.trim() };
-            saveData(); alert('تم الحفظ ⭐');
-        }
-
-        function populateMessageSelect() {
-            const select = document.getElementById('msg-student-select');
-            if(!select) return; select.innerHTML = '<option value="">اختر التلميذ...</option>';
-            studentsData.forEach(s => { select.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`; });
-            renderMessagesList();
-        }
-        function sendPrivateMessage() {
-            const sId = document.getElementById('msg-student-select').value;
-            const student = studentsData.find(s => s.id === sId);
-            const content = document.getElementById('msg-content').value.trim();
-            if(!student || !content) return;
-            messagesData = messagesData.filter(m => m.studentId !== sId);
-            messagesData.push({ studentId: sId, studentName: student.name, title: document.getElementById('msg-title').value, content, date: new Date().toLocaleDateString('ar-IQ') });
-            document.getElementById('msg-content').value = ''; saveData(); alert('تم الإرسال 🚀');
-        }
-        function renderMessagesList() {
-            const c = document.getElementById('messages-list-container');
-            if(!c) return; c.innerHTML = '';
-            messagesData.forEach((m, idx) => { c.innerHTML += `<div class="p-2 bg-slate-900 border border-slate-700 rounded-xl text-xs flex justify-between"><span>${m.studentName}: ${m.title}</span><button onclick="messagesData.splice(${idx},1);saveData();" class="text-red-400">🗑️</button></div>`; });
-        }
-
-        function populateGradeSelect() {
-            const select = document.getElementById('grade-student-select');
-            if(!select) return; select.innerHTML = '<option value="">اختر التلميذ...</option>';
-            studentsData.forEach(s => { select.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`; });
-        }
-        document.getElementById('grade-student-select')?.addEventListener('change', function() {
-            const s = studentsData.find(x => x.id === this.value);
-            const container = document.getElementById('grade-inputs-container');
-            if(!s) { container.classList.add('hidden'); return; }
-            container.classList.remove('hidden');
-            document.getElementById('g-oct').value = s.oct || '';
-            document.getElementById('g-nov').value = s.nov || '';
-            document.getElementById('g-dec').value = s.dec || '';
-            document.getElementById('g-jan').value = s.jan || '';
-            document.getElementById('g-mid-avg').value = s.midAvg || '';
-            document.getElementById('g-mid').value = s.mid || '';
-            document.getElementById('t-m1').value = s.m1 || '';
-            document.getElementById('t-m2').value = s.m2 || '';
-            document.getElementById('t-m3').value = s.m3 || '';
-        });
-        function saveStudentGrades() {
-            const s = studentsData.find(x => x.id === document.getElementById('grade-student-select').value);
-            if(s) {
-                s.oct = document.getElementById('g-oct').value; s.nov = document.getElementById('g-nov').value;
-                s.dec = document.getElementById('g-dec').value; s.jan = document.getElementById('g-jan').value;
-                s.midAvg = document.getElementById('g-mid-avg').value; s.mid = document.getElementById('g-mid').value;
-                s.m1 = document.getElementById('t-m1').value; s.m2 = document.getElementById('t-m2').value; s.m3 = document.getElementById('t-m3').value;
-                saveData(); alert('تم الحفظ 💾');
-            }
-        }
-
-        function publishHomework() {
-            const title = document.getElementById('hw-title').value.trim();
-            if(!title) return;
-            homeworkData.push({ title, notes: document.getElementById('hw-notes').value, cls: document.getElementById('hw-class').value, sec: document.getElementById('hw-section').value, sub: document.getElementById('hw-sub').value, date: new Date().toLocaleDateString('ar-IQ') });
-            document.getElementById('hw-title').value = ''; document.getElementById('hw-notes').value = '';
-            saveData(); alert('تم النشر 🚀');
-        }
-        function renderHomeworkList() {
-            const c = document.getElementById('homework-list-container');
-            if(!c) return; c.innerHTML = '';
-            homeworkData.forEach((hw, i) => { c.innerHTML += `<div class="p-2 bg-slate-900 border border-slate-700 rounded-xl text-xs flex justify-between"><span>${hw.sub}: ${hw.title}</span><button onclick="homeworkData.splice(${i},1);saveData();" class="text-red-400">🗑️</button></div>`; });
-        }
-
-        let audioCtx = null, alarmInterval = null;
-        function playBeep() {
-            try {
-                if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = audioCtx.createOscillator(); const g = audioCtx.createGain();
-                osc.connect(g); g.connect(audioCtx.destination);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.5);
-            } catch(e){}
-        }
-        setInterval(() => {
-            const now = new Date();
-            const cur = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-            const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-            scheduleData.forEach(item => {
-                if(item.day === days[now.getDay()] && item.startTime === cur) {
-                    document.getElementById('alarm-details').innerText = `حان موعد (${item.num}: ${item.sub})`;
-                    document.getElementById('alarm-modal').classList.remove('hidden');
-                    if(alarmInterval) clearInterval(alarmInterval);
-                    alarmInterval = setInterval(playBeep, 1000);
-                }
-            });
-        }, 1000);
-        function stopAlarm() { if(alarmInterval) clearInterval(alarmInterval); document.getElementById('alarm-modal').classList.add('hidden'); }
 
         switchTeacherTab('notifications');
         saveData();
