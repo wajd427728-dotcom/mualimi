@@ -18,13 +18,13 @@
     </header>
 
     <main class="w-full max-w-md space-y-4">
-        <!-- التبويبات الرئيسية -->
+        <!-- التبويبات الرئيسية (تم تحسين الأداء وسرعة الاستجابة) -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg">
             <h2 class="text-sm font-bold text-amber-400 mb-3 flex items-center gap-2">
                 <i class="fa-solid fa-gauge-high"></i> التبويبات الرئيسية
             </h2>
             <div class="grid grid-cols-4 gap-1.5 text-center text-xs mb-2">
-                <button onclick="switchTeacherTab('notifications')" id="t-tab-notifications" class="p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition text-[10px] flex items-center justify-center gap-1">
+                <button onclick="switchTeacherTab('notifications')" id="t-tab-notifications" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[10px] flex items-center justify-center gap-1">
                     <i class="fa-solid fa-bell"></i> 🔔 إشعارات (<span id="notif-count">0</span>)
                 </button>
                 <button onclick="switchTeacherTab('homework')" id="t-tab-homework" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[10px]">📖 الواجبات</button>
@@ -359,7 +359,7 @@
             const selects = ['honor-student-select', 'cert-student-select', 'beh-student-select', 'msg-student-select', 'grade-student-select'];
             selects.forEach(id => {
                 const el = document.getElementById(id);
-                if(el) {
+                if(el && el.options.length <= 1) {
                     el.innerHTML = '<option value="">اختر التلميذ / التلميذة...</option>';
                     studentsData.forEach(s => {
                         el.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`;
@@ -368,21 +368,30 @@
             });
         }
 
+        // --- تحسين سرعة التنقل بين التبويبات (Lazy Loading & Instant Switch) ---
         function switchTeacherTab(tab) {
-            ['students', 'grades', 'homework', 'schedule', 'guidance', 'mybook', 'behavior', 'certificate', 'honor', 'quiz', 'notifications'].forEach(t => {
+            const tabs = ['students', 'grades', 'homework', 'schedule', 'guidance', 'mybook', 'behavior', 'certificate', 'honor', 'quiz', 'notifications'];
+            
+            tabs.forEach(t => {
                 const el = document.getElementById(`teacher-tab-${t}`);
                 const btn = document.getElementById(`t-tab-${t}`);
-                if(el) el.classList.add('hidden');
-                if(btn) btn.className = "p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]";
+                if (el) el.classList.add('hidden');
+                if (btn) btn.className = "p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition text-[9px]";
             });
-            document.getElementById(`teacher-tab-${tab}`).classList.remove('hidden');
+
+            const activeEl = document.getElementById(`teacher-tab-${tab}`);
             const activeBtn = document.getElementById(`t-tab-${tab}`);
-            if(activeBtn) activeBtn.className = "p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition text-[9px]";
-            if(tab === 'students') renderStudentsList();
+            
+            if (activeEl) activeEl.classList.remove('hidden');
+            if (activeBtn) activeBtn.className = "p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition text-[9px]";
+
+            // تحميل بيانات التبويب المحدد عند الضغط عليه فقط لزيادة السرعة
+            if (tab === 'students') renderStudentsList();
+            else if (tab === 'schedule') renderScheduleList();
+            else if (tab === 'notifications') renderNotifications();
             else populateAllSelects();
         }
 
-        // --- دوال الأزرار المفقودة سابقاً ---
         function clearNotifications() {
             notificationsData = [];
             saveData();
@@ -462,7 +471,7 @@
             const names = raw.split('\n');
             const cls = document.getElementById('group-class').value;
             const sec = document.getElementById('group-section').value;
-            names.forEach((n, idx) => {
+            names.forEach((n) => {
                 if(n.trim()) {
                     studentsData.push({ id: `STU-${Math.floor(1000 + Math.random() * 9000)}`, name: n.trim(), class: cls, section: sec });
                 }
@@ -514,7 +523,17 @@
                 start, end
             });
             saveData();
+            renderScheduleList();
             alert('تم حفظ الحصة ⏰');
+        }
+
+        function renderScheduleList() {
+            const c = document.getElementById('schedule-list-container');
+            if(!c) return; c.innerHTML = '';
+            if(scheduleData.length === 0) { c.innerHTML = '<p class="text-xs text-slate-400 text-center py-2">لا توجد حصص محفوظة.</p>'; return; }
+            scheduleData.forEach(s => {
+                c.innerHTML += `<div class="p-2 bg-slate-900 border border-slate-700 rounded-xl flex justify-between items-center text-xs"><span>${s.day} - ${s.number} (${s.sub})</span></div>`;
+            });
         }
 
         function fillStudentCertName() {
@@ -562,8 +581,8 @@
             });
         }
 
+        // تشغيل افتراضي سريع عند فتح الصفحة
         switchTeacherTab('notifications');
-        renderNotifications();
         saveData();
     </script>
 </body>
