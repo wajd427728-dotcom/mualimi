@@ -220,7 +220,7 @@
             </div>
         </div>
 
-        <!-- تبويب: دروسي (مع خاصية حذف الحصص الدراسية) -->
+        <!-- تبويب: دروسي (مع خاصية الحذف للحصص الدراسية) -->
         <div id="teacher-tab-schedule" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-calendar-days"></i> جدول دروسي الأسبوعي ⏰</h3>
@@ -359,7 +359,7 @@
             const selects = ['honor-student-select', 'cert-student-select', 'beh-student-select', 'msg-student-select', 'grade-student-select'];
             selects.forEach(id => {
                 const el = document.getElementById(id);
-                if(el && el.options.length <= 1) {
+                if(el) {
                     el.innerHTML = '<option value="">اختر التلميذ / التلميذة...</option>';
                     studentsData.forEach(s => {
                         el.innerHTML += `<option value="${s.id}">${s.name} (${s.class} - شعبة ${s.section})</option>`;
@@ -523,7 +523,6 @@
             alert('تم حفظ الحصة ⏰');
         }
 
-        // --- دالة حذف الحصة الدراسية ---
         function deleteScheduleItem(id) {
             if(confirm('هل أنت متأكد من حذف هذه الحصة الدراسية؟')) {
                 scheduleData = scheduleData.filter(s => s.id !== id);
@@ -535,7 +534,10 @@
         function renderScheduleList() {
             const c = document.getElementById('schedule-list-container');
             if(!c) return; c.innerHTML = '';
-            if(scheduleData.length === {0}) { c.innerHTML = '<p class="text-xs text-slate-400 text-center py-2">لا توجد حصص محفوظة.</p>'; return; }
+            if(scheduleData.length === 0) {
+                c.innerHTML = '<p class="text-xs text-slate-400 text-center py-2">لا توجد حصص محفوظة.</p>';
+                return;
+            }
             scheduleData.forEach(s => {
                 c.innerHTML += `
                     <div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl flex justify-between items-center text-xs">
