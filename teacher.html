@@ -18,7 +18,7 @@
     </header>
 
     <main class="w-full max-w-md space-y-4">
-        <!-- التبويبات الرئيسية (تم تحسين الأداء وسرعة الاستجابة) -->
+        <!-- التبويبات الرئيسية -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg">
             <h2 class="text-sm font-bold text-amber-400 mb-3 flex items-center gap-2">
                 <i class="fa-solid fa-gauge-high"></i> التبويبات الرئيسية
@@ -220,7 +220,7 @@
             </div>
         </div>
 
-        <!-- تبويب: دروسي -->
+        <!-- تبويب: دروسي (مع خاصية حذف الحصص الدراسية) -->
         <div id="teacher-tab-schedule" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-calendar-days"></i> جدول دروسي الأسبوعي ⏰</h3>
@@ -368,10 +368,8 @@
             });
         }
 
-        // --- تحسين سرعة التنقل بين التبويبات (Lazy Loading & Instant Switch) ---
         function switchTeacherTab(tab) {
             const tabs = ['students', 'grades', 'homework', 'schedule', 'guidance', 'mybook', 'behavior', 'certificate', 'honor', 'quiz', 'notifications'];
-            
             tabs.forEach(t => {
                 const el = document.getElementById(`teacher-tab-${t}`);
                 const btn = document.getElementById(`t-tab-${t}`);
@@ -381,11 +379,9 @@
 
             const activeEl = document.getElementById(`teacher-tab-${tab}`);
             const activeBtn = document.getElementById(`t-tab-${tab}`);
-            
             if (activeEl) activeEl.classList.remove('hidden');
             if (activeBtn) activeBtn.className = "p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition text-[9px]";
 
-            // تحميل بيانات التبويب المحدد عند الضغط عليه فقط لزيادة السرعة
             if (tab === 'students') renderStudentsList();
             else if (tab === 'schedule') renderScheduleList();
             else if (tab === 'notifications') renderNotifications();
@@ -527,12 +523,31 @@
             alert('تم حفظ الحصة ⏰');
         }
 
+        // --- دالة حذف الحصة الدراسية ---
+        function deleteScheduleItem(id) {
+            if(confirm('هل أنت متأكد من حذف هذه الحصة الدراسية؟')) {
+                scheduleData = scheduleData.filter(s => s.id !== id);
+                saveData();
+                renderScheduleList();
+            }
+        }
+
         function renderScheduleList() {
             const c = document.getElementById('schedule-list-container');
             if(!c) return; c.innerHTML = '';
-            if(scheduleData.length === 0) { c.innerHTML = '<p class="text-xs text-slate-400 text-center py-2">لا توجد حصص محفوظة.</p>'; return; }
+            if(scheduleData.length === {0}) { c.innerHTML = '<p class="text-xs text-slate-400 text-center py-2">لا توجد حصص محفوظة.</p>'; return; }
             scheduleData.forEach(s => {
-                c.innerHTML += `<div class="p-2 bg-slate-900 border border-slate-700 rounded-xl flex justify-between items-center text-xs"><span>${s.day} - ${s.number} (${s.sub})</span></div>`;
+                c.innerHTML += `
+                    <div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl flex justify-between items-center text-xs">
+                        <div>
+                            <span class="font-bold text-amber-400 block">${s.day} - ${s.number} (${s.start} إلى ${s.end})</span>
+                            <span class="text-white font-medium">${s.sub} | ${s.cls} - شعبة ${s.sec}</span>
+                        </div>
+                        <button onclick="deleteScheduleItem(${s.id})" class="text-red-400 hover:text-red-300 p-1.5 bg-red-950/50 rounded-lg border border-red-900 transition" title="حذف الحصة">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `;
             });
         }
 
@@ -581,7 +596,6 @@
             });
         }
 
-        // تشغيل افتراضي سريع عند فتح الصفحة
         switchTeacherTab('notifications');
         saveData();
     </script>
