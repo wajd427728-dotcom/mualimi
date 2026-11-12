@@ -220,7 +220,7 @@
             </div>
         </div>
 
-        <!-- تبويب: دروسي (مع خاصية الحذف للحصص الدراسية) -->
+        <!-- تبويب: دروسي (مع خاصية إلغاء الصف والشعبة عند اختيار شاغر) -->
         <div id="teacher-tab-schedule" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-calendar-days"></i> جدول دروسي الأسبوعي ⏰</h3>
@@ -388,6 +388,17 @@
             else populateAllSelects();
         }
 
+        // --- إخفاء/إظهار حقل الصف والشعبة حسب المادة المختارة ---
+        function toggleScheduleFields() {
+            const sub = document.getElementById('sch-sub').value;
+            const box = document.getElementById('sch-class-section-box');
+            if(sub === 'شاغر (استراحة)') {
+                box.classList.add('hidden');
+            } else {
+                box.classList.remove('hidden');
+            }
+        }
+
         function clearNotifications() {
             notificationsData = [];
             saveData();
@@ -508,16 +519,26 @@
         function addScheduleItem() {
             const start = document.getElementById('sch-start').value;
             const end = document.getElementById('sch-end').value;
+            const sub = document.getElementById('sch-sub').value;
             if(!start || !end) { alert('حدد وقت البدء والانتهاء.'); return; }
-            scheduleData.push({
+            
+            let item = {
                 id: Date.now(),
                 day: document.getElementById('sch-day').value,
                 number: document.getElementById('sch-number').value,
-                sub: document.getElementById('sch-sub').value,
-                cls: document.getElementById('sch-class').value,
-                sec: document.getElementById('sch-section').value,
+                sub: sub,
                 start, end
-            });
+            };
+
+            if(sub === 'شاغر (استراحة)') {
+                item.cls = '';
+                item.sec = '';
+            } else {
+                item.cls = document.getElementById('sch-class').value;
+                item.sec = document.getElementById('sch-section').value;
+            }
+
+            scheduleData.push(item);
             saveData();
             renderScheduleList();
             alert('تم حفظ الحصة ⏰');
@@ -539,11 +560,12 @@
                 return;
             }
             scheduleData.forEach(s => {
+                let details = s.cls ? `${s.sub} | ${s.cls} - شعبة ${s.sec}` : `${s.sub}`;
                 c.innerHTML += `
                     <div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl flex justify-between items-center text-xs">
                         <div>
                             <span class="font-bold text-amber-400 block">${s.day} - ${s.number} (${s.start} إلى ${s.end})</span>
-                            <span class="text-white font-medium">${s.sub} | ${s.cls} - شعبة ${s.sec}</span>
+                            <span class="text-white font-medium">${details}</span>
                         </div>
                         <button onclick="deleteScheduleItem(${s.id})" class="text-red-400 hover:text-red-300 p-1.5 bg-red-950/50 rounded-lg border border-red-900 transition" title="حذف الحصة">
                             <i class="fa-solid fa-trash-can"></i>
