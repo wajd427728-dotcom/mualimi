@@ -78,7 +78,7 @@
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-circle-question"></i> نشر سؤال تفاعلي أو اختبار قصير ❓</h3>
                 <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
                     <div class="grid grid-cols-2 gap-2">
-                        <select id="quiz-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">الخامس</option><option value="الجميع">كافة الصفوف</option></select>
+                        <select id="quiz-class" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"><option value="السادس الابتدائي">السادس</option><option value="الخامس الابتدائي">الخامس</option><option value="كافة الصفوف">كافة الصفوف</option></select>
                         <select id="quiz-sub" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold"><option value="التربية الإسلامية">التربية الإسلامية</option><option value="اللغة العربية">اللغة العربية</option></select>
                     </div>
                     <div>
@@ -86,11 +86,11 @@
                         <textarea id="quiz-question" rows="2" placeholder="اكتب السؤال هنا..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></textarea>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="quiz-opt1" placeholder="الخيار أ..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
-                        <input type="text" id="quiz-opt2" placeholder="الخيار ب..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                        <input type="text" id="quiz-opt1" placeholder="الخيار أ (اختياري)..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                        <input type="text" id="quiz-opt2" placeholder="الخيار ب (اختياري)..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
                     </div>
                     <div>
-                        <label class="text-[10px] text-amber-400 block mb-1">الخيار الصحيح:</label>
+                        <label class="text-[10px] text-amber-400 block mb-1">الخيار الصحيح (في حال وجود خيارات):</label>
                         <select id="quiz-correct" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold"><option value="1">الخيار (أ)</option><option value="2">الخيار (ب)</option></select>
                     </div>
                     <button onclick="publishQuiz()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl">نشر السؤال للبوابة التفاعلية 🚀</button>
@@ -220,7 +220,7 @@
             </div>
         </div>
 
-        <!-- تبويب: دروسي (مع خاصية إلغاء الصف والشعبة عند اختيار شاغر) -->
+        <!-- تبويب: دروسي -->
         <div id="teacher-tab-schedule" class="space-y-4 hidden">
             <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                 <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-calendar-days"></i> جدول دروسي الأسبوعي ⏰</h3>
@@ -345,6 +345,7 @@
         function saveData() {
             localStorage.setItem('dhariyat_students', JSON.stringify(studentsData));
             localStorage.setItem('dhariyat_grades', JSON.stringify(gradesData));
+            localStorage.setItem('dhariyat_behavior', JSON.stringify(behaviorData));
             localStorage.setItem('dhariyat_schedule', JSON.stringify(scheduleData));
             localStorage.setItem('dhariyat_certificates', JSON.stringify(certificatesData));
             localStorage.setItem('dhariyat_notifications', JSON.stringify(notificationsData));
@@ -388,15 +389,11 @@
             else populateAllSelects();
         }
 
-        // --- إخفاء/إظهار حقل الصف والشعبة حسب المادة المختارة ---
         function toggleScheduleFields() {
             const sub = document.getElementById('sch-sub').value;
             const box = document.getElementById('sch-class-section-box');
-            if(sub === 'شاغر (استراحة)') {
-                box.classList.add('hidden');
-            } else {
-                box.classList.remove('hidden');
-            }
+            if(sub === 'شاغر (استراحة)') box.classList.add('hidden');
+            else box.classList.remove('hidden');
         }
 
         function clearNotifications() {
@@ -420,6 +417,27 @@
             });
         }
 
+        // --- دوال السلوك المفعلة للمطابقة ---
+        function loadStudentBehavior() {
+            const sId = document.getElementById('beh-student-select').value;
+            if(!sId) return;
+            const b = behaviorData[sId] || { score: 95, note: '' };
+            document.getElementById('beh-score-range').value = b.score;
+            document.getElementById('beh-score-val').innerText = b.score;
+            document.getElementById('beh-note').value = b.note || '';
+        }
+
+        function saveStudentBehavior() {
+            const sId = document.getElementById('beh-student-select').value;
+            if(!sId) { alert('اختر التلميذ أولاً.'); return; }
+            behaviorData[sId] = {
+                score: document.getElementById('beh-score-range').value,
+                note: document.getElementById('beh-note').value.trim()
+            };
+            saveData();
+            alert('تم حفظ وإرسال التقييم السلوكي بنجاح ⭐');
+        }
+
         function addHonorStudent() {
             const sId = document.getElementById('honor-student-select').value;
             const reason = document.getElementById('honor-reason').value.trim();
@@ -436,10 +454,19 @@
         function publishQuiz() {
             const q = document.getElementById('quiz-question').value.trim();
             if(!q) { alert('الرجاء كتابة نص السؤال.'); return; }
-            quizData.push({ question: q, cls: document.getElementById('quiz-class').value, sub: document.getElementById('quiz-sub').value });
+            quizData.push({
+                question: q,
+                cls: document.getElementById('quiz-class').value,
+                sub: document.getElementById('quiz-sub').value,
+                opt1: document.getElementById('quiz-opt1').value.trim(),
+                opt2: document.getElementById('quiz-opt2').value.trim(),
+                correct: document.getElementById('quiz-correct').value
+            });
             saveData();
             alert('تم نشر الاختبار بنجاح 🚀');
             document.getElementById('quiz-question').value = '';
+            document.getElementById('quiz-opt1').value = '';
+            document.getElementById('quiz-opt2').value = '';
         }
 
         function addMyNote() {
@@ -455,7 +482,7 @@
         function publishHomework() {
             const title = document.getElementById('hw-title').value.trim();
             if(!title) { alert('الرجاء كتابة عنوان الواجب.'); return; }
-            homeworkData.push({ title, notes: document.getElementById('hw-notes').value, cls: document.getElementById('hw-class').value, sec: document.getElementById('hw-section').value });
+            homeworkData.push({ title, notes: document.getElementById('hw-notes').value, cls: document.getElementById('hw-class').value, sec: document.getElementById('hw-section').value, sub: document.getElementById('hw-sub').value });
             saveData();
             alert('تم نشر الواجب بنجاح 📖');
             document.getElementById('hw-title').value = '';
@@ -487,6 +514,14 @@
             renderStudentsList();
             alert('تمت إضافة الدفعة بنجاح 🚀');
             document.getElementById('group-names-input').value = '';
+        }
+
+        function resetToDefaultStudents() {
+            if(confirm('هل تريد استرجاع القائمة الأصلية للتلاميذ؟')) {
+                studentsData = [...BASE_STUDENTS];
+                saveData();
+                renderStudentsList();
+            }
         }
 
         function loadStudentGradesInputs() {
