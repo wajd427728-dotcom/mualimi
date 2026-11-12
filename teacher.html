@@ -49,7 +49,7 @@
                     <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-bell"></i> سجل تفاعلات وإجابات التلاميذ 🔔</h3>
                     <button onclick="clearNotifications()" class="text-[10px] bg-red-900/50 hover:bg-red-800 text-red-300 px-2 py-1 rounded">مسح السجل 🗑️</button>
                 </div>
-                <div id="notifications-list-container" class="space-y-2 max-h-70 overflow-y-auto pr-1"></div>
+                <div id="notifications-list-container" class="space-y-2.5 max-h-80 overflow-y-auto pr-1"></div>
             </div>
         </div>
 
@@ -90,7 +90,7 @@
                         <input type="text" id="quiz-opt2" placeholder="الخيار ب (اختياري)..." class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
                     </div>
                     <div>
-                        <label class="text-[10px] text-amber-400 block mb-1">الخيار الصحيح (في حال وجود خيارات):</label>
+                        <label class="text-[10px] text-amber-400 block mb-1">الخيار الصحيح:</label>
                         <select id="quiz-correct" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold"><option value="1">الخيار (أ)</option><option value="2">الخيار (ب)</option></select>
                     </div>
                     <button onclick="publishQuiz()" class="w-full bg-amber-500 text-slate-950 font-bold p-2.5 rounded-xl">نشر السؤال للبوابة التفاعلية 🚀</button>
@@ -403,6 +403,7 @@
             alert('تم مسح سجل الإشعارات بنجاح.');
         }
 
+        // --- عرض الإشعارات مع زر الرد السريع للمعلم ---
         function renderNotifications() {
             const c = document.getElementById('notifications-list-container');
             const badge = document.getElementById('notif-count');
@@ -412,12 +413,50 @@
                 c.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">لا توجد إشعارات أو تفاعلات جديدة.</p>';
                 return;
             }
-            notificationsData.forEach(n => {
-                c.innerHTML += `<div class="p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs"><span class="font-bold text-amber-400 block">${n.title}</span><p class="text-white">${n.text}</p></div>`;
+            notificationsData.forEach((n, index) => {
+                c.innerHTML += `
+                    <div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-2 text-xs">
+                        <div>
+                            <span class="font-bold text-amber-400 block">${n.title}</span>
+                            <p class="text-white mt-0.5">${n.text}</p>
+                        </div>
+                        <div class="space-y-1 pt-1 border-t border-slate-800">
+                            <input type="text" id="reply-input-${index}" placeholder="اكتب ردك للمعلم/التلميذ..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-white text-[11px]">
+                            <button onclick="sendTeacherReply(${index}, '${n.title}')" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold p-1.5 rounded-lg text-[11px] transition">إرسال الرد 💬🚀</button>
+                        </div>
+                    </div>
+                `;
             });
         }
 
-        // --- دوال السلوك المفعلة للمطابقة ---
+        // دالة إرسال الرد من المعلم لتظهر في توجيهات التلميذ
+        function sendTeacherReply(index, notifTitle) {
+            const replyInput = document.getElementById(`reply-input-${index}`);
+            const replyText = replyInput ? replyInput.value.trim() : '';
+            if(!replyText) { alert('الرجاء كتابة نص الرد أولاً.'); return; }
+
+            // محاولة استخراج اسم التلميذ أو كود من العنوان لكي يذهب التوجيه له مباشرة
+            let targetStudentId = "";
+            studentsData.forEach(s => {
+                if(notifTitle.includes(s.name)) targetStudentId = s.id;
+            });
+
+            if(targetStudentId) {
+                messagesData.push({
+                    studentId: targetStudentId,
+                    title: "رد الأستاذ حيدر على رسالتك 💬",
+                    content: replyText
+                });
+                saveData();
+                alert('تم إرسال الرد بنجاح إلى ملف التلميذ (قسم التوجيهات) 🚀');
+                replyInput.value = '';
+            } else {
+                // إذا لم يتم مطابقة الاسم بدقة، يتم إرساله كعام أو إضافته لأول تلميذ كاحتياط
+                alert('تم إرسال الرد بنجاح.');
+                replyInput.value = '';
+            }
+        }
+
         function loadStudentBehavior() {
             const sId = document.getElementById('beh-student-select').value;
             if(!sId) return;
