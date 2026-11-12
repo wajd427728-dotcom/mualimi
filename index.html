@@ -46,12 +46,17 @@
                     <h3 id="display-student-name" class="text-base font-black text-white">---</h3>
                     <p id="display-student-class" class="text-xs text-slate-400">---</p>
                 </div>
-                <button onclick="logoutStudent()" class="bg-red-900/40 hover:bg-red-900/60 text-red-400 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1">
-                    <i class="fa-solid fa-right-from-bracket"></i> خروج
-                </button>
+                <div class="flex items-center gap-2">
+                    <button onclick="loadStudentData()" class="bg-slate-700 hover:bg-slate-600 text-amber-400 px-2.5 py-2 rounded-xl text-xs font-bold transition" title="تحديث البيانات">
+                        <i class="fa-solid fa-rotate"></i>
+                    </button>
+                    <button onclick="logoutStudent()" class="bg-red-900/40 hover:bg-red-900/60 text-red-400 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1">
+                        <i class="fa-solid fa-right-from-bracket"></i> خروج
+                    </button>
+                </div>
             </div>
 
-            <!-- تبويبات البوابة (تمت إضافة الاختبارات، التوجيهات، الشرف، وتراسل المعلم) -->
+            <!-- تبويبات البوابة -->
             <div class="grid grid-cols-4 gap-1 text-center text-[11px]">
                 <button onclick="switchStudentTab('behavior')" id="s-tab-behavior" class="p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition shadow">⭐ سلوكي</button>
                 <button onclick="switchStudentTab('grades')" id="s-tab-grades" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">📊 درجات</button>
@@ -116,12 +121,12 @@
                 </div>
             </div>
 
-            <!-- المحتوى: التوجيهات التربوية -->
+            <!-- المحتوى: التوجيهات التربوية (والردود المرسلة من المعلم) -->
             <div id="student-tab-guidance" class="space-y-3 hidden">
                 <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
-                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-envelope-open-text"></i> التوجيهات التربوية الخاصة 💌</h3>
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-envelope-open-text"></i> التوجيهات وردود المعلم 💌</h3>
                     <div id="student-guidance-container" class="space-y-3 text-xs">
-                        <p class="text-slate-400 text-center py-4">لا توجد توجيهات جديدة.</p>
+                        <p class="text-slate-400 text-center py-4">لا توجد توجيهات أو ردود جديدة.</p>
                     </div>
                 </div>
             </div>
@@ -136,7 +141,7 @@
                 </div>
             </div>
 
-            <!-- المحتوى: مراسلة المعلم (إرسال رسالة إلى معلمي) -->
+            <!-- المحتوى: مراسلة المعلم -->
             <div id="student-tab-message" class="space-y-3 hidden">
                 <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                     <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-comments"></i> إرسال رسالة أو استفسار إلى المعلم 💬</h3>
@@ -197,9 +202,11 @@
             });
             document.getElementById(`student-tab-${tab}`).classList.remove('hidden');
             document.getElementById(`s-tab-${tab}`).className = "p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition shadow text-[10px]";
+            
+            // تحديث البيانات تلقائياً عند فتح تبويب التوجيهات
+            if(tab === 'guidance') loadStudentData();
         }
 
-        // --- نظام الكلمات التشجيعية التفاعلية حسب درجة السلوك ---
         function getEncouragementMessage(score) {
             if (score >= 95) return "🌟 بطل متميز جداً! مثابر، خلوق، وقدوة في الالتزام والتفوق الدراسي.";
             if (score >= 85) return "⭐ تلميذ مجتهد ورائع! استمر في هذا العطاء والتقدم المستمر.";
@@ -303,13 +310,13 @@
                 });
             }
 
-            // التوجيهات الخاصة
+            // التوجيهات وردود المعلم الخاصة بالتلميذ
             const messagesList = JSON.parse(localStorage.getItem('dhariyat_messages')) || [];
             const guidanceContainer = document.getElementById('student-guidance-container');
             guidanceContainer.innerHTML = '';
             const myMsgs = messagesList.filter(m => m.studentId === currentStudent.id);
             if(myMsgs.length === 0) {
-                guidanceContainer.innerHTML = '<p class="text-slate-400 text-center py-4">لا توجد توجيهات جديدة.</p>';
+                guidanceContainer.innerHTML = '<p class="text-slate-400 text-center py-4">لا توجد توجيهات أو ردود جديدة.</p>';
             } else {
                 myMsgs.forEach(m => {
                     guidanceContainer.innerHTML += `
@@ -325,7 +332,6 @@
             const honorList = JSON.parse(localStorage.getItem('dhariyat_honor')) || [];
             const honorContainer = document.getElementById('student-honor-container');
             honorContainer.innerHTML = '';
-            const myHonor = honorList.filter(h => h.name.trim() === currentStudent.name.trim());
             if(honorList.length === 0) {
                 honorContainer.innerHTML = '<p class="text-slate-400 text-center py-4">لم يتم تسجيل أسماء في لوحة الشرف بعد.</p>';
             } else {
@@ -344,7 +350,6 @@
             }
         }
 
-        // إرسال حل الاختبار للمعلم
         function submitQuizAnswer(idx, qText) {
             const ansInput = document.getElementById(`quiz-ans-${idx}`);
             const ans = ansInput ? ansInput.value.trim() : '';
@@ -360,7 +365,6 @@
             ansInput.value = '';
         }
 
-        // إرسال رسالة من ولي الأمر إلى المعلم
         function sendParentMessageToTeacher() {
             const title = document.getElementById('parent-msg-title').value.trim();
             const content = document.getElementById('parent-msg-content').value.trim();
