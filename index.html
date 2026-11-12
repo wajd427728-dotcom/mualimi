@@ -15,7 +15,7 @@
         <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 text-xl mb-1 shadow-inner">
             <i class="fa-solid fa-graduation-cap"></i>
         </div>
-        <span class="text-xs bg-amber-500 text-slate-950 px-3 py-1 rounded-full font-black block w-fit mx-auto shadow">بوابة ولي الأمر</span>
+        <span class="text-xs bg-amber-500 text-slate-950 px-3 py-1 rounded-full font-black block w-fit mx-auto shadow">بوابة ولي الأمر والتلميذ</span>
         <h1 class="text-lg font-black text-amber-400">مدرسة الذاريات الابتدائية المختلطة</h1>
         <p class="text-xs font-bold text-slate-300">المعلم: أ. حيدر محمد عبد الكريم</p>
     </header>
@@ -51,24 +51,31 @@
                 </button>
             </div>
 
-            <!-- تبويبات البوابة -->
+            <!-- تبويبات البوابة (تمت إضافة الاختبارات، التوجيهات، الشرف، وتراسل المعلم) -->
             <div class="grid grid-cols-4 gap-1 text-center text-[11px]">
-                <button onclick="switchStudentTab('behavior')" id="s-tab-behavior" class="p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition shadow">⭐ السلوك</button>
-                <button onclick="switchStudentTab('grades')" id="s-tab-grades" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">📊 الدرجات</button>
-                <button onclick="switchStudentTab('certificate')" id="s-tab-certificate" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">🏆 الشهادات</button>
-                <button onclick="switchStudentTab('homework')" id="s-tab-homework" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">📖 الواجبات</button>
+                <button onclick="switchStudentTab('behavior')" id="s-tab-behavior" class="p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition shadow">⭐ سلوكي</button>
+                <button onclick="switchStudentTab('grades')" id="s-tab-grades" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">📊 درجات</button>
+                <button onclick="switchStudentTab('certificate')" id="s-tab-certificate" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">🏆 شهادة</button>
+                <button onclick="switchStudentTab('homework')" id="s-tab-homework" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">📖 واجبات</button>
+            </div>
+            <div class="grid grid-cols-4 gap-1 text-center text-[10px]">
+                <button onclick="switchStudentTab('quiz')" id="s-tab-quiz" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">❓ اختبارات</button>
+                <button onclick="switchStudentTab('guidance')" id="s-tab-guidance" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">💌 توجيهات</button>
+                <button onclick="switchStudentTab('honor')" id="s-tab-honor" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">🌟 الشرف</button>
+                <button onclick="switchStudentTab('message')" id="s-tab-message" class="p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow">💬 لمعلمي</button>
             </div>
 
-            <!-- المحتوى: وسام السلوك -->
+            <!-- المحتوى: وسام السلوك والكلمات التشجيعية -->
             <div id="student-tab-behavior" class="space-y-3">
                 <div class="bg-slate-800/90 border-2 border-amber-500/60 rounded-2xl p-5 shadow-2xl space-y-4 text-center">
-                    <h3 class="font-black text-base text-amber-400">وسام السلوك والتفوق الدراسي</h3>
+                    <h3 class="font-black text-base text-amber-400">وسام السلوك والكلمات التشجيعية ⭐</h3>
                     <div class="bg-slate-900 p-4 rounded-2xl border border-slate-700 space-y-3">
                         <div class="flex justify-between items-center text-xs font-bold">
                             <span class="text-slate-300">الدرجة التقديرية:</span>
                             <span id="student-beh-score-text" class="text-amber-400 font-black text-base">95 / 100</span>
                         </div>
                     </div>
+                    <div id="student-beh-encouragement" class="text-xs font-black text-amber-300 bg-amber-500/10 p-3 rounded-xl border border-amber-500/30">---</div>
                     <p id="student-beh-note" class="text-xs text-slate-200 p-3 bg-slate-800/80 rounded-xl border border-slate-700">---</p>
                 </div>
             </div>
@@ -81,7 +88,7 @@
                 </div>
             </div>
 
-            <!-- المحتوى: الشهادات التقديرية المرسلة -->
+            <!-- المحتوى: الشهادات التقديرية -->
             <div id="student-tab-certificate" class="space-y-3 hidden">
                 <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                     <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-award"></i> الشهادات التقديرية الرسمية 🏆</h3>
@@ -96,6 +103,48 @@
                 <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
                     <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-book-open"></i> الواجبات المدرسية اليومية</h3>
                     <div id="student-homework-list" class="space-y-2 max-h-70 overflow-y-auto pr-1"></div>
+                </div>
+            </div>
+
+            <!-- المحتوى: الاختبارات التفاعلية -->
+            <div id="student-tab-quiz" class="space-y-3 hidden">
+                <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-circle-question"></i> الاختبارات والأسئلة القصيرة ❓</h3>
+                    <div id="student-quiz-container" class="space-y-3 text-xs">
+                        <p class="text-slate-400 text-center py-4">لا توجد اختبارات منشورة حالياً.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المحتوى: التوجيهات التربوية -->
+            <div id="student-tab-guidance" class="space-y-3 hidden">
+                <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-envelope-open-text"></i> التوجيهات التربوية الخاصة 💌</h3>
+                    <div id="student-guidance-container" class="space-y-3 text-xs">
+                        <p class="text-slate-400 text-center py-4">لا توجد توجيهات جديدة.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المحتوى: لوحة الشرف -->
+            <div id="student-tab-honor" class="space-y-3 hidden">
+                <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-medal"></i> لوحة الشرف المدرسية 🌟</h3>
+                    <div id="student-honor-container" class="space-y-3 text-xs">
+                        <p class="text-slate-400 text-center py-4">لم يتم تسجيل اسم في لوحة الشرف بعد.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المحتوى: مراسلة المعلم (إرسال رسالة إلى معلمي) -->
+            <div id="student-tab-message" class="space-y-3 hidden">
+                <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 shadow-lg space-y-3">
+                    <h3 class="font-bold text-sm text-amber-400"><i class="fa-solid fa-comments"></i> إرسال رسالة أو استفسار إلى المعلم 💬</h3>
+                    <div class="space-y-2.5 bg-slate-900 p-3.5 rounded-xl border border-slate-700 text-xs">
+                        <input type="text" id="parent-msg-title" placeholder="عنوان الرسالة (مثال: استفسار عن الواجب)..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white font-bold">
+                        <textarea id="parent-msg-content" rows="3" placeholder="اكتب رسالتك للمعلم هنا..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></textarea>
+                        <button onclick="sendParentMessageToTeacher()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-2.5 rounded-xl transition shadow">إرسال الرسالة إلى الأستاذ حيدر 🚀</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -140,23 +189,32 @@
         }
 
         function switchStudentTab(tab) {
-            ['behavior', 'grades', 'certificate', 'homework'].forEach(t => {
+            ['behavior', 'grades', 'certificate', 'homework', 'quiz', 'guidance', 'honor', 'message'].forEach(t => {
                 const el = document.getElementById(`student-tab-${t}`);
                 const btn = document.getElementById(`s-tab-${t}`);
                 if(el) el.classList.add('hidden');
-                if(btn) btn.className = "p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow text-[11px]";
+                if(btn) btn.className = "p-2 rounded-xl bg-slate-700 text-slate-300 font-bold transition shadow text-[10px]";
             });
             document.getElementById(`student-tab-${tab}`).classList.remove('hidden');
-            document.getElementById(`s-tab-${tab}`).className = "p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition shadow text-[11px]";
+            document.getElementById(`s-tab-${tab}`).className = "p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition shadow text-[10px]";
+        }
+
+        // --- نظام الكلمات التشجيعية التفاعلية حسب درجة السلوك ---
+        function getEncouragementMessage(score) {
+            if (score >= 95) return "🌟 بطل متميز جداً! مثابر، خلوق، وقدوة في الالتزام والتفوق الدراسي.";
+            if (score >= 85) return "⭐ تلميذ مجتهد ورائع! استمر في هذا العطاء والتقدم المستمر.";
+            if (score >= 75) return "👍 تلميذ جيد ولديك طاقة كبيرة للوصول إلى القمة، شد حيلك أكثر!";
+            return "💪 يمكنك تقديم الأفضل دائماً بمعية أستاذك وعائلتك، واصل الاجتهاد!";
         }
 
         function loadStudentData() {
             if(!currentStudent) return;
             
-            // السلوك
+            // السلوك والكلمات التشجيعية
             const behaviorData = JSON.parse(localStorage.getItem('dhariyat_behavior')) || {};
             const myBehavior = behaviorData[currentStudent.id] || { score: 95, note: 'تلميذ متميز ومجتهد وخلوق!' };
             document.getElementById('student-beh-score-text').innerText = `${myBehavior.score} / 100`;
+            document.getElementById('student-beh-encouragement').innerText = getEncouragementMessage(Number(myBehavior.score));
             document.getElementById('student-beh-note').innerText = myBehavior.note || 'تلميذ متميز ومجتهد وخلوق!';
 
             // سجل الدرجات
@@ -205,6 +263,118 @@
             } else {
                 certContainer.innerHTML = '<p class="text-slate-400 text-center py-4">لم يتم إصدار شهادة تقديرية بعد.</p>';
             }
+
+            // الواجبات المدرسية
+            const homeworkList = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
+            const hwContainer = document.getElementById('student-homework-list');
+            hwContainer.innerHTML = '';
+            const filteredHw = homeworkList.filter(h => h.cls === 'الجميع' || h.cls === currentStudent.class);
+            if(filteredHw.length === 0) {
+                hwContainer.innerHTML = '<p class="text-slate-400 text-center py-4">لا توجد واجبات منشورة حالياً.</p>';
+            } else {
+                filteredHw.forEach(h => {
+                    hwContainer.innerHTML += `
+                        <div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-1">
+                            <span class="text-[10px] text-amber-400 font-bold block">${h.sub || 'مادة دراسية'} (${h.cls})</span>
+                            <h4 class="font-black text-white">${h.title}</h4>
+                            <p class="text-slate-300 text-[11px]">${h.notes || ''}</p>
+                        </div>
+                    `;
+                });
+            }
+
+            // الاختبارات التفاعلية
+            const quizList = JSON.parse(localStorage.getItem('dhariyat_quiz')) || [];
+            const quizContainer = document.getElementById('student-quiz-container');
+            quizContainer.innerHTML = '';
+            const filteredQuiz = quizList.filter(q => q.cls === 'كافة الصفوف' || q.cls === currentStudent.class);
+            if(filteredQuiz.length === 0) {
+                quizContainer.innerHTML = '<p class="text-slate-400 text-center py-4">لا توجد اختبارات منشورة حالياً.</p>';
+            } else {
+                filteredQuiz.forEach((q, idx) => {
+                    quizContainer.innerHTML += `
+                        <div class="p-3 bg-slate-900 border border-slate-700 rounded-xl space-y-2">
+                            <span class="text-[10px] text-amber-400 font-bold block">${q.sub}</span>
+                            <p class="font-black text-white">${q.question}</p>
+                            <input type="text" id="quiz-ans-${idx}" placeholder="اكتب إجابتك هنا..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs">
+                            <button onclick="submitQuizAnswer(${idx}, '${q.question}')" class="w-full bg-amber-500 text-slate-950 font-bold p-2 rounded-lg text-xs">إرسال الإجابة للمعلم 🚀</button>
+                        </div>
+                    `;
+                });
+            }
+
+            // التوجيهات الخاصة
+            const messagesList = JSON.parse(localStorage.getItem('dhariyat_messages')) || [];
+            const guidanceContainer = document.getElementById('student-guidance-container');
+            guidanceContainer.innerHTML = '';
+            const myMsgs = messagesList.filter(m => m.studentId === currentStudent.id);
+            if(myMsgs.length === 0) {
+                guidanceContainer.innerHTML = '<p class="text-slate-400 text-center py-4">لا توجد توجيهات جديدة.</p>';
+            } else {
+                myMsgs.forEach(m => {
+                    guidanceContainer.innerHTML += `
+                        <div class="p-3 bg-slate-900 border border-amber-500/40 rounded-xl space-y-1">
+                            <span class="text-[10px] text-amber-400 font-bold block">${m.title}</span>
+                            <p class="text-white text-xs">${m.content}</p>
+                        </div>
+                    `;
+                });
+            }
+
+            // لوحة الشرف
+            const honorList = JSON.parse(localStorage.getItem('dhariyat_honor')) || [];
+            const honorContainer = document.getElementById('student-honor-container');
+            honorContainer.innerHTML = '';
+            const myHonor = honorList.filter(h => h.name.trim() === currentStudent.name.trim());
+            if(honorList.length === 0) {
+                honorContainer.innerHTML = '<p class="text-slate-400 text-center py-4">لم يتم تسجيل أسماء في لوحة الشرف بعد.</p>';
+            } else {
+                honorList.forEach(h => {
+                    const isMe = h.name.trim() === currentStudent.name.trim();
+                    honorContainer.innerHTML += `
+                        <div class="p-3 bg-slate-900 border ${isMe ? 'border-amber-500 bg-amber-500/10' : 'border-slate-700'} rounded-xl space-y-1">
+                            <div class="flex justify-between items-center">
+                                <span class="font-black text-amber-400">${h.name}</span>
+                                <span class="text-[10px] text-slate-400">${h.class} (${h.section})</span>
+                            </div>
+                            <p class="text-slate-200 text-xs">🌟 ${h.reason}</p>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        // إرسال حل الاختبار للمعلم
+        function submitQuizAnswer(idx, qText) {
+            const ansInput = document.getElementById(`quiz-ans-${idx}`);
+            const ans = ansInput ? ansInput.value.trim() : '';
+            if(!ans) { alert('الرجاء كتابة الإجابة أولاً.'); return; }
+            
+            let notifications = JSON.parse(localStorage.getItem('dhariyat_notifications')) || [];
+            notifications.unshift({
+                title: `إجابة اختبار من: ${currentStudent.name}`,
+                text: `السؤال: ${qText} | الإجابة: ${ans}`
+            });
+            localStorage.setItem('dhariyat_notifications', JSON.stringify(notifications));
+            alert('تم إرسال إجابتك إلى الأستاذ حيدر بنجاح 🚀');
+            ansInput.value = '';
+        }
+
+        // إرسال رسالة من ولي الأمر إلى المعلم
+        function sendParentMessageToTeacher() {
+            const title = document.getElementById('parent-msg-title').value.trim();
+            const content = document.getElementById('parent-msg-content').value.trim();
+            if(!title || !content) { alert('الرجاء كتابة العنوان ومحتوى الرسالة.'); return; }
+
+            let notifications = JSON.parse(localStorage.getItem('dhariyat_notifications')) || [];
+            notifications.unshift({
+                title: `رسالة من ولي أمر التلميذ: ${currentStudent.name}`,
+                text: `العنوان: ${title} | النص: ${content}`
+            });
+            localStorage.setItem('dhariyat_notifications', JSON.stringify(notifications));
+            alert('تم إرسال رسالتك إلى الأستاذ حيدر بنجاح 💬🚀');
+            document.getElementById('parent-msg-title').value = '';
+            document.getElementById('parent-msg-content').value = '';
         }
 
         window.onload = function() {
