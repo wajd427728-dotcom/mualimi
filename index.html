@@ -28,7 +28,7 @@
             </div>
             <div class="space-y-1.5">
                 <h2 class="text-base font-black text-white">تسجيل دخول التلميذ / ولي الأمر</h2>
-                <p class="text-[11px] text-slate-400">أدخل كود الدخول الخاص بك (مثال: STU-1001) لتسجيل الدخول.</p>
+                <p class="text-[11px] text-slate-400">أدخل كود الدخول الخاص بك (مثال: STU-8626) لتسجيل الدخول.</p>
             </div>
             <div class="space-y-3">
                 <input type="text" id="student-code-input" placeholder="أدخل الكود هنا..." class="w-full bg-slate-900 border-2 border-slate-700 rounded-2xl p-3.5 text-center text-white font-mono font-black tracking-widest text-sm focus:border-amber-400 outline-none transition uppercase shadow-inner">
@@ -158,10 +158,218 @@
     <script>
         let currentStudent = null;
         const BASE_STUDENTS = [
+            // الصف الخامس أ
+            { id: "STU-8626", name: "أحمد شجاع عباس", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-2932", name: "احمد قاسم محمد", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-5307", name: "أحمد كاظم مكطوف", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-6504", name: "أحمد محمود صالح", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-5240", name: "احمد ياسر كشكول", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-3304", name: "أركان علي جبار", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-1339", name: "أكرم حيدر فرج", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-2200", name: "امير محمد عبد الكريم", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-8051", name: "أيسر علي كريم", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-3606", name: "ايوب محمد عبد الكريم", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-2980", name: "باقر حمزة صاحب", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-8473", name: "بنيامين صلاح جواد", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-3129", name: "ثائر عامر محمود", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-1349", name: "حسن أحمد لفته", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-4251", name: "حسن حميد جاسم", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-2092", name: "حسن حيدر موسى", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-1681", name: "حسن محمد حميد", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-5788", name: "حسين أحمد حميد", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-6855", name: "حيدر علي محمود", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-9972", name: "ذوالفقار محمد فلاح", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-5069", name: "رضا حيدر نعيم", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-9407", name: "رضا رعد ساجد", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-4395", name: "صادق مصعب راسم", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-7493", name: "عادل عمار كشكول", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-9507", name: "عباس رعد شرقي", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-3610", name: "عباس طالب حسن", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-4467", name: "عباس علي محمود", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-8628", name: "عباس محمد حميد", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-3921", name: "عبدالله خضير عباس", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-6028", name: "عبدالله رسول مطشر", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-1262", name: "عبدالله محمد حسن", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-1854", name: "علي أحمد مطشر", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-6789", name: "علي حميد جاسم", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-4545", name: "علي عباس حسوني", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-6651", name: "علي محمد عناد", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-6571", name: "علي مرتضى مظهر", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-7801", name: "كرار احمد عبد السادة", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-9029", name: "كرار علاء عبد", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-7043", name: "كرم نعيم حسن", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-1205", name: "كيان وليد عبد السادة", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-8631", name: "مجتبى جمال علاوي", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-2184", name: "محمد باقر زناد", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-4258", name: "محمد يحيى كشكول", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-8822", name: "مصطفى جمال علاوي", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-4458", name: "مصطفى فراس علي", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-8397", name: "مصطفى نهاد رشيد", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-2187", name: "مصطفى واقد سعدي", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-3363", name: "منتظر صفاء حامد", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-9040", name: "موسى حيدر قاسم", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-4148", name: "موسى صالح عربي", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-3207", name: "موسى ظاهر حبيب", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-3098", name: "مؤمن صفاء سامي", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-8451", name: "هيثم وطبان عباس", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-3305", name: "هيثم يوسف خلف", class: "الخامس الابتدائي", section: "أ" },
+            { id: "STU-1199", name: "يوسف علي كامل", class: "الخامس الابتدائي", section: "أ" },
+
+            // الصف الخامس باء
+            { id: "STU-6401", name: "أبراهيم يوسف راسم", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-6161", name: "أحمد محمد خضير", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-6570", name: "جعفر صباح محمود", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-1804", name: "حسين علي حافظ", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-9717", name: "حسين علي حسن", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-2101", name: "سجاد بلال عبد الكريم", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-4033", name: "سجاد ياس محمد", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-5002", name: "سلام علي فاضل", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-7657", name: "عباس فراس محمد", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-4508", name: "علي بلال عبد الكريم", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-1317", name: "علي رسول سعدي", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-2562", name: "علي محمد علي", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-2015", name: "كرار وليد خالد", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-4952", name: "محمد الجواد علي سعد", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-4977", name: "محمد علي حسن", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-3507", name: "موسى جاسم محمد", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-9076", name: "أسيل عبد علي جبار", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-4221", name: "أية مزهر محمد", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-4217", name: "بنين مهدي عبدالله", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-9889", name: "بيان حيدر قاسم", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-6379", name: "تبارك عباس سلمان", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-4286", name: "جنات صفاء مظهر", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-2181", name: "رقية حسين حسوني", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-4293", name: "رقية علي جعفر", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-3982", name: "رقية علي كريم", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-6785", name: "رهف مهند مولى", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-6366", name: "روان قصي حامد", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-4140", name: "رياحين احمد فاضل", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-3657", name: "ريتاج عزيز كاظم", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-8820", name: "ريحانة حسن علي", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-4299", name: "زهراء طه سلمان", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-5360", name: "زهراء عباس قاسم", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-4704", name: "زينب حسن رحيم", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-5136", name: "زينب علاء هاشم", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-2621", name: "زينب عماد خزعل", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-8182", name: "سراية علي فاضل", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-7771", name: "سمر علي سلمان", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-6950", name: "شهد أحمد عبدالرزاق", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-6737", name: "فاطمة جبار عبد علي", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-6403", name: "فاطمة رعد شرقي", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-5110", name: "فاطمة سعد قيس", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-4809", name: "فاطمة عباس صبيح", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-7809", name: "فاطمة علي جبار", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-2638", name: "فيان عثمان عبدالخالق", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-7497", name: "كوثر أسعد محمد", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-8884", name: "مريم لقمان صادق", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-4541", name: "ملاك باسم محمد", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-8532", name: "ملاك حسين علي", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-2646", name: "ملاك سجاد قاسم", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-6020", name: "ملاك علي حافظ", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-8167", name: "ملاك وليد ناصر", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-5627", name: "نرجس سعد قيس", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-2365", name: "هدى جواد كاظم", class: "الخامس الابتدائي", section: "ب" },
+            { id: "STU-5980", name: "ولاية حيدر علي", class: "الخامس الابتدائي", section: "ب" },
+
+            // الصف السادس أ
             { id: "STU-1001", name: "أبو تراب حسين سلام", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-2525", name: "احمد عقيل صبري", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-3601", name: "احمد مهند نجم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-4192", name: "أوراس ستار فاضل", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-9907", name: "أيمن حسين كريم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-7492", name: "براق علي حاتم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-8986", name: "ثامر عامر محمود", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-3949", name: "جعفر سعدي نعيم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6262", name: "حذيفة ثامر يوسف", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-9020", name: "حسن اياد محمود", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-9685", name: "حسن علي صبيح", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-9383", name: "حسين محمد غدير", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-2771", name: "حمزه كرار علي", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-5527", name: "حمزه ميثم عبد الحسين", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-7369", name: "حيدر محمد عمران", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-4416", name: "حيدر وليد خالد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6349", name: "رعد حسن سلمان", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-7368", name: "سجاد طالب حسن", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-4199", name: "سليمان سعد رضا", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-4623", name: "عباس رائف حسن", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-4638", name: "عباس عبد الزهره علي", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-2165", name: "عباس علي رشيد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6320", name: "عباس علي سالم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-3735", name: "عباس علي والي", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-1579", name: "عباس فهد عناد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-9392", name: "عبد الرحمن بلال ابراهيم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-7907", name: "عبدالله قدوري خضير", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6859", name: "علي حسين صاحب", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-5151", name: "علي حيدر وشال", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-8828", name: "علي صادق حيدر", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-3529", name: "علي كرار علي", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6842", name: "علي محمد مطشر", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-1473", name: "علي نصير شرقي", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-2051", name: "علي ياس محمد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-4835", name: "كاظم كرار علي", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-5207", name: "كرار حيدر محمود", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-8186", name: "كيان عمار عبد الكريم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-8789", name: "محمد الجواد ناطف فاهم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6699", name: "محمد حميد جاسم", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-9710", name: "محمد رسول سعدي", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-3983", name: "محمد ماهر محمد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-4318", name: "مرتضى حسن عبد الزهرة", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6567", name: "مرتضى علي صبيح", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6029", name: "مسلم قتيبة ماجد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6409", name: "مهدي عباس علي", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6138", name: "نور محمد حسن", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-5182", name: "هادي عادل عبد الهادي", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6101", name: "وضاح قيصر مخلص", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-5165", name: "وليد رسول خالد", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6453", name: "ياسر صالح صباح", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-5047", name: "ياسر عبد الله حسين", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-6260", name: "يوسف باسم حيدر", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-2559", name: "يوسف علي كامل", class: "السادس الابتدائي", section: "أ" },
+            { id: "STU-3505", name: "يونس محمود صالح", class: "السادس الابتدائي", section: "أ" },
+
+            // الصف السادس باء
             { id: "STU-8959", name: "أساور محسن سلمان", class: "السادس الابتدائي", section: "ب" },
-            { id: "STU-3001", name: "أحمد شجاع عباس", class: "الخامس الابتدائي", section: "أ" },
-            { id: "STU-4001", name: "أبراهيم يوسف راسم", class: "الخامس الابتدائي", section: "ب" }
+            { id: "STU-8302", name: "أسماء قيصر مخلص", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-6893", name: "اية علي سالم", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-1574", name: "بنين نجم عبد", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-1082", name: "تقى مرتضى مظهر", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-4652", name: "جميلة علي محمد", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-8880", name: "جنه مرتضى حسين", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-7407", name: "جنى علي عبدالخالق", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-1926", name: "حوراء حسين كريم", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-9642", name: "حوراء رائف حسن", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-1502", name: "حوراء نجاح فلاح", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-8071", name: "دنيا محمد شيال", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-8360", name: "دنيا مزهر محمد", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-7703", name: "رتاج حسين حيدر", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-3205", name: "رفيف طه سلمان", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-7861", name: "ريتاج جلال محسن", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-1089", name: "ريحانه بهاء حامد", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-5147", name: "زهراء فلاح حسن", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-6512", name: "زينب سيف عيدان", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-2311", name: "سجى رائد عبد الامير", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-9694", name: "شهد حسين علي", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-9804", name: "شهد وليد عبد السادة", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-9189", name: "طيبة علاء طعمة", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-5900", name: "غدير سيف الدين نوري", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-2287", name: "فاطمة حيدر فرج", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-7658", name: "فاطمة عبد الزهرة علي", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-5626", name: "فاطمة علي محمود", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-5830", name: "فاطمة فيصل علي", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-3221", name: "فاطمة محمد حاتم", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-3739", name: "فرح سعد ساجد", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-7539", name: "قمر حيدر قاسم", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-4547", name: "ليليان رسول عباس", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-5040", name: "ماريا حسين هاشم", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-5834", name: "مريم ليث سلمان", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-1960", name: "مريم مصعب راسم", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-3184", name: "مسار سيف الدين سلمان", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-7634", name: "ملك محمد فخري", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-6592", name: "منسه فرحان هاشم", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-8187", name: "منه سيف الدين نوري", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-7427", name: "مودة فؤاد جواد", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-3677", name: "نوران سيف عيدان", class: "السادس الابتدائي", section: "ب" },
+            { id: "STU-5211", name: "يقين كرار عبد علي", class: "السادس الابتدائي", section: "ب" }
         ];
 
         function loginStudent() {
@@ -203,7 +411,6 @@
             document.getElementById(`student-tab-${tab}`).classList.remove('hidden');
             document.getElementById(`s-tab-${tab}`).className = "p-2 rounded-xl bg-amber-500 text-slate-950 font-bold transition shadow text-[10px]";
             
-            // تحديث البيانات تلقائياً عند فتح تبويب التوجيهات
             if(tab === 'guidance') loadStudentData();
         }
 
@@ -217,14 +424,12 @@
         function loadStudentData() {
             if(!currentStudent) return;
             
-            // السلوك والكلمات التشجيعية
             const behaviorData = JSON.parse(localStorage.getItem('dhariyat_behavior')) || {};
             const myBehavior = behaviorData[currentStudent.id] || { score: 95, note: 'تلميذ متميز ومجتهد وخلوق!' };
             document.getElementById('student-beh-score-text').innerText = `${myBehavior.score} / 100`;
             document.getElementById('student-beh-encouragement').innerText = getEncouragementMessage(Number(myBehavior.score));
             document.getElementById('student-beh-note').innerText = myBehavior.note || 'تلميذ متميز ومجتهد وخلوق!';
 
-            // سجل الدرجات
             const gradesData = JSON.parse(localStorage.getItem('dhariyat_grades')) || {};
             const myGrades = gradesData[currentStudent.id] || {};
             const gContainer = document.getElementById('student-grades-container');
@@ -239,7 +444,6 @@
                 </div>
             `;
 
-            // الشهادات المرسلة
             const certsData = JSON.parse(localStorage.getItem('dhariyat_certificates')) || {};
             const myCert = certsData[currentStudent.id];
             const certContainer = document.getElementById('student-certificates-container');
@@ -271,7 +475,6 @@
                 certContainer.innerHTML = '<p class="text-slate-400 text-center py-4">لم يتم إصدار شهادة تقديرية بعد.</p>';
             }
 
-            // الواجبات المدرسية
             const homeworkList = JSON.parse(localStorage.getItem('dhariyat_homework')) || [];
             const hwContainer = document.getElementById('student-homework-list');
             hwContainer.innerHTML = '';
@@ -290,7 +493,6 @@
                 });
             }
 
-            // الاختبارات التفاعلية
             const quizList = JSON.parse(localStorage.getItem('dhariyat_quiz')) || [];
             const quizContainer = document.getElementById('student-quiz-container');
             quizContainer.innerHTML = '';
@@ -310,7 +512,6 @@
                 });
             }
 
-            // التوجيهات وردود المعلم الخاصة بالتلميذ
             const messagesList = JSON.parse(localStorage.getItem('dhariyat_messages')) || [];
             const guidanceContainer = document.getElementById('student-guidance-container');
             guidanceContainer.innerHTML = '';
@@ -328,7 +529,6 @@
                 });
             }
 
-            // لوحة الشرف
             const honorList = JSON.parse(localStorage.getItem('dhariyat_honor')) || [];
             const honorContainer = document.getElementById('student-honor-container');
             honorContainer.innerHTML = '';
